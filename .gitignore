@@ -60,3 +60,7 @@ megapolis-spec.txt
 # Jeśli potrzeba w repo — użyj Git LFS: git lfs track "*.mp4"
 media/hero-intro.mp4
 media/hero.mp4
+
+# Archiwa z mediami (lokalny backup) — za duże na GitHub
+media.zip
+*.zip

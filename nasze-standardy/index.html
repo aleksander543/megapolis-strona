@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="pl" data-site="megapolis">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nasze standardy — Megapolis</title>
+  <meta name="description" content="Standard Megapolis — jakość, z której jesteśmy rozpoznawalni. Materiały, technologie, części wspólne i obsługa posprzedażowa — jeden spójny standard we wszystkich naszych inwestycjach.">
+  <link rel="preload" href="/fonts/Ubuntu-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/fonts/Ubuntu-Medium.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/fonts/Ubuntu-Bold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .std-page { background: #f4f2ec; color: var(--graphite); }
+
+    /* ========== HERO ========== */
+    .std-hero {
+      position: relative;
+      padding: 180px 0 90px;
+      background: linear-gradient(180deg, #ffffff 0%, #f4f2ec 100%);
+      overflow: hidden;
+    }
+    .std-hero::before {
+      content: ''; position: absolute; top: -40px; right: -60px;
+      width: 460px; height: 460px;
+      background: url('/media/decor/arcs.svg') no-repeat top right;
+      background-size: contain;
+      opacity: 0.32; pointer-events: none;
+    }
+    .std-hero::after {
+      content: ''; position: absolute; bottom: -40px; left: -40px;
+      width: 340px; height: 260px;
+      background: url('/media/decor/curve.svg') no-repeat bottom left;
+      background-size: contain;
+      opacity: 0.75; pointer-events: none;
+    }
+    .std-hero__inner {
+      position: relative; z-index: 1;
+      max-width: 1080px; margin: 0 auto;
+      padding: 0 24px;
+      text-align: center;
+    }
+    .std-crumbs {
+      font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--graphite); opacity: 0.55;
+      margin-bottom: 24px;
+    }
+    .std-crumbs a { color: var(--brand-night); text-decoration: none; }
+    .std-crumbs .sep { margin: 0 10px; opacity: 0.5; }
+    .std-eyebrow {
+      display: inline-flex; align-items: center; gap: 14px;
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-night);
+      margin-bottom: 24px;
+    }
+    .std-eyebrow::before,
+    .std-eyebrow::after { content: ''; width: 44px; height: 1px; background: var(--brand-night); }
+    .std-hero__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(44px, 6.5vw, 92px);
+      font-weight: 800;
+      line-height: 1.02;
+      letter-spacing: -1.8px;
+      color: var(--brand-night);
+      margin: 0 0 22px;
+    }
+    .std-hero__title em { font-style: italic; font-weight: 300; opacity: 0.65; }
+    .std-hero__lead {
+      font-size: clamp(17px, 1.5vw, 20px);
+      line-height: 1.7;
+      color: var(--graphite);
+      max-width: 760px; margin: 0 auto;
+    }
+
+    /* ========== INTRO — duży cytat ========== */
+    .std-intro {
+      padding: 60px 24px 40px;
+      max-width: 880px; margin: 0 auto;
+      text-align: center;
+    }
+    .std-intro__text {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(20px, 2vw, 28px);
+      font-weight: 400;
+      line-height: 1.6;
+      color: var(--brand-night);
+      letter-spacing: -0.2px;
+      margin: 0;
+    }
+    .std-intro__text strong { font-weight: 700; }
+
+    /* ========== PILLARS — 4 filary standardu ========== */
+    .std-pillars {
+      padding: 60px 24px 40px;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .std-pillars__head {
+      text-align: center;
+      max-width: 720px; margin: 0 auto 48px;
+    }
+    .std-section-eyebrow {
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-night); opacity: 0.7;
+      margin-bottom: 14px;
+    }
+    .std-section-title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(30px, 4vw, 52px);
+      font-weight: 800;
+      color: var(--brand-night);
+      line-height: 1.08;
+      letter-spacing: -0.6px;
+      margin: 0 0 16px;
+    }
+    .std-section-title em { font-style: italic; font-weight: 300; opacity: 0.7; }
+    .std-section-sub {
+      font-size: 16px; line-height: 1.7;
+      color: var(--graphite); opacity: 0.8;
+      margin: 0;
+    }
+
+    .std-pillars__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .std-pillar {
+      padding: 32px 26px;
+      background: #ffffff;
+      border: 1px solid rgba(0, 60, 113, 0.1);
+      border-radius: 14px;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .std-pillar::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--brand-night);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .std-pillar:hover {
+      border-color: var(--brand-night);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0, 60, 113, 0.1);
+    }
+    .std-pillar:hover::before { transform: scaleX(1); }
+    .std-pillar__ico {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: rgba(183, 201, 211, 0.4);
+      color: var(--brand-night);
+      margin-bottom: 20px;
+    }
+    .std-pillar__title {
+      font-size: 18px; font-weight: 800;
+      color: var(--brand-night);
+      margin: 0 0 10px;
+      letter-spacing: -0.2px;
+    }
+    .std-pillar__desc {
+      font-size: 14px; line-height: 1.7;
+      color: var(--graphite); opacity: 0.85;
+      margin: 0;
+    }
+
+    /* ========== DETAILS — 4 sekcje szczegółowe (naprzemienne) ========== */
+    .std-details {
+      padding: 40px 0 40px;
+    }
+    .std-detail {
+      padding: 80px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .std-detail--alt { background: #ffffff; }
+    .std-detail__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      position: relative; z-index: 1;
+    }
+    .std-detail--flip .std-detail__img { order: 2; }
+    .std-detail--flip .std-detail__content { order: 1; }
+
+    .std-detail__img {
+      aspect-ratio: 4 / 3;
+      border-radius: 14px;
+      overflow: hidden;
+      position: relative;
+      background: linear-gradient(135deg, #003C71 0%, #1a5490 100%);
+      box-shadow: 0 30px 80px rgba(0, 60, 113, 0.18);
+    }
+    .std-detail__img::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url('/media/decor/grid.svg') no-repeat center;
+      background-size: 80%;
+      opacity: 0.2; filter: invert(1);
+    }
+    .std-detail__img::after {
+      content: ''; position: absolute; inset: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      pointer-events: none;
+    }
+    .std-detail__img img { width: 100%; height: 100%; object-fit: cover; display: block; position: relative; z-index: 1; }
+
+    .std-detail__kicker {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 11px; letter-spacing: 3px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-night); opacity: 0.7;
+      margin-bottom: 14px;
+    }
+    .std-detail__kicker::before { content: ''; width: 28px; height: 1px; background: var(--brand-night); opacity: 0.5; }
+    .std-detail__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(30px, 3.5vw, 44px);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.5px;
+      color: var(--brand-night);
+      margin: 0 0 20px;
+    }
+    .std-detail__desc {
+      font-size: 16px; line-height: 1.8;
+      color: var(--graphite);
+      margin: 0 0 24px;
+      max-width: 540px;
+    }
+
+    .std-checks {
+      list-style: none;
+      padding: 0; margin: 0;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .std-check {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 12px 16px;
+      background: #f4f2ec;
+      border-radius: 10px;
+      font-size: 14px; line-height: 1.55;
+      color: var(--graphite);
+    }
+    .std-detail--alt .std-check { background: rgba(183, 201, 211, 0.22); }
+    .std-check__mark {
+      flex-shrink: 0;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--brand-night);
+      color: #ffffff;
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-top: 1px;
+    }
+    .std-check strong { color: var(--brand-night); font-weight: 700; }
+
+    /* ========== NUMBERS — metryki ========== */
+    .std-numbers {
+      padding: 80px 24px;
+      max-width: 1200px; margin: 0 auto;
+      text-align: center;
+    }
+    .std-numbers__head { margin-bottom: 48px; }
+    .std-numbers__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: rgba(0, 60, 113, 0.12);
+      border: 1px solid rgba(0, 60, 113, 0.12);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .std-number {
+      padding: 36px 26px;
+      background: #ffffff;
+      text-align: center;
+    }
+    .std-number__num {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(32px, 3.5vw, 48px);
+      font-weight: 800;
+      color: var(--brand-night);
+      line-height: 1;
+      letter-spacing: -1px;
+      margin-bottom: 10px;
+    }
+    .std-number__lbl {
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600;
+      color: var(--graphite); opacity: 0.65;
+    }
+
+    /* ========== CTA ========== */
+    .std-cta-wrap {
+      padding: 70px 24px 120px;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .std-cta {
+      padding: 60px 48px;
+      background: linear-gradient(135deg, #003C71 0%, #1a5490 100%);
+      color: #fff;
+      border-radius: 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 40px 100px rgba(0, 60, 113, 0.25);
+    }
+    .std-cta::before {
+      content: ''; position: absolute;
+      top: -80px; right: -80px;
+      width: 320px; height: 320px;
+      background: url('/media/decor/arcs.svg') no-repeat top right;
+      background-size: contain;
+      opacity: 0.2;
+      filter: invert(1);
+      pointer-events: none;
+    }
+    .std-cta__eyebrow {
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-moon);
+      margin-bottom: 14px;
+    }
+    .std-cta__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(28px, 3.2vw, 44px);
+      font-weight: 800;
+      line-height: 1.1;
+      margin: 0 0 18px;
+      letter-spacing: -0.4px;
+    }
+    .std-cta__title em { font-style: italic; font-weight: 300; color: var(--brand-moon); }
+    .std-cta__text {
+      font-size: 16px; line-height: 1.7;
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 620px; margin: 0 auto 30px;
+    }
+    .std-cta__buttons {
+      display: inline-flex; gap: 14px; flex-wrap: wrap;
+      justify-content: center;
+    }
+    .std-cta__btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 32px;
+      border-radius: 9999px;
+      font-size: 14px; font-weight: 700; letter-spacing: 0.5px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+    .std-cta__btn--primary {
+      background: var(--brand-moon);
+      color: var(--brand-night);
+    }
+    .std-cta__btn--primary:hover {
+      background: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 14px 32px rgba(183, 201, 211, 0.35);
+    }
+    .std-cta__btn--ghost {
+      background: transparent;
+      color: var(--brand-moon);
+      border: 1.5px solid var(--brand-moon);
+    }
+    .std-cta__btn--ghost:hover {
+      background: var(--brand-moon);
+      color: var(--brand-night);
+    }
+
+    /* ========== REVEAL ========== */
+    [data-rev] {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    [data-rev].is-revealed { opacity: 1; transform: translateY(0); }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 900px) {
+      .std-hero { padding: 140px 0 70px; }
+      .std-pillars__grid { grid-template-columns: 1fr 1fr; }
+      .std-detail__inner { grid-template-columns: 1fr; gap: 32px; }
+      .std-detail--flip .std-detail__img { order: 0; }
+      .std-detail--flip .std-detail__content { order: 0; }
+      .std-detail { padding: 60px 0; }
+      .std-numbers__grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .std-pillars__grid { grid-template-columns: 1fr; }
+      .std-numbers__grid { grid-template-columns: 1fr; }
+      .std-cta { padding: 44px 24px; }
+    }
+  </style>
+</head>
+<body class="std-page">
+
+  <!-- HEADER -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a class="header__logo" href="/">
+        <img src="/media/megapolis-logo-whitetext.svg" alt="Megapolis" class="header__logo-img">
+      </a>
+      <div class="header__actions">
+        <a class="header__cta header__cta--find" href="/wyszukiwarka">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span>Znajdź swoje mieszkanie</span>
+        </a>
+        <a class="header__cta header__cta--special" href="/oferta-specjalna">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>Oferta specjalna</span>
+        </a>
+        <a class="header__phone" href="tel:+48123000077">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span>12 300 00 77</span>
+        </a>
+        <button class="header__burger" id="burgerBtn" aria-label="Otwórz menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- DRAWER -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__inner">
+      <ul class="mobile-menu__list">
+        <li class="mobile-menu__has-sub">
+          <a href="/o-nas" class="mobile-menu__toggle"><span>O nas</span>
+            <svg class="mobile-menu__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </a>
+          <ul class="mobile-menu__sub">
+            <li><a href="/o-nas/historia">Historia firmy</a></li>
+            <li><a href="/o-nas/zespol">Zespół</a></li>
+            <li><a href="/o-nas/misja">Misja i wartości</a></li>
+            <li><a href="/o-nas/holding">Grupa Holding 1</a></li>
+          </ul>
+        </li>
+        <li><a href="/nasze-standardy">Nasze standardy</a></li>
+        <li><a href="/realizacje">Nasze realizacje</a></li>
+        <li><a href="/lokale-uslugowe">Lokale usługowe</a></li>
+        <li><a href="/program-wykonczenia">Program wykończenia mieszkań</a></li>
+        <li><a href="/finansowanie">Finansowanie</a></li>
+        <li><a href="/kariera">Kariera i społecznie odpowiedzialni</a></li>
+        <li><a href="/aktualnosci">Aktualności</a></li>
+        <li><a href="/kontakt">Kontakt</a></li>
+      </ul>
+      <div class="mobile-menu__footer">
+        <a href="tel:+48123000077" class="mobile-menu__phone">12 300 00 77</a>
+        <a href="mailto:biuro@megapolis.pl" class="mobile-menu__email">biuro@megapolis.pl</a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content">
+
+    <!-- HERO -->
+    <section class="std-hero">
+      <div class="std-hero__inner">
+        <nav class="std-crumbs" data-rev>
+          <a href="/">Strona główna</a><span class="sep">·</span>
+          <span>Nasze standardy</span>
+        </nav>
+        <p class="std-eyebrow" data-rev>Jakość Megapolis</p>
+        <h1 class="std-hero__title" data-rev>Standard, który <em>nie&nbsp;negocjujemy</em></h1>
+        <p class="std-hero__lead" data-rev>
+          Jedna spójna lista wymagań we&nbsp;wszystkich naszych inwestycjach — od&nbsp;podłoża fundamentów po&nbsp;ostatnią klamkę. Niezależnie od&nbsp;tego, czy&nbsp;kupujesz mieszkanie w&nbsp;Smart Life, czy w&nbsp;premium, te same reguły obowiązują zawsze.
+        </p>
+      </div>
+    </section>
+
+    <!-- INTRO -->
+    <section class="std-intro" data-rev>
+      <p class="std-intro__text">
+        Megapolis to&nbsp;<strong>ponad 35&nbsp;lat budowania na&nbsp;krakowskim rynku</strong>. W&nbsp;tym czasie wypracowaliśmy zestaw wymagań, które pozwalają nam dotrzymywać obietnic — z&nbsp;Tobą, z&nbsp;generalnym wykonawcą i&nbsp;z&nbsp;samymi sobą.
+      </p>
+    </section>
+
+    <!-- 4 FILARY -->
+    <section class="std-pillars">
+      <div class="std-pillars__head" data-rev>
+        <p class="std-section-eyebrow">Cztery filary</p>
+        <h2 class="std-section-title">Co składa&nbsp;się na&nbsp;<em>standard Megapolis</em></h2>
+      </div>
+      <div class="std-pillars__grid">
+        <div class="std-pillar" data-rev>
+          <div class="std-pillar__ico">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <h3 class="std-pillar__title">Architektura</h3>
+          <p class="std-pillar__desc">Projekty tworzone wspólnie z&nbsp;doświadczonymi pracowniami. Myślimy o&nbsp;mieszkańcach — nie&nbsp;tylko o&nbsp;metrażu.</p>
+        </div>
+        <div class="std-pillar" data-rev>
+          <div class="std-pillar__ico">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3 class="std-pillar__title">Materiały</h3>
+          <p class="std-pillar__desc">Sprawdzone marki, atestowane produkty, kontrola jakości na&nbsp;każdym etapie dostaw. Bez&nbsp;zastępników „na&nbsp;szybko".</p>
+        </div>
+        <div class="std-pillar" data-rev>
+          <div class="std-pillar__ico">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 0-10 10 10 10 0 0 0 10 10 10 10 0 0 0 10-10"/><polyline points="12 6 12 12 16 14"/><path d="M16 2 22 2 22 8"/><line x1="22" y1="2" x2="15" y2="9"/></svg>
+          </div>
+          <h3 class="std-pillar__title">Energooszczędność</h3>
+          <p class="std-pillar__desc">Budujemy pod&nbsp;przyszłe standardy — nie&nbsp;minimalny obowiązujący. Niższe rachunki i&nbsp;mniejszy ślad węglowy.</p>
+        </div>
+        <div class="std-pillar" data-rev>
+          <div class="std-pillar__ico">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3 class="std-pillar__title">Obsługa</h3>
+          <p class="std-pillar__desc">Jesteśmy z&nbsp;mieszkańcami długo po&nbsp;odbiorze kluczy. Serwis, spółka zarządzająca, życie sąsiedzkie — pełny cykl.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- DETAILS — 4 sekcje szczegółowe -->
+    <div class="std-details">
+
+      <!-- 1. Architektura i projekt -->
+      <section class="std-detail">
+        <div class="std-detail__inner">
+          <div class="std-detail__img" data-rev></div>
+          <div class="std-detail__content" data-rev>
+            <p class="std-detail__kicker">01 · Architektura</p>
+            <h2 class="std-detail__title">Projekt, który&nbsp;żyje z&nbsp;miejscem</h2>
+            <p class="std-detail__desc">
+              Zanim wbijemy pierwszą łopatę, pracownia architektoniczna poznaje dzielnicę — jej&nbsp;historię, komunikację, światło, sąsiedztwo. Projekty Megapolis są&nbsp;„szyte" pod&nbsp;konkretną lokalizację.
+            </p>
+            <ul class="std-checks">
+              <li class="std-check">
+                <span class="std-check__mark"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span><strong>Bryła dostosowana do&nbsp;kontekstu miejskiego</strong> — wysokość, materiał, rytm elewacji</span>
+              </li>
+              <li class="std-check">
+                <span class="std-check__mark"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span><strong>Rozkłady mieszkań bez&nbsp;„martwych" stref</strong> — każdy metr ma&nbsp;funkcję</span>
+              </li>
+              <li class="std-check">
+                <span class="std-check__mark"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span><strong>Okna zapewniające dużo&nbsp;dziennego światła</strong> — min. 1:6 względem powierzchni użytkowej</span>
+              </li>
+              <li class="std-check">
+                <span class="std-check__mark"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span><strong>Balkon, loggia lub ogródek</strong> w&nbsp;minimum 90% mieszkań w&nbsp;każdej inwestycji</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Materiały i technologia -->
+      <section class="std-detail std-detail--alt std-detail--flip">
+        <div class="std-detail__inner">
+          <div class="std-detail__img" data-rev></div>
+          <div class="std-detail__content" data-rev>
+            <p class="std-detail__kicker">02 · Materiały</p>
+            <h2 class="std-detail__title">Sprawdzone, atestowane, trwałe</h2>
+            <p class="std-detail__desc">
+              Lista dopuszczonych materiałów w&nbsp;Megapolis jest&nbsp;węższa niż&nbsp;standardowo — ale&nbsp;za&nbsp;to&nbsp;każda pozycja przeszła nasze wewnętrzne testy. Jeśli nie&nbsp;znalazło się to&nbsp;na&nbsp;liście, nie&nbsp;trafia na&nbsp;budowę.
+            </p>
+            <ul class="std-checks">
+              <li class="std-check">
+                <span class="std-check__mark"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span><strong>Ściany konstrukcyjne z&nbsp;żelbetu</strong> monolitycznego (nie&nbsp;prefabrykat)</span>
+              </li>
+              <li class="std-check">
+                <span class="std-check__mark"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span><strong>Okna 3-szybowe Uw ≤ 0,9 W/m²K</strong> — marki europejskie, z&nbsp;co&nbsp;najmniej 10-letnią gwarancją</span>
+              </li>
+              <li class="std-check">
+                <span class="std-check__mark"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span><strong>Parapety kamienne lub konglomerat</strong> — bez&nbsp;plastiku</span>
+              </li>
+              <li class="std-check">
+                <span class="std-check__mark"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span><strong>Drzwi wejściowe antywłamaniowe</strong> klasy RC2 lub&nbsp;wyżej</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Energia i komfort -->
+      <section class="std-detail">
+        <div class="std-detail__inner">
+          <div class="std-detail__img" data-rev></div>
+          <div class="std-detail__content" data-rev>
+            <p class="std-detail__kicker">03 · Energia &amp; komfort</p>
+            <h2 class="std-detail__title">Niższe rachunki, czyste powietrze, cisza</h2>
+            <p class="std-detail__desc">
+              Budujemy mieszkania, w&nbsp;których zimą nie&nbsp;marzniesz, latem nie&nbsp;przegrzewasz się, a&nbsp;hałas od&nbsp;sąsiada nie&nbsp;dochodzi. Komfort to&nbsp;dla&nbsp;nas parametr — mierzymy go&nbsp;na&nbsp;etapie projektu i&nbsp;kontrolujemy na&nbsp;etapie odbiorów.
+            </p>
+            <ul class="std-checks">
+              <li class="std-check">
+                <span class="std-check__mark"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span><strong>Energia pierwotna EP ≤ 55&nbsp;kWh/m²</strong>·rok — poniżej wymogów ustawowych</span>
+              </li>
+              <li class="std-check">
+                <span class="std-check__mark"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span><strong>Rekuperacja w&nbsp;standardzie</strong> — świeże powietrze bez&nbsp;strat ciepła</span>
+              </li>
+              <li class="std-check">
+                <span class="std-check__mark"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span><strong>Izolacja akustyczna R'A1 ≥ 50&nbsp;dB</strong> między mieszkaniami</span>
+              </li>
+              <li class="std-check">
+                <span class="std-check__mark"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span><strong>Ogrzewanie gazowe lub&nbsp;pompa ciepła</strong> — każda inwestycja wyposażona w&nbsp;pomiar mediów per mieszkanie</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Części wspólne & tereny zielone -->
+      <section class="std-detail std-detail--alt std-detail--flip">
+        <div class="std-detail__inner">
+          <div class="std-detail__img" data-rev></div>
+          <div class="std-detail__content" data-rev>
+            <p class="std-detail__kicker">04 · Części wspólne</p>
+            <h2 class="std-detail__title">Osiedla dla&nbsp;ludzi, nie&nbsp;dla&nbsp;aut</h2>
+            <p class="std-detail__desc">
+              Parkingi schowane w&nbsp;podziemiach. Parter — dla&nbsp;mieszkańców. Na&nbsp;każdym osiedlu są&nbsp;przestrzenie, w&nbsp;których naprawdę chce się być — place zabaw, strefy relaksu, tereny zielone.
+            </p>
+            <ul class="std-checks">
+              <li class="std-check">
+                <span class="std-check__mark"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span><strong>Min. 35% powierzchni osiedla</strong> — tereny zielone, place zabaw, strefy relaksu</span>
+              </li>
+              <li class="std-check">
+                <span class="std-check__mark"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span><strong>Nasadzenia drzew i&nbsp;krzewów</strong> w&nbsp;wieku min. 5&nbsp;lat — nie&nbsp;„patyczki", tylko&nbsp;dorosła zieleń</span>
+              </li>
+              <li class="std-check">
+                <span class="std-check__mark"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span><strong>Strefa Relacji lub&nbsp;Kącik Sąsiedzki</strong> w&nbsp;każdej inwestycji — przestrzeń wspólna do&nbsp;rozmów i&nbsp;integracji</span>
+              </li>
+              <li class="std-check">
+                <span class="std-check__mark"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span><strong>Oświetlenie LED z&nbsp;ciepłą barwą</strong> — przyjazne dla&nbsp;oczu i&nbsp;owadów, z&nbsp;czujnikiem zmierzchu</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- NUMBERS — metryki standardu -->
+    <section class="std-numbers">
+      <div class="std-numbers__head" data-rev>
+        <p class="std-section-eyebrow">Nasz standard w&nbsp;liczbach</p>
+        <h2 class="std-section-title">Parametry, które&nbsp;<em>mówią za&nbsp;nas</em></h2>
+      </div>
+      <div class="std-numbers__grid" data-rev>
+        <div class="std-number">
+          <div class="std-number__num">55</div>
+          <div class="std-number__lbl">kWh/m²·rok EP</div>
+        </div>
+        <div class="std-number">
+          <div class="std-number__num">35%</div>
+          <div class="std-number__lbl">terenów zielonych</div>
+        </div>
+        <div class="std-number">
+          <div class="std-number__num">50&nbsp;dB</div>
+          <div class="std-number__lbl">izolacja akustyczna</div>
+        </div>
+        <div class="std-number">
+          <div class="std-number__num">10&nbsp;lat</div>
+          <div class="std-number__lbl">gwarancji budowlanej</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="std-cta-wrap">
+      <div class="std-cta" data-rev>
+        <p class="std-cta__eyebrow">Chcesz zobaczyć standard na&nbsp;żywo?</p>
+        <h2 class="std-cta__title">Zapraszamy na <em>wizję lokalną</em> i&nbsp;odbiór techniczny</h2>
+        <p class="std-cta__text">
+          Umów się z&nbsp;doradcą — pokażemy Ci&nbsp;część wspólną, mieszkanie pokazowe i&nbsp;dokumentację techniczną. Odpowiemy na&nbsp;każde pytanie dotyczące materiałów, technologii i&nbsp;gwarancji.
+        </p>
+        <div class="std-cta__buttons">
+          <a href="/kontakt" class="std-cta__btn std-cta__btn--primary">
+            Umów wizję lokalną
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href="/realizacje" class="std-cta__btn std-cta__btn--ghost">Zobacz realizacje</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__bottom" style="padding:32px 0;">
+        <p style="font-size:12px;color:var(--white-40);">&copy; 2026 Megapolis Sp. z&nbsp;o.o. &nbsp;·&nbsp; <a href="/polityka-prywatnosci" style="color:var(--white-60);">Polityka prywatności</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/main.js"></script>
+  <script>
+    (function () {
+      const els = document.querySelectorAll('[data-rev]');
+      if (!('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('is-revealed')); return; }
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-revealed'); io.unobserve(e.target); } });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      els.forEach(e => io.observe(e));
+    })();
+  </script>
+</body>
+</html>
