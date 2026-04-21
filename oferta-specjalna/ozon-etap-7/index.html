@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OZON Etap 7 — gotowe mieszkania · Megapolis</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { height:100%; overflow:hidden; font-family:system-ui, -apple-system, sans-serif; background:#003C71; }
+  .emb-bar { position:fixed; top:0; left:0; right:0; height:56px; display:flex; align-items:center; justify-content:space-between; padding:0 24px; background:#003C71; color:#fff; z-index:1000; box-shadow:0 2px 12px rgba(0,0,0,0.25); }
+  .emb-bar__left { display:inline-flex; align-items:center; gap:14px; font-size:13px; }
+  .emb-bar__back { display:inline-flex; align-items:center; gap:6px; color:#B7C9D3; font-weight:500; font-size:13px; padding:6px 12px; border:1px solid rgba(183,201,211,0.35); border-radius:9999px; text-decoration:none; transition:all 0.2s ease; }
+  .emb-bar__back:hover { background:#B7C9D3; color:#003C71; }
+  .emb-bar__logo { height:28px; width:auto; display:block; }
+  .emb-bar__sep { color:rgba(255,255,255,0.35); margin:0 6px; }
+  .emb-bar__title { color:#fff; font-weight:600; letter-spacing:0.3px; }
+  .emb-bar__badge { padding:3px 10px; background:#B7C9D3; color:#003C71; font-size:10px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; border-radius:9999px; margin-left:10px; }
+  .emb-bar__right { display:inline-flex; align-items:center; gap:12px; font-size:12px; }
+  .emb-bar__external { display:inline-flex; align-items:center; gap:6px; color:rgba(255,255,255,0.7); font-size:12px; text-decoration:none; transition:color 0.2s; }
+  .emb-bar__external:hover { color:#B7C9D3; }
+  .emb-iframe { position:fixed; top:56px; left:0; right:0; bottom:0; width:100vw; height:calc(100vh - 56px); border:0; background:#fff; display:block; }
+  @media (max-width:640px) { .emb-bar { height:48px; padding:0 14px; } .emb-bar__title, .emb-bar__sep, .emb-bar__badge { display:none; } .emb-iframe { top:48px; height:calc(100vh - 48px); } .emb-bar__back span { display:none; } .emb-bar__back { padding:6px 10px; } }
+</style>
+</head>
+<body>
+  <header class="emb-bar">
+    <div class="emb-bar__left">
+      <a class="emb-bar__back" href="/oferta-specjalna/"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg><span>Oferta specjalna</span></a>
+      <img src="/media/megapolis-logo-whitetext.svg" alt="Megapolis" class="emb-bar__logo">
+      <span class="emb-bar__sep">/</span>
+      <span class="emb-bar__title">OZON Etap&nbsp;7</span>
+      <span class="emb-bar__badge">Gotowe do odbioru</span>
+    </div>
+    <div class="emb-bar__right">
+      <a class="emb-bar__external" href="https://gotowemieszkania.osiedleozon.pl/mieszkania/etap-6/wyszukiwarka_tekstowa" target="_blank" rel="noopener">Otwórz w nowym oknie
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
+    </div>
+  </header>
+  <iframe class="emb-iframe" src="https://gotowemieszkania.osiedleozon.pl/mieszkania/etap-6/wyszukiwarka_tekstowa" title="OZON Etap 7 — gotowe mieszkania" referrerpolicy="no-referrer-when-downgrade" sandbox="allow-forms allow-scripts allow-popups allow-same-origin allow-top-navigation-by-user-activation allow-presentation allow-downloads" allow="fullscreen; geolocation; autoplay; encrypted-media"></iframe>
+</body>
+</html>

@@ -9,9 +9,39 @@ const path = require('path');
 const crypto = require('crypto');
 const url = require('url');
 
+// ---------- Proste ladowanie .env (bez zewnetrznych zaleznosci) ----------
+// Jesli plik .env istnieje, parsujemy linie KEY=VALUE i ustawiamy process.env.
+(function loadDotEnv() {
+  try {
+    const envPath = path.join(__dirname, '.env');
+    if (!fs.existsSync(envPath)) return;
+    const txt = fs.readFileSync(envPath, 'utf8');
+    txt.split(/\r?\n/).forEach((line) => {
+      const s = line.trim();
+      if (!s || s.startsWith('#')) return;
+      const eq = s.indexOf('=');
+      if (eq === -1) return;
+      const k = s.substring(0, eq).trim();
+      let v = s.substring(eq + 1).trim();
+      // strip surrounding quotes
+      if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
+        v = v.substring(1, v.length - 1);
+      }
+      if (k && !(k in process.env)) process.env[k] = v;
+    });
+  } catch (e) { /* ciche wyjscie - .env nie jest obowiazkowy */ }
+})();
+
 // ---------- THTG config ----------
 const THTG_TOKEN  = process.env.THTG_TOKEN  || '6fd4f9905453c463ee35d4e61adf6bce7bfe03a5';
 const THTG_DOMAIN = process.env.THTG_DOMAIN || 'crmmegapolis.thtg.pl';
+
+// ---------- AI config (Grok / Gemini) ----------
+const AI_PROVIDER    = (process.env.AI_PROVIDER || 'grok').toLowerCase();
+const GROK_API_KEY   = process.env.GROK_API_KEY   || '';
+const GROK_MODEL     = process.env.GROK_MODEL     || 'grok-3-mini';
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
+const GEMINI_MODEL   = process.env.GEMINI_MODEL   || 'gemini-2.0-flash';
 
 const INVESTMENT_MAP = {
   14: 'osiedle-ozon',
@@ -350,6 +380,184 @@ seedIfMissing('i18n', {
   },
 });
 
+// ---------- Gemini AI search ----------
+// Rate limiting: max 10 zapytan na minute per IP
+const aiRateBuckets = new Map();  // ip -> [timestamp, ...]
+const AI_RATE_LIMIT = 10;
+const AI_RATE_WINDOW_MS = 60 * 1000;
+
+function aiRateLimitCheck(ip) {
+  const now = Date.now();
+  const arr = aiRateBuckets.get(ip) || [];
+  // odfiltruj stare wpisy
+  const fresh = arr.filter(t => now - t < AI_RATE_WINDOW_MS);
+  if (fresh.length >= AI_RATE_LIMIT) return false;
+  fresh.push(now);
+  aiRateBuckets.set(ip, fresh);
+  return true;
+}
+
+// Prompt systemowy dla AI — sztywne zasady, ZAWSZE zwraca JSON
+const AI_SEARCH_PROMPT = [
+  'Jestes asystentem wyszukiwarki mieszkan w firmie deweloperskiej Megapolis (Krakow, Wroclaw).',
+  'Masz wyciagnac z zapytania uzytkownika strukturyzowane filtry i zwrocic CZYSTY JSON (bez markdown, bez komentarzy).',
+  '',
+  'Schemat odpowiedzi (wszystkie pola opcjonalne, zwracaj TYLKO to co user wspomnial):',
+  '{',
+  '  "miasto": "krakow" | "wroclaw" | null,',
+  '  "inwestycja": "ozon" | "clou" | "fi" | "link" | null,',
+  '  "pokoje": number (1-5) | null,',
+  '  "powierzchnia_od": number (m2) | null,',
+  '  "powierzchnia_do": number (m2) | null,',
+  '  "cena_od": number (zl) | null,',
+  '  "cena_do": number (zl) | null,',
+  '  "pietro": number (0=parter, 1-4) | "parter" | "ostatnie" | null,',
+  '  "strona_swiata": ["N"|"S"|"E"|"W"|"NE"|"NW"|"SE"|"SW"] | null,',
+  '  "features": ["balkon"|"loggia"|"ogrodek"|"taras"|"antresola"|"parking"] | null,',
+  '  "promocja": boolean | null,',
+  '  "summary": "krotkie (max 80 znakow) podsumowanie co user chce, po polsku"',
+  '}',
+  '',
+  'Zasady:',
+  '- "500k", "500 tys", "pol miliona" = 500000',
+  '- "2 miliony" = 2000000',
+  '- "dwojka", "2pokoi" = pokoje: 2',
+  '- "kawalerka" = pokoje: 1',
+  '- "krak", "krakow" = "krakow"; "wroc", "wroclaw" = "wroclaw"',
+  '- "poludnie", "na S" = strona_swiata: ["S"]',
+  '- Jesli user nie wspomina o polu, POMIJAJ je (nie wpisuj null - po prostu nie dawaj klucza)',
+  '- summary zawsze obecne.',
+  '- Jesli zapytanie nie ma nic wspolnego z mieszkaniami, zwroc {"summary":"Nie rozumiem - sprecyzuj czego szukasz"}',
+  '',
+  'Zwroc TYLKO JSON, zadnego tekstu przed/po.',
+].join('\n');
+
+function callGemini(userQuery) {
+  return new Promise((resolve, reject) => {
+    if (!GEMINI_API_KEY) { reject(new Error('GEMINI_API_KEY not set')); return; }
+
+    const payload = JSON.stringify({
+      system_instruction: { parts: [{ text: AI_SEARCH_PROMPT }] },
+      contents: [{ role: 'user', parts: [{ text: userQuery }] }],
+      generationConfig: {
+        temperature: 0.2,
+        topP: 0.9,
+        maxOutputTokens: 512,
+        responseMimeType: 'application/json',
+      },
+    });
+
+    const apiPath = '/v1beta/models/' + encodeURIComponent(GEMINI_MODEL) + ':generateContent?key=' + encodeURIComponent(GEMINI_API_KEY);
+    const r = https.request({
+      hostname: 'generativelanguage.googleapis.com',
+      path: apiPath,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) },
+    }, (rsp) => {
+      let raw = '';
+      rsp.on('data', c => raw += c);
+      rsp.on('end', () => {
+        try {
+          const data = JSON.parse(raw);
+          if (rsp.statusCode >= 400) return reject(new Error('Gemini ' + rsp.statusCode + ': ' + (data.error && data.error.message || raw.substring(0, 200))));
+          const text = data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0] && data.candidates[0].content.parts[0].text;
+          if (!text) return reject(new Error('Gemini empty response'));
+          const filters = JSON.parse(text);
+          resolve(filters);
+        } catch (e) { reject(new Error('Gemini parse: ' + e.message)); }
+      });
+    });
+    r.on('error', reject);
+    r.setTimeout(15000, () => { r.destroy(); reject(new Error('Gemini timeout')); });
+    r.write(payload);
+    r.end();
+  });
+}
+
+// Grok (xAI) — API OpenAI-compatible
+function callGrok(userQuery) {
+  return new Promise((resolve, reject) => {
+    if (!GROK_API_KEY) { reject(new Error('GROK_API_KEY not set')); return; }
+
+    const payload = JSON.stringify({
+      model: GROK_MODEL,
+      messages: [
+        { role: 'system', content: AI_SEARCH_PROMPT },
+        { role: 'user',   content: userQuery },
+      ],
+      temperature: 0.2,
+      max_tokens: 512,
+      response_format: { type: 'json_object' },
+    });
+
+    const r = https.request({
+      hostname: 'api.x.ai',
+      path: '/v1/chat/completions',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + GROK_API_KEY,
+        'Content-Length': Buffer.byteLength(payload),
+      },
+    }, (rsp) => {
+      let raw = '';
+      rsp.on('data', c => raw += c);
+      rsp.on('end', () => {
+        try {
+          const data = JSON.parse(raw);
+          if (rsp.statusCode >= 400) return reject(new Error('Grok ' + rsp.statusCode + ': ' + (data.error && data.error.message || raw.substring(0, 200))));
+          const text = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+          if (!text) return reject(new Error('Grok empty response'));
+          const filters = JSON.parse(text);
+          resolve(filters);
+        } catch (e) { reject(new Error('Grok parse: ' + e.message)); }
+      });
+    });
+    r.on('error', reject);
+    r.setTimeout(15000, () => { r.destroy(); reject(new Error('Grok timeout')); });
+    r.write(payload);
+    r.end();
+  });
+}
+
+function callAI(userQuery) {
+  if (AI_PROVIDER === 'grok' && GROK_API_KEY) return callGrok(userQuery);
+  if (AI_PROVIDER === 'gemini' && GEMINI_API_KEY) return callGemini(userQuery);
+  // fallback — probuj z dostepnym
+  if (GROK_API_KEY) return callGrok(userQuery);
+  if (GEMINI_API_KEY) return callGemini(userQuery);
+  return Promise.reject(new Error('No AI provider configured'));
+}
+
+// Sanityzacja filtrow - akceptujemy tylko znane klucze i typy
+function sanitizeFilters(raw) {
+  if (!raw || typeof raw !== 'object') return { summary: 'Nie rozumiem zapytania' };
+  const CITIES = new Set(['krakow', 'wroclaw']);
+  const INVS   = new Set(['ozon', 'clou', 'fi', 'link']);
+  const DIRS   = new Set(['N','S','E','W','NE','NW','SE','SW']);
+  const FEATS  = new Set(['balkon','loggia','ogrodek','taras','antresola','parking']);
+  const out = {};
+  if (typeof raw.miasto === 'string' && CITIES.has(raw.miasto)) out.miasto = raw.miasto;
+  if (typeof raw.inwestycja === 'string' && INVS.has(raw.inwestycja)) out.inwestycja = raw.inwestycja;
+  if (Number.isFinite(raw.pokoje) && raw.pokoje >= 1 && raw.pokoje <= 5) out.pokoje = Math.round(raw.pokoje);
+  if (Number.isFinite(raw.powierzchnia_od) && raw.powierzchnia_od > 0) out.powierzchnia_od = Math.round(raw.powierzchnia_od);
+  if (Number.isFinite(raw.powierzchnia_do) && raw.powierzchnia_do > 0) out.powierzchnia_do = Math.round(raw.powierzchnia_do);
+  if (Number.isFinite(raw.cena_od) && raw.cena_od > 0) out.cena_od = Math.round(raw.cena_od);
+  if (Number.isFinite(raw.cena_do) && raw.cena_do > 0) out.cena_do = Math.round(raw.cena_do);
+  if (raw.pietro === 'parter' || raw.pietro === 'ostatnie' || (Number.isFinite(raw.pietro) && raw.pietro >= 0 && raw.pietro <= 4)) out.pietro = raw.pietro;
+  if (Array.isArray(raw.strona_swiata)) {
+    const ss = raw.strona_swiata.filter(d => typeof d === 'string' && DIRS.has(d));
+    if (ss.length) out.strona_swiata = ss;
+  }
+  if (Array.isArray(raw.features)) {
+    const f = raw.features.filter(x => typeof x === 'string' && FEATS.has(x));
+    if (f.length) out.features = f;
+  }
+  if (typeof raw.promocja === 'boolean') out.promocja = raw.promocja;
+  out.summary = typeof raw.summary === 'string' ? raw.summary.substring(0, 140) : '';
+  return out;
+}
+
 // ---------- Routes ----------
 async function handleAPI(req, res, parsed) {
   const p = parsed.pathname;
@@ -360,6 +568,31 @@ async function handleAPI(req, res, parsed) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   if (m === 'OPTIONS') return sendText(res, 204, '');
+
+  // --- AI search (Gemini proxy) ---
+  if (p === '/api/ai-search' && m === 'POST') {
+    const ip = (req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown').split(',')[0].trim();
+    if (!aiRateLimitCheck(ip)) {
+      return sendJSON(res, 429, { error: 'rate limit exceeded. Try again in a minute.' });
+    }
+    const body = await parseBody(req, 8 * 1024);
+    const query = (body && typeof body.query === 'string') ? body.query.trim().substring(0, 500) : '';
+    if (!query || query.length < 2) {
+      return sendJSON(res, 400, { error: 'query is required (min 2 chars)' });
+    }
+    if (!GROK_API_KEY && !GEMINI_API_KEY) {
+      console.error('No AI API key - check .env');
+      return sendJSON(res, 503, { error: 'AI search not configured' });
+    }
+    try {
+      const raw = await callAI(query);
+      const filters = sanitizeFilters(raw);
+      return sendJSON(res, 200, { ok: true, provider: AI_PROVIDER, filters });
+    } catch (e) {
+      console.error('AI search error:', e.message);
+      return sendJSON(res, 502, { error: 'AI search failed', detail: e.message });
+    }
+  }
 
   // --- Auth ---
   if (p === '/api/auth/login' && m === 'POST') {
@@ -741,9 +974,82 @@ function serveStatic(req, res, parsed) {
   });
 }
 
+// ---------- Proxy dla oferty specjalnej Fi ----------
+// Pobiera wyszukiwarkę Fi + wstrzykuje CSS ukrywający mieszkania
+// które nie mają badge "SUPER OFERTA" (data-extra="super-offer*").
+// Ten sam origin (localhost:3030) — można iframować bez CORS.
+function fetchHtml(hostname, path) {
+  return new Promise((resolve, reject) => {
+    const req = https.request(
+      { hostname, path, method: 'GET',
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Megapolis proxy)',
+          'Accept': 'text/html,application/xhtml+xml'
+        } },
+      (res) => {
+        let raw = '';
+        res.setEncoding('utf8');
+        res.on('data', c => raw += c);
+        res.on('end', () => resolve({ status: res.statusCode, body: raw }));
+      }
+    );
+    req.on('error', reject);
+    req.setTimeout(15000, () => { req.destroy(); reject(new Error('proxy timeout')); });
+    req.end();
+  });
+}
+
+async function handleFiSuperOferta(req, res) {
+  try {
+    const { status, body } = await fetchHtml('osiedlefi.pl', '/mieszkania-wyszukiwarka-tekstowa/');
+    if (status >= 400) {
+      sendText(res, 502, 'Proxy upstream error ' + status);
+      return;
+    }
+    // Wstrzyknięcie CSS + banner z Megapolis info na górze
+    const inject = `
+<style id="mpl-super-oferta-filter">
+  /* Ukryj wszystkie wiersze mieszkań nie oznaczone jako super-oferta */
+  tr[data-extra]:not([data-extra*="super-offer"]) { display: none !important; }
+  /* Banner Megapolis */
+  body::before {
+    content: "MEGAPOLIS \u00b7 SUPER OFERTA Fi \u00b7 Widzisz tylko apartamenty z promocj\u0105";
+    display: block;
+    position: sticky; top: 0; z-index: 9999;
+    background: #003C71; color: #B7C9D3;
+    padding: 14px 24px;
+    font: 700 13px/1 Arial, sans-serif;
+    letter-spacing: 2px; text-transform: uppercase;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+  }
+</style>
+<base href="https://osiedlefi.pl/">`;
+    // Przekształć relatywne URL-e (linki, formsy) tak by wracały do Fi, nie do naszego serwera
+    let patched = body;
+    if (/<\/head>/i.test(patched)) patched = patched.replace(/<\/head>/i, inject + '</head>');
+    else patched = inject + patched;
+
+    res.writeHead(200, {
+      'Content-Type': 'text/html; charset=utf-8',
+      'Cache-Control': 'public, max-age=60',
+      'X-Proxy': 'megapolis-super-oferta-fi'
+    });
+    res.end(patched);
+  } catch (err) {
+    console.error('Fi proxy error', err);
+    sendText(res, 502, 'Proxy error: ' + (err.message || err));
+  }
+}
+
 // ---------- Server ----------
 http.createServer((req, res) => {
   const parsed = url.parse(req.url, true);
+  // Proxy: /proxy/fi-super-oferta
+  if (parsed.pathname === '/proxy/fi-super-oferta') {
+    handleFiSuperOferta(req, res);
+    return;
+  }
   if (parsed.pathname && parsed.pathname.startsWith('/api/')) {
     handleAPI(req, res, parsed).catch(err => { console.error(err); sendJSON(res, 500, { error: String(err && err.message || err) }); });
     return;

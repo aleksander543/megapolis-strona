@@ -56,10 +56,12 @@ megapolis-spec.txt
 *.tmp
 *.bak
 
-# Large binary video — 94MB, blisko limitu GitHuba (100MB)
+# Large binary video — blisko limitu GitHuba (100MB)
 # Jeśli potrzeba w repo — użyj Git LFS: git lfs track "*.mp4"
 media/hero-intro.mp4
 media/hero.mp4
+media/hero-2026.mp4
+media/*.mp4
 
 # Archiwa z mediami (lokalny backup) — za duże na GitHub
 media.zip

@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="pl" data-site="megapolis">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lokale usługowe — Megapolis</title>
+  <meta name="description" content="Lokale usługowe na parterach osiedli Megapolis — atrakcyjne lokalizacje w Krakowie. Powierzchnie od 40 do 250 m², gotowe do aranżacji.">
+  <link rel="preload" href="/fonts/Ubuntu-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/fonts/Ubuntu-Medium.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/fonts/Ubuntu-Bold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .lu-page { background: #f4f2ec; color: var(--graphite); }
+
+    /* HERO */
+    .lu-hero {
+      position: relative;
+      padding: 180px 0 90px;
+      background: linear-gradient(180deg, #ffffff 0%, #f4f2ec 100%);
+      overflow: hidden;
+    }
+    .lu-hero::before {
+      content: ''; position: absolute; top: -40px; right: -60px;
+      width: 460px; height: 460px;
+      background: url('/media/decor/arcs.svg') no-repeat top right;
+      background-size: contain; opacity: 0.32; pointer-events: none;
+    }
+    .lu-hero::after {
+      content: ''; position: absolute; bottom: -40px; left: -40px;
+      width: 340px; height: 260px;
+      background: url('/media/decor/curve.svg') no-repeat bottom left;
+      background-size: contain; opacity: 0.75; pointer-events: none;
+    }
+    .lu-hero__inner {
+      position: relative; z-index: 1;
+      max-width: 1080px; margin: 0 auto;
+      padding: 0 24px; text-align: center;
+    }
+    .lu-crumbs {
+      font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--graphite); opacity: 0.55;
+      margin-bottom: 24px;
+    }
+    .lu-crumbs a { color: var(--brand-night); text-decoration: none; }
+    .lu-crumbs .sep { margin: 0 10px; opacity: 0.5; }
+    .lu-eyebrow {
+      display: inline-flex; align-items: center; gap: 14px;
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-night); margin-bottom: 24px;
+    }
+    .lu-eyebrow::before,
+    .lu-eyebrow::after { content: ''; width: 44px; height: 1px; background: var(--brand-night); }
+    .lu-hero__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(44px, 6.5vw, 92px);
+      font-weight: 800; line-height: 1.02;
+      letter-spacing: -1.8px; color: var(--brand-night);
+      margin: 0 0 22px;
+    }
+    .lu-hero__title em { font-style: italic; font-weight: 300; opacity: 0.65; }
+    .lu-hero__lead {
+      font-size: clamp(17px, 1.5vw, 20px);
+      line-height: 1.7; color: var(--graphite);
+      max-width: 700px; margin: 0 auto;
+    }
+
+    /* STATS */
+    .lu-stats {
+      display: flex; justify-content: center; flex-wrap: wrap;
+      gap: 48px;
+      padding: 26px 44px;
+      background: #ffffff;
+      border: 1px solid rgba(0, 60, 113, 0.1);
+      border-radius: 14px;
+      box-shadow: 0 14px 40px rgba(0, 60, 113, 0.06);
+      margin: 40px auto 0;
+      max-width: 860px;
+    }
+    .lu-stat__num {
+      display: block;
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(28px, 3vw, 36px);
+      font-weight: 800; color: var(--brand-night);
+      line-height: 1; letter-spacing: -0.5px;
+      text-align: center;
+    }
+    .lu-stat__lbl {
+      display: block; margin-top: 8px;
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600;
+      color: var(--graphite); opacity: 0.6;
+      text-align: center;
+    }
+
+    /* BENEFITS — 4 powody */
+    .lu-benefits {
+      padding: 80px 24px 40px;
+      max-width: 1240px; margin: 0 auto;
+    }
+    .lu-section-head {
+      text-align: center;
+      max-width: 720px; margin: 0 auto 50px;
+    }
+    .lu-section-eyebrow {
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-night); opacity: 0.7;
+      margin-bottom: 14px;
+    }
+    .lu-section-title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(30px, 4vw, 48px);
+      font-weight: 800; color: var(--brand-night);
+      line-height: 1.08; letter-spacing: -0.5px;
+      margin: 0 0 14px;
+    }
+    .lu-section-title em { font-style: italic; font-weight: 300; opacity: 0.65; }
+    .lu-section-sub {
+      font-size: 16px; line-height: 1.7;
+      color: var(--graphite); opacity: 0.8;
+    }
+    .lu-benefits__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .lu-benefit {
+      padding: 32px 26px;
+      background: #ffffff;
+      border: 1px solid rgba(0, 60, 113, 0.1);
+      border-radius: 14px;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .lu-benefit::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--brand-night);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .lu-benefit:hover {
+      border-color: var(--brand-night);
+      transform: translateY(-4px);
+      box-shadow: 0 14px 40px rgba(0, 60, 113, 0.1);
+    }
+    .lu-benefit:hover::before { transform: scaleX(1); }
+    .lu-benefit__ico {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: rgba(183, 201, 211, 0.4);
+      color: var(--brand-night);
+      margin-bottom: 18px;
+    }
+    .lu-benefit__title {
+      font-size: 17px; font-weight: 800;
+      color: var(--brand-night);
+      margin: 0 0 10px;
+    }
+    .lu-benefit__desc {
+      font-size: 13px; line-height: 1.7;
+      color: var(--graphite); opacity: 0.85;
+      margin: 0;
+    }
+
+    /* LISTINGS */
+    .lu-listings {
+      padding: 60px 24px 80px;
+      max-width: 1240px; margin: 0 auto;
+    }
+    .lu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .lu-card {
+      display: flex; flex-direction: column;
+      background: #ffffff;
+      border: 1px solid rgba(0, 60, 113, 0.1);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .lu-card:hover {
+      border-color: var(--brand-night);
+      box-shadow: 0 20px 50px rgba(0, 60, 113, 0.12);
+      transform: translateY(-4px);
+    }
+    .lu-card__cover {
+      aspect-ratio: 16 / 10;
+      background: linear-gradient(135deg, #003C71 0%, #1a5490 100%);
+      position: relative; overflow: hidden;
+    }
+    .lu-card__cover img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .lu-card:hover .lu-card__cover img { transform: scale(1.05); }
+    .lu-card__status {
+      position: absolute; top: 14px; left: 14px;
+      padding: 6px 14px;
+      background: #ffffff;
+      color: var(--brand-night);
+      font-size: 10px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase;
+      border-radius: 9999px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .lu-card__status::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: #2e8b57;
+    }
+    .lu-card__status--reserved::before { background: #b0691e; }
+    .lu-card__status--sold::before { background: rgba(0, 60, 113, 0.5); }
+    .lu-card__body {
+      padding: 24px 24px 28px;
+      display: flex; flex-direction: column; gap: 10px;
+      flex: 1;
+    }
+    .lu-card__kicker {
+      font-size: 11px; letter-spacing: 1.8px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-night); opacity: 0.7;
+    }
+    .lu-card__name {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: 21px; font-weight: 800;
+      line-height: 1.2; letter-spacing: -0.3px;
+      color: var(--brand-night);
+      margin: 2px 0 4px;
+    }
+    .lu-card__loc {
+      font-size: 13px; color: var(--graphite); opacity: 0.75;
+      margin: 0 0 12px;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .lu-card__loc svg { color: var(--brand-night); opacity: 0.6; flex-shrink: 0; }
+    .lu-card__specs {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 4px 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(0, 60, 113, 0.08);
+      margin-top: auto;
+    }
+    .lu-card__spec dt {
+      font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; font-weight: 600;
+      color: var(--graphite); opacity: 0.55;
+      margin: 0 0 4px;
+    }
+    .lu-card__spec dd {
+      font-size: 14px; font-weight: 800;
+      color: var(--brand-night);
+      margin: 0;
+    }
+
+    /* CTA */
+    .lu-cta-wrap {
+      padding: 40px 24px 120px;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .lu-cta {
+      padding: 60px 48px;
+      background: linear-gradient(135deg, #003C71 0%, #1a5490 100%);
+      color: #fff;
+      border-radius: 20px;
+      text-align: center;
+      position: relative; overflow: hidden;
+      box-shadow: 0 40px 100px rgba(0, 60, 113, 0.25);
+    }
+    .lu-cta::before {
+      content: ''; position: absolute;
+      top: -80px; right: -80px;
+      width: 320px; height: 320px;
+      background: url('/media/decor/arcs.svg') no-repeat top right;
+      background-size: contain;
+      opacity: 0.2; filter: invert(1);
+      pointer-events: none;
+    }
+    .lu-cta__eyebrow {
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-moon);
+      margin-bottom: 14px;
+    }
+    .lu-cta__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(28px, 3.2vw, 44px);
+      font-weight: 800; line-height: 1.1;
+      margin: 0 0 18px; letter-spacing: -0.4px;
+    }
+    .lu-cta__title em { font-style: italic; font-weight: 300; color: var(--brand-moon); }
+    .lu-cta__text {
+      font-size: 16px; line-height: 1.7;
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 580px; margin: 0 auto 28px;
+    }
+    .lu-cta__btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 34px;
+      background: var(--brand-moon); color: var(--brand-night);
+      border-radius: 9999px;
+      font-size: 14px; font-weight: 700; letter-spacing: 0.5px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+    .lu-cta__btn:hover {
+      background: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 14px 32px rgba(183, 201, 211, 0.35);
+    }
+
+    [data-rev] {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    [data-rev].is-revealed { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+      .lu-hero { padding: 140px 0 70px; }
+      .lu-benefits__grid { grid-template-columns: 1fr 1fr; }
+      .lu-grid { grid-template-columns: 1fr 1fr; }
+      .lu-stats { gap: 28px; padding: 22px 28px; }
+    }
+    @media (max-width: 560px) {
+      .lu-benefits__grid { grid-template-columns: 1fr; }
+      .lu-grid { grid-template-columns: 1fr; }
+      .lu-cta { padding: 44px 24px; }
+    }
+  </style>
+</head>
+<body class="lu-page">
+
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a class="header__logo" href="/">
+        <img src="/media/megapolis-logo-whitetext.svg" alt="Megapolis" class="header__logo-img">
+      </a>
+      <div class="header__actions">
+        <a class="header__cta header__cta--find" href="/wyszukiwarka">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span>Znajdź swoje mieszkanie</span>
+        </a>
+        <a class="header__cta header__cta--special" href="/oferta-specjalna">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>Oferta specjalna</span>
+        </a>
+        <a class="header__phone" href="tel:+48123000077">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span>12 300 00 77</span>
+        </a>
+        <button class="header__burger" id="burgerBtn" aria-label="Otwórz menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__inner">
+      <ul class="mobile-menu__list">
+        <li class="mobile-menu__has-sub">
+          <a href="/o-nas" class="mobile-menu__toggle"><span>O nas</span>
+            <svg class="mobile-menu__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </a>
+          <ul class="mobile-menu__sub">
+            <li><a href="/o-nas/historia">Historia firmy</a></li>
+            <li><a href="/o-nas/zespol">Zespół</a></li>
+            <li><a href="/o-nas/misja">Misja i wartości</a></li>
+            <li><a href="/o-nas/holding">Grupa Holding 1</a></li>
+          </ul>
+        </li>
+        <li><a href="/nasze-standardy">Nasze standardy</a></li>
+        <li><a href="/realizacje">Nasze realizacje</a></li>
+        <li><a href="/lokale-uslugowe">Lokale usługowe</a></li>
+        <li><a href="/program-wykonczenia">Program wykończenia mieszkań</a></li>
+        <li><a href="/finansowanie">Finansowanie</a></li>
+        <li><a href="/kariera">Kariera i społecznie odpowiedzialni</a></li>
+        <li><a href="/aktualnosci">Aktualności</a></li>
+        <li><a href="/kontakt">Kontakt</a></li>
+      </ul>
+      <div class="mobile-menu__footer">
+        <a href="tel:+48123000077" class="mobile-menu__phone">12 300 00 77</a>
+        <a href="mailto:biuro@megapolis.pl" class="mobile-menu__email">biuro@megapolis.pl</a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content">
+
+    <section class="lu-hero">
+      <div class="lu-hero__inner">
+        <nav class="lu-crumbs" data-rev>
+          <a href="/">Strona główna</a><span class="sep">·</span>
+          <span>Lokale usługowe</span>
+        </nav>
+        <p class="lu-eyebrow" data-rev>Parter osiedli Megapolis</p>
+        <h1 class="lu-hero__title" data-rev>Lokale <em>usługowe</em></h1>
+        <p class="lu-hero__lead" data-rev>
+          Gotowe lokale komercyjne na&nbsp;parterach naszych osiedli — dla&nbsp;sklepów, gastronomii, usług medycznych, biur i&nbsp;fitnessu. Atrakcyjne lokalizacje z&nbsp;gwarantowaną bazą klientów od&nbsp;pierwszego dnia.
+        </p>
+        <div class="lu-stats" data-rev>
+          <div>
+            <span class="lu-stat__num">12</span>
+            <span class="lu-stat__lbl">dostępnych lokali</span>
+          </div>
+          <div>
+            <span class="lu-stat__num">40–250</span>
+            <span class="lu-stat__lbl">m² powierzchni</span>
+          </div>
+          <div>
+            <span class="lu-stat__num">3&nbsp;500+</span>
+            <span class="lu-stat__lbl">mieszkańców w&nbsp;zasięgu</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BENEFITS -->
+    <section class="lu-benefits">
+      <div class="lu-section-head" data-rev>
+        <p class="lu-section-eyebrow">Dlaczego Megapolis</p>
+        <h2 class="lu-section-title">Dlaczego wybrać <em>lokal u&nbsp;nas</em></h2>
+        <p class="lu-section-sub">Cztery powody, dla&nbsp;których lokale Megapolis są&nbsp;pierwszym wyborem najemców.</p>
+      </div>
+
+      <div class="lu-benefits__grid">
+        <div class="lu-benefit" data-rev>
+          <div class="lu-benefit__ico">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3 class="lu-benefit__title">Baza klientów od&nbsp;dnia&nbsp;1</h3>
+          <p class="lu-benefit__desc">Setki mieszkań bezpośrednio nad&nbsp;lokalem — Twoja pierwsza grupa klientów jest zagwarantowana.</p>
+        </div>
+        <div class="lu-benefit" data-rev>
+          <div class="lu-benefit__ico">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <h3 class="lu-benefit__title">Świetne lokalizacje</h3>
+          <p class="lu-benefit__desc">Ruczaj, Bronowice, Prądnik — dzielnice o&nbsp;dużej sile nabywczej, dobra komunikacja, parkingi.</p>
+        </div>
+        <div class="lu-benefit" data-rev>
+          <div class="lu-benefit__ico">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          </div>
+          <h3 class="lu-benefit__title">Gotowe do&nbsp;aranżacji</h3>
+          <p class="lu-benefit__desc">Wentylacja, przyłącza mediów, witryny — wszystko przygotowane pod&nbsp;typowe profile usługowe.</p>
+        </div>
+        <div class="lu-benefit" data-rev>
+          <div class="lu-benefit__ico">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3 class="lu-benefit__title">Stabilny deweloper</h3>
+          <p class="lu-benefit__desc">35+ lat na&nbsp;rynku — umowa najmu z&nbsp;Megapolis to&nbsp;pewność długofalowej współpracy.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- LISTINGS -->
+    <section class="lu-listings">
+      <div class="lu-section-head" data-rev>
+        <p class="lu-section-eyebrow">Dostępne lokale</p>
+        <h2 class="lu-section-title">Aktualna <em>oferta</em></h2>
+        <p class="lu-section-sub">Wybrane lokale do&nbsp;wynajęcia lub kupna — pełna oferta u&nbsp;doradcy.</p>
+      </div>
+
+      <div class="lu-grid">
+
+        <div class="lu-card" data-rev>
+          <div class="lu-card__cover">
+            <span class="lu-card__status">Dostępny</span>
+            <img src="https://megapolis.pl/wp-content/uploads/2024/07/ozon-III-noc-max-res-1-1024x576.webp" alt="Lokal OZON III" loading="lazy">
+          </div>
+          <div class="lu-card__body">
+            <div class="lu-card__kicker">Osiedle OZON · Parter</div>
+            <h3 class="lu-card__name">Lokal&nbsp;OZ-U1 — narożny</h3>
+            <p class="lu-card__loc">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Kraków, Ruczaj
+            </p>
+            <dl class="lu-card__specs">
+              <div class="lu-card__spec"><dt>Powierzchnia</dt><dd>128 m²</dd></div>
+              <div class="lu-card__spec"><dt>Witryny</dt><dd>3</dd></div>
+              <div class="lu-card__spec"><dt>Parking</dt><dd>Tak</dd></div>
+            </dl>
+          </div>
+        </div>
+
+        <div class="lu-card" data-rev>
+          <div class="lu-card__cover">
+            <span class="lu-card__status">Dostępny</span>
+            <img src="https://cloulindego.pl/wp-content/uploads/251113_CLOU_wizualizacje_02_korektaludzie-min-1024x576.png" alt="Lokal CLOU" loading="lazy">
+          </div>
+          <div class="lu-card__body">
+            <div class="lu-card__kicker">CLOU Lindego · Parter</div>
+            <h3 class="lu-card__name">Lokal&nbsp;CL-U3 — premium</h3>
+            <p class="lu-card__loc">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Kraków, Bronowice
+            </p>
+            <dl class="lu-card__specs">
+              <div class="lu-card__spec"><dt>Powierzchnia</dt><dd>84 m²</dd></div>
+              <div class="lu-card__spec"><dt>Wysokość</dt><dd>3,8 m</dd></div>
+              <div class="lu-card__spec"><dt>Parking</dt><dd>Tak</dd></div>
+            </dl>
+          </div>
+        </div>
+
+        <div class="lu-card" data-rev>
+          <div class="lu-card__cover">
+            <span class="lu-card__status lu-card__status--reserved">Rezerwacja</span>
+            <img src="https://megapolis.pl/wp-content/uploads/2025/04/08_noc_a-1024x576.jpg" alt="Lokal Fi" loading="lazy">
+          </div>
+          <div class="lu-card__body">
+            <div class="lu-card__kicker">Nowe Osiedle Fi · Parter</div>
+            <h3 class="lu-card__name">Lokal&nbsp;FI-U2 — kawiarnia</h3>
+            <p class="lu-card__loc">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Kraków, Dobrego Pasterza
+            </p>
+            <dl class="lu-card__specs">
+              <div class="lu-card__spec"><dt>Powierzchnia</dt><dd>65 m²</dd></div>
+              <div class="lu-card__spec"><dt>Taras</dt><dd>18 m²</dd></div>
+              <div class="lu-card__spec"><dt>Witryny</dt><dd>2</dd></div>
+            </dl>
+          </div>
+        </div>
+
+        <div class="lu-card" data-rev>
+          <div class="lu-card__cover">
+            <span class="lu-card__status">Dostępny</span>
+            <img src="https://megapolis.pl/wp-content/uploads/2024/07/link-noc-max-res-1-1024x576.webp" alt="Lokal LINK" loading="lazy">
+          </div>
+          <div class="lu-card__body">
+            <div class="lu-card__kicker">LINK Bunscha · Parter</div>
+            <h3 class="lu-card__name">Lokal&nbsp;LB-U4 — biuro</h3>
+            <p class="lu-card__loc">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Kraków, Ruczaj
+            </p>
+            <dl class="lu-card__specs">
+              <div class="lu-card__spec"><dt>Powierzchnia</dt><dd>42 m²</dd></div>
+              <div class="lu-card__spec"><dt>Zaplecze</dt><dd>Tak</dd></div>
+              <div class="lu-card__spec"><dt>Parking</dt><dd>Tak</dd></div>
+            </dl>
+          </div>
+        </div>
+
+        <div class="lu-card" data-rev>
+          <div class="lu-card__cover">
+            <span class="lu-card__status">Dostępny</span>
+            <img src="https://megapolis.pl/wp-content/uploads/2024/07/ozon-noc-max-res-1024x576.webp" alt="Lokal OZON II" loading="lazy">
+          </div>
+          <div class="lu-card__body">
+            <div class="lu-card__kicker">OZON II · Parter</div>
+            <h3 class="lu-card__name">Lokal&nbsp;OZ-U6 — duży</h3>
+            <p class="lu-card__loc">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Kraków, Ruczaj
+            </p>
+            <dl class="lu-card__specs">
+              <div class="lu-card__spec"><dt>Powierzchnia</dt><dd>245 m²</dd></div>
+              <div class="lu-card__spec"><dt>Wysokość</dt><dd>4,2 m</dd></div>
+              <div class="lu-card__spec"><dt>Witryny</dt><dd>5</dd></div>
+            </dl>
+          </div>
+        </div>
+
+        <div class="lu-card" data-rev>
+          <div class="lu-card__cover">
+            <span class="lu-card__status lu-card__status--sold">Wynajęty</span>
+            <img src="https://megapolis.pl/wp-content/uploads/2024/07/kapelanka2-dzien-max-res.webp" alt="Lokal Kapelanka" loading="lazy">
+          </div>
+          <div class="lu-card__body">
+            <div class="lu-card__kicker">Kapelanka 6a · Parter</div>
+            <h3 class="lu-card__name">Lokal&nbsp;KA-U1 — wynajęty</h3>
+            <p class="lu-card__loc">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Kraków, Dębniki
+            </p>
+            <dl class="lu-card__specs">
+              <div class="lu-card__spec"><dt>Powierzchnia</dt><dd>95 m²</dd></div>
+              <div class="lu-card__spec"><dt>Od kiedy</dt><dd>2024</dd></div>
+              <div class="lu-card__spec"><dt>Najemca</dt><dd>Apteka</dd></div>
+            </dl>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="lu-cta-wrap">
+      <div class="lu-cta" data-rev>
+        <p class="lu-cta__eyebrow">Zainteresowany współpracą?</p>
+        <h2 class="lu-cta__title">Odezwij się <em>do&nbsp;nas</em></h2>
+        <p class="lu-cta__text">
+          Każdy lokal ma&nbsp;indywidualne parametry i&nbsp;warunki umowy. Opowiedz nam o&nbsp;Twojej działalności — przedstawimy dopasowaną propozycję.
+        </p>
+        <a href="/kontakt?temat=lokale-uslugowe" class="lu-cta__btn">
+          Skontaktuj się z&nbsp;doradcą
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__bottom" style="padding:32px 0;">
+        <p style="font-size:12px;color:var(--white-40);">&copy; 2026 Megapolis Sp. z&nbsp;o.o. &nbsp;·&nbsp; <a href="/polityka-prywatnosci" style="color:var(--white-60);">Polityka prywatności</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/main.js"></script>
+  <script>
+    (function () {
+      const els = document.querySelectorAll('[data-rev]');
+      if (!('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('is-revealed')); return; }
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-revealed'); io.unobserve(e.target); } });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      els.forEach(e => io.observe(e));
+    })();
+  </script>
+</body>
+</html>

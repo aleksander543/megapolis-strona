@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="pl" data-site="megapolis">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Misja i wartości — Megapolis</title>
+  <meta name="description" content="Dlaczego robimy to, co robimy — misja, wizja i wartości Megapolis. Poznaj filozofię, która kieruje naszymi decyzjami od 35 lat.">
+  <link rel="preload" href="/fonts/Ubuntu-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/fonts/Ubuntu-Medium.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/fonts/Ubuntu-Bold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .ms-page { background: #f4f2ec; color: var(--graphite); }
+
+    /* HERO */
+    .ms-hero {
+      position: relative;
+      padding: 180px 0 90px;
+      background: linear-gradient(180deg, #ffffff 0%, #f4f2ec 100%);
+      overflow: hidden;
+    }
+    .ms-hero::before {
+      content: ''; position: absolute; top: -40px; right: -60px;
+      width: 460px; height: 460px;
+      background: url('/media/decor/arcs.svg') no-repeat top right;
+      background-size: contain; opacity: 0.32; pointer-events: none;
+    }
+    .ms-hero::after {
+      content: ''; position: absolute; bottom: -40px; left: -40px;
+      width: 340px; height: 260px;
+      background: url('/media/decor/curve.svg') no-repeat bottom left;
+      background-size: contain; opacity: 0.75; pointer-events: none;
+    }
+    .ms-hero__inner {
+      position: relative; z-index: 1;
+      max-width: 1080px; margin: 0 auto;
+      padding: 0 24px; text-align: center;
+    }
+    .ms-crumbs {
+      font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--graphite); opacity: 0.55;
+      margin-bottom: 24px;
+    }
+    .ms-crumbs a { color: var(--brand-night); text-decoration: none; }
+    .ms-crumbs .sep { margin: 0 10px; opacity: 0.5; }
+    .ms-eyebrow {
+      display: inline-flex; align-items: center; gap: 14px;
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-night); margin-bottom: 24px;
+    }
+    .ms-eyebrow::before,
+    .ms-eyebrow::after { content: ''; width: 44px; height: 1px; background: var(--brand-night); }
+    .ms-hero__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(44px, 6.5vw, 92px);
+      font-weight: 800; line-height: 1.02;
+      letter-spacing: -1.8px; color: var(--brand-night);
+      margin: 0 0 22px;
+    }
+    .ms-hero__title em { font-style: italic; font-weight: 300; opacity: 0.65; }
+    .ms-hero__lead {
+      font-size: clamp(17px, 1.5vw, 20px);
+      line-height: 1.7; color: var(--graphite);
+      max-width: 720px; margin: 0 auto;
+    }
+
+    /* Misja — duży cytat */
+    .ms-mission {
+      padding: 90px 24px 60px;
+      max-width: 960px; margin: 0 auto;
+      text-align: center;
+      position: relative;
+    }
+    .ms-mission::before {
+      content: '"';
+      position: absolute;
+      top: 50px; left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Ubuntu', sans-serif;
+      font-size: 200px; line-height: 0.4;
+      color: var(--brand-night);
+      opacity: 0.1;
+      pointer-events: none;
+    }
+    .ms-mission__eyebrow {
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-night); opacity: 0.7;
+      margin: 0 0 24px;
+    }
+    .ms-mission__text {
+      position: relative;
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(26px, 3.2vw, 44px);
+      font-weight: 400; line-height: 1.4;
+      color: var(--brand-night);
+      letter-spacing: -0.4px;
+      margin: 0 0 28px;
+    }
+    .ms-mission__text strong { font-weight: 800; }
+    .ms-mission__text em { font-style: italic; font-weight: 300; opacity: 0.75; }
+    .ms-mission__divider {
+      width: 80px; height: 2px;
+      background: var(--brand-night);
+      margin: 0 auto 24px;
+      opacity: 0.4;
+    }
+    .ms-mission__sub {
+      font-size: 16px; line-height: 1.7;
+      color: var(--graphite); opacity: 0.85;
+      max-width: 700px; margin: 0 auto;
+    }
+
+    /* Wartości — 4 filary w dużym układzie */
+    .ms-values {
+      padding: 80px 24px;
+      max-width: 1240px; margin: 0 auto;
+    }
+    .ms-section-head {
+      text-align: center;
+      max-width: 720px; margin: 0 auto 60px;
+    }
+    .ms-section-eyebrow {
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-night); opacity: 0.7;
+      margin-bottom: 14px;
+    }
+    .ms-section-title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(30px, 4vw, 52px);
+      font-weight: 800; color: var(--brand-night);
+      line-height: 1.08; letter-spacing: -0.6px;
+      margin: 0 0 16px;
+    }
+    .ms-section-title em { font-style: italic; font-weight: 300; opacity: 0.65; }
+    .ms-section-sub {
+      font-size: 16px; line-height: 1.7;
+      color: var(--graphite); opacity: 0.8;
+    }
+
+    .ms-values__list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    .ms-value {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 36px;
+      align-items: start;
+      padding: 36px 40px;
+      background: #ffffff;
+      border: 1px solid rgba(0, 60, 113, 0.1);
+      border-radius: 16px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .ms-value::before {
+      content: ''; position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: linear-gradient(180deg, var(--brand-night), var(--brand-moon));
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .ms-value:hover {
+      transform: translateX(6px);
+      border-color: var(--brand-night);
+      box-shadow: 0 20px 50px rgba(0, 60, 113, 0.1);
+    }
+    .ms-value:hover::before { transform: scaleY(1); }
+
+    .ms-value__num {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(48px, 5vw, 72px);
+      font-weight: 800;
+      color: var(--brand-night); opacity: 0.15;
+      line-height: 1; letter-spacing: -2px;
+      min-width: 80px;
+    }
+    .ms-value__body {
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .ms-value__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(22px, 2.4vw, 30px);
+      font-weight: 800;
+      color: var(--brand-night);
+      margin: 0;
+      letter-spacing: -0.3px;
+    }
+    .ms-value__title em { font-style: italic; font-weight: 300; opacity: 0.7; }
+    .ms-value__desc {
+      font-size: 15px; line-height: 1.8;
+      color: var(--graphite);
+      margin: 0;
+      max-width: 640px;
+    }
+    .ms-value__desc strong { color: var(--brand-night); font-weight: 700; }
+
+    /* Promise banner */
+    .ms-promise {
+      padding: 80px 24px;
+      background: linear-gradient(135deg, #003C71 0%, #1a5490 100%);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .ms-promise::before {
+      content: ''; position: absolute;
+      top: -60px; right: -60px;
+      width: 400px; height: 400px;
+      background: url('/media/decor/arcs.svg') no-repeat top right;
+      background-size: contain;
+      opacity: 0.18; filter: invert(1);
+      pointer-events: none;
+    }
+    .ms-promise::after {
+      content: ''; position: absolute;
+      bottom: -60px; left: -60px;
+      width: 320px; height: 240px;
+      background: url('/media/decor/waves.svg') no-repeat bottom left;
+      background-size: contain;
+      opacity: 0.25;
+      pointer-events: none;
+    }
+    .ms-promise__inner {
+      max-width: 1100px; margin: 0 auto;
+      position: relative; z-index: 1;
+      text-align: center;
+    }
+    .ms-promise__eyebrow {
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-moon);
+      margin-bottom: 18px;
+    }
+    .ms-promise__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(30px, 4vw, 52px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+      margin: 0 0 24px;
+    }
+    .ms-promise__title em { font-style: italic; font-weight: 300; color: var(--brand-moon); }
+    .ms-promise__text {
+      font-size: 17px; line-height: 1.75;
+      color: rgba(255, 255, 255, 0.88);
+      max-width: 720px; margin: 0 auto;
+    }
+
+    /* CTA */
+    .ms-cta-wrap {
+      padding: 70px 24px 120px;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .ms-cta {
+      padding: 56px 48px;
+      background: #ffffff;
+      border: 1px solid rgba(0, 60, 113, 0.1);
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 60, 113, 0.06);
+    }
+    .ms-cta__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(26px, 3vw, 38px);
+      font-weight: 800;
+      color: var(--brand-night);
+      margin: 0 0 14px;
+      letter-spacing: -0.3px;
+    }
+    .ms-cta__title em { font-style: italic; font-weight: 300; opacity: 0.65; }
+    .ms-cta__text {
+      font-size: 15px; line-height: 1.7;
+      color: var(--graphite); opacity: 0.85;
+      max-width: 560px; margin: 0 auto 28px;
+    }
+    .ms-cta__buttons {
+      display: inline-flex; gap: 12px; flex-wrap: wrap;
+      justify-content: center;
+    }
+    .ms-cta__btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 30px;
+      border-radius: 9999px;
+      font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+    .ms-cta__btn--primary {
+      background: var(--brand-night); color: #fff;
+      border: 1.5px solid var(--brand-night);
+    }
+    .ms-cta__btn--primary:hover {
+      background: #1a5490; border-color: #1a5490;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(0, 60, 113, 0.25);
+    }
+    .ms-cta__btn--ghost {
+      background: transparent; color: var(--brand-night);
+      border: 1.5px solid rgba(0, 60, 113, 0.25);
+    }
+    .ms-cta__btn--ghost:hover {
+      background: var(--brand-night); color: #fff;
+      border-color: var(--brand-night);
+    }
+
+    [data-rev] {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    [data-rev].is-revealed { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+      .ms-hero { padding: 140px 0 70px; }
+      .ms-value { grid-template-columns: 1fr; gap: 16px; padding: 28px 28px; }
+    }
+  </style>
+</head>
+<body class="ms-page">
+
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a class="header__logo" href="/">
+        <img src="/media/megapolis-logo-whitetext.svg" alt="Megapolis" class="header__logo-img">
+      </a>
+      <div class="header__actions">
+        <a class="header__cta header__cta--find" href="/wyszukiwarka">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span>Znajdź swoje mieszkanie</span>
+        </a>
+        <a class="header__cta header__cta--special" href="/oferta-specjalna">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>Oferta specjalna</span>
+        </a>
+        <a class="header__phone" href="tel:+48123000077">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span>12 300 00 77</span>
+        </a>
+        <button class="header__burger" id="burgerBtn" aria-label="Otwórz menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__inner">
+      <ul class="mobile-menu__list">
+        <li class="mobile-menu__has-sub">
+          <a href="/o-nas" class="mobile-menu__toggle"><span>O nas</span>
+            <svg class="mobile-menu__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </a>
+          <ul class="mobile-menu__sub">
+            <li><a href="/o-nas/historia">Historia firmy</a></li>
+            <li><a href="/o-nas/zespol">Zespół</a></li>
+            <li><a href="/o-nas/misja">Misja i wartości</a></li>
+            <li><a href="/o-nas/holding">Grupa Holding 1</a></li>
+          </ul>
+        </li>
+        <li><a href="/nasze-standardy">Nasze standardy</a></li>
+        <li><a href="/realizacje">Nasze realizacje</a></li>
+        <li><a href="/lokale-uslugowe">Lokale usługowe</a></li>
+        <li><a href="/program-wykonczenia">Program wykończenia mieszkań</a></li>
+        <li><a href="/finansowanie">Finansowanie</a></li>
+        <li><a href="/kariera">Kariera i społecznie odpowiedzialni</a></li>
+        <li><a href="/aktualnosci">Aktualności</a></li>
+        <li><a href="/kontakt">Kontakt</a></li>
+      </ul>
+      <div class="mobile-menu__footer">
+        <a href="tel:+48123000077" class="mobile-menu__phone">12 300 00 77</a>
+        <a href="mailto:biuro@megapolis.pl" class="mobile-menu__email">biuro@megapolis.pl</a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content">
+
+    <section class="ms-hero">
+      <div class="ms-hero__inner">
+        <nav class="ms-crumbs" data-rev>
+          <a href="/">Strona główna</a><span class="sep">·</span>
+          <a href="/o-nas">O nas</a><span class="sep">·</span>
+          <span>Misja i wartości</span>
+        </nav>
+        <p class="ms-eyebrow" data-rev>Dlaczego robimy to, co&nbsp;robimy</p>
+        <h1 class="ms-hero__title" data-rev>Nasza <em>misja</em></h1>
+        <p class="ms-hero__lead" data-rev>
+          Kilka słów o&nbsp;tym, co&nbsp;kieruje każdą naszą decyzją — od&nbsp;wyboru gruntu, przez projekt, po&nbsp;klucze w&nbsp;Twojej ręce. To&nbsp;nie&nbsp;marketing — to&nbsp;reguły, których trzymamy się 35+&nbsp;lat.
+        </p>
+      </div>
+    </section>
+
+    <!-- MISSION QUOTE -->
+    <section class="ms-mission" data-rev>
+      <p class="ms-mission__eyebrow">Nasza misja</p>
+      <p class="ms-mission__text">
+        <em>Budujemy osiedla,</em> <strong>w&nbsp;których dobrze się mieszka</strong> — dziś, jutro, za&nbsp;dziesięć lat. Miejsca, z&nbsp;których możemy być&nbsp;dumni my, nasi mieszkańcy i&nbsp;Kraków.
+      </p>
+      <div class="ms-mission__divider"></div>
+      <p class="ms-mission__sub">
+        Dom to&nbsp;więcej niż&nbsp;metry kwadratowe. To&nbsp;społeczność, otoczenie, poczucie bezpieczeństwa i&nbsp;codzienny komfort. Wszystko, co&nbsp;projektujemy i&nbsp;budujemy — służy temu celowi.
+      </p>
+    </section>
+
+    <!-- VALUES -->
+    <section class="ms-values">
+      <div class="ms-section-head" data-rev>
+        <p class="ms-section-eyebrow">Cztery wartości</p>
+        <h2 class="ms-section-title">Reguły, których <em>nie&nbsp;negocjujemy</em></h2>
+        <p class="ms-section-sub">Przez 35&nbsp;lat zmieniały się technologie, przepisy, rynek. Te cztery wartości — nigdy.</p>
+      </div>
+
+      <div class="ms-values__list">
+        <div class="ms-value" data-rev>
+          <div class="ms-value__num">01</div>
+          <div class="ms-value__body">
+            <h3 class="ms-value__title">Słowo — <em>obietnica, nie&nbsp;marketing</em></h3>
+            <p class="ms-value__desc">
+              Obiecujemy — dotrzymujemy. <strong>Terminy, jakość materiałów, zapisy umowy</strong> — wszystko, co&nbsp;ustalimy na&nbsp;początku, obowiązuje do&nbsp;końca. Jeśli coś pójdzie inaczej niż&nbsp;plan — dzwonimy pierwsi, bez&nbsp;czekania aż&nbsp;Ty się zorientujesz.
+            </p>
+          </div>
+        </div>
+
+        <div class="ms-value" data-rev>
+          <div class="ms-value__num">02</div>
+          <div class="ms-value__body">
+            <h3 class="ms-value__title">Lokalność — <em>budujemy tu, gdzie&nbsp;mieszkamy</em></h3>
+            <p class="ms-value__desc">
+              Krakowianie budują w&nbsp;Krakowie. Znamy <strong>każdą naszą dzielnicę</strong> — jej&nbsp;historię, komunikację, sąsiedztwo, światło. Nie&nbsp;projektujemy „z&nbsp;biura w&nbsp;Warszawie" — projektujemy z&nbsp;miejsca, w&nbsp;którym sami byśmy zamieszkali.
+            </p>
+          </div>
+        </div>
+
+        <div class="ms-value" data-rev>
+          <div class="ms-value__num">03</div>
+          <div class="ms-value__body">
+            <h3 class="ms-value__title">Społeczność — <em>budynki to&nbsp;nie&nbsp;wszystko</em></h3>
+            <p class="ms-value__desc">
+              Po&nbsp;oddaniu kluczy nie&nbsp;znikamy. <strong>Zarządzamy wspólnotami, organizujemy eventy sąsiedzkie, wspieramy dzielnice.</strong> Mieszkaniec, który czuje się u&nbsp;siebie, to&nbsp;nasza najlepsza reklama — i&nbsp;tego dbamy długo po&nbsp;końcu inwestycji.
+            </p>
+          </div>
+        </div>
+
+        <div class="ms-value" data-rev>
+          <div class="ms-value__num">04</div>
+          <div class="ms-value__body">
+            <h3 class="ms-value__title">Jakość życia — <em>to&nbsp;parametr, nie&nbsp;slogan</em></h3>
+            <p class="ms-value__desc">
+              Dobre projekty to&nbsp;te, w&nbsp;których czuje się codzienny komfort — <strong>rozkłady, światło, akustyka, powietrze</strong>. Każdy detal mierzymy na&nbsp;etapie projektu i&nbsp;kontrolujemy na&nbsp;etapie odbiorów. Mieszkanie Megapolis jest „dopracowane" — nie przez przypadek.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROMISE -->
+    <section class="ms-promise">
+      <div class="ms-promise__inner" data-rev>
+        <p class="ms-promise__eyebrow">Nasze zobowiązanie</p>
+        <h2 class="ms-promise__title">Każdy detal ma&nbsp;<em>znaczenie</em></h2>
+        <p class="ms-promise__text">
+          W&nbsp;mieszkaniach Megapolis nie&nbsp;ma&nbsp;miejsc pominiętych. Od&nbsp;ułożenia płytek po&nbsp;wybór oświetlenia w&nbsp;korytarzu — wszystko przechodzi przez naszą wewnętrzną kontrolę jakości. Bo&nbsp;dom, w&nbsp;którym mieszkasz, powinien być&nbsp;dopracowany jak&nbsp;Twój ulubiony hotel — tylko że na&nbsp;stałe.
+        </p>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="ms-cta-wrap">
+      <div class="ms-cta" data-rev>
+        <h2 class="ms-cta__title">Chcesz nas <em>lepiej poznać?</em></h2>
+        <p class="ms-cta__text">
+          Historia firmy, nasz zespół i&nbsp;grupa Holding&nbsp;1 — poznaj Megapolis od&nbsp;środka.
+        </p>
+        <div class="ms-cta__buttons">
+          <a class="ms-cta__btn ms-cta__btn--primary" href="/o-nas/historia">
+            Historia firmy
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a class="ms-cta__btn ms-cta__btn--ghost" href="/o-nas/zespol">Zespół</a>
+          <a class="ms-cta__btn ms-cta__btn--ghost" href="/o-nas/holding">Grupa Holding 1</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__bottom" style="padding:32px 0;">
+        <p style="font-size:12px;color:var(--white-40);">&copy; 2026 Megapolis Sp. z&nbsp;o.o. &nbsp;·&nbsp; <a href="/polityka-prywatnosci" style="color:var(--white-60);">Polityka prywatności</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/main.js"></script>
+  <script>
+    (function () {
+      const els = document.querySelectorAll('[data-rev]');
+      if (!('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('is-revealed')); return; }
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-revealed'); io.unobserve(e.target); } });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      els.forEach(e => io.observe(e));
+    })();
+  </script>
+</body>
+</html>

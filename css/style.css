@@ -2850,6 +2850,54 @@ html.a11y-light body { background:var(--bg); color:var(--white); }
 
 /* Lista po lewej */
 .invmap__list { display: flex; flex-direction: column; gap: 8px; max-height: 500px; overflow-y: auto; padding-right: 4px; }
+
+/* City buttons — szybki przeskok do miasta na mapie */
+.invmap__cities {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  padding: 4px 4px 14px;
+  border-bottom: 1.5px solid rgba(0, 60, 113, 0.12);
+  margin-bottom: 10px;
+}
+.invmap__city {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 16px;
+  background: #ffffff;
+  border: 1.5px solid rgba(0, 60, 113, 0.18);
+  color: var(--brand-night);
+  font-family: inherit;
+  font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 1;
+  justify-content: center;
+}
+.invmap__city:hover {
+  background: rgba(0, 60, 113, 0.06);
+  border-color: var(--brand-night);
+  transform: translateY(-1px);
+}
+.invmap__city.is-active {
+  background: var(--brand-night);
+  border-color: var(--brand-night);
+  color: #ffffff;
+  box-shadow: 0 6px 16px rgba(0, 60, 113, 0.25);
+}
+.invmap__city svg { flex-shrink: 0; opacity: 0.8; }
+.invmap__city-count {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 22px; height: 22px;
+  padding: 0 7px;
+  background: rgba(0, 60, 113, 0.1);
+  color: var(--brand-night);
+  border-radius: 9999px;
+  font-size: 11px; font-weight: 800;
+  margin-left: 2px;
+}
+.invmap__city.is-active .invmap__city-count {
+  background: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+}
 .invmap__list::-webkit-scrollbar { width: 4px; }
 .invmap__list::-webkit-scrollbar-track { background: transparent; }
 .invmap__list::-webkit-scrollbar-thumb { background: var(--white-10, rgba(255,255,255,.1)); border-radius: 2px; }
@@ -3453,12 +3501,13 @@ html.a11y-light body { background:var(--bg); color:var(--white); }
   position: relative;
   aspect-ratio: 4/3;
   overflow: hidden;
-  background: #1a1a1a;
+  background: #e8e4d8;
 }
+/* Subtelny dolny gradient TYLKO pod badge statusu - bez moona */
 .allinv__card-media::before {
   content: '';
   position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,.6) 100%);
+  background: linear-gradient(180deg, rgba(0,0,0,.15) 0%, transparent 25%, transparent 70%, rgba(0,0,0,.2) 100%);
   z-index: 1;
   pointer-events: none;
   transition: opacity .4s;
@@ -3466,12 +3515,149 @@ html.a11y-light body { background:var(--bg); color:var(--white); }
 .allinv__card-media img {
   width: 100%; height: 100%;
   object-fit: cover;
-  transition: transform .8s cubic-bezier(.2,.6,.2,1),
-              filter .4s;
+  /* rozjasnione zdjecia - usuniety efekt ksiezyca */
+  filter: brightness(1.18) contrast(0.96) saturate(1.08);
+  transition: transform .8s cubic-bezier(.2,.6,.2,1);
 }
-.allinv__card:hover .allinv__card-media img {
-  transform: scale(1.08);
-  filter: brightness(.9);
+.allinv__card:hover .allinv__card-media img.is-active {
+  transform: scale(1.06);
+}
+
+/* ===== Slider zdjec w karcie ===== */
+.allinv__slider {
+  position: absolute; inset: 0;
+  z-index: 0;
+}
+.allinv__slide {
+  position: absolute; inset: 0;
+  opacity: 0;
+  transition: opacity .9s ease;
+  z-index: 1;
+}
+.allinv__slide.is-active {
+  opacity: 1;
+  z-index: 2;
+}
+.allinv__slide img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: brightness(1.18) contrast(0.96) saturate(1.08);
+  transition: transform .8s cubic-bezier(.2,.6,.2,1);
+}
+.allinv__card:hover .allinv__slide.is-active img {
+  transform: scale(1.05);
+}
+
+/* Dots nawigacja - kwadraciki pod rogiem prawym */
+.allinv__dots {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 7px;
+  z-index: 5;
+  padding: 6px 10px;
+  background: rgba(255,255,255,.18);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.25);
+}
+.allinv__dot {
+  width: 22px; height: 5px;
+  border-radius: 3px;
+  background: rgba(255,255,255,.45);
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+  transition: all .3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.allinv__dot:hover {
+  background: rgba(255,255,255,.75);
+}
+.allinv__dot.is-active {
+  width: 32px;
+  background: #fff;
+}
+/* Progress bar w aktywnej kropce (auto-play) */
+.allinv__dot.is-active::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(201,169,110,.9) 0%, rgba(201,169,110,.9) 100%);
+  transform-origin: left;
+  animation: allinvDotProgress 4.5s linear;
+}
+@keyframes allinvDotProgress {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.allinv__card.is-paused .allinv__dot.is-active::after {
+  animation-play-state: paused;
+}
+
+/* Logo inwestycji - prawy gorny rog */
+.allinv__logo {
+  position: absolute;
+  top: 16px; right: 16px;
+  z-index: 5;
+  display: flex; align-items: center; justify-content: center;
+  padding: 12px 18px;
+  min-width: 60px; min-height: 60px;
+  background: rgba(255,255,255,.94);
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0,0,0,.2), inset 0 0 0 1px rgba(0,0,0,.04);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform .4s ease, box-shadow .4s ease;
+}
+.allinv__card:hover .allinv__logo {
+  transform: scale(1.05) rotate(-2deg);
+  box-shadow: 0 12px 30px rgba(0,0,0,.28), inset 0 0 0 1px rgba(0,0,0,.04);
+}
+/* Wariant z obrazem SVG (prawdziwe logo) */
+.allinv__logo--img {
+  padding: 10px 14px;
+}
+.allinv__logo--img img,
+.allinv__logo--img svg {
+  display: block;
+  max-width: 92px;
+  max-height: 42px;
+  width: auto; height: auto;
+  object-fit: contain;
+}
+/* Wariant tekstowy (monogram) - fallback */
+.allinv__logo-mark {
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--brand-night, #003C71);
+  font-size: 18px;
+  line-height: 1;
+  text-align: center;
+}
+.allinv__logo-mark em {
+  display: block;
+  font-style: normal;
+  font-size: 8px;
+  letter-spacing: 1.4px;
+  opacity: 0.55;
+  margin-top: 2px;
+  font-weight: 600;
+}
+@media (max-width: 640px) {
+  .allinv__logo { min-width: 52px; min-height: 52px; top: 10px; right: 10px; padding: 10px 14px; }
+  .allinv__logo--img { padding: 8px 12px; }
+  .allinv__logo--img img,
+  .allinv__logo--img svg { max-width: 74px; max-height: 34px; }
+  .allinv__logo-mark { font-size: 15px; }
+  .allinv__dots { bottom: 10px; padding: 4px 8px; }
+  .allinv__dot { width: 18px; height: 4px; }
+  .allinv__dot.is-active { width: 26px; }
 }
 
 /* Status badge - na zdjeciu, lewy gorny rog */
@@ -4102,17 +4288,30 @@ html.a11y-light body { background:var(--bg); color:var(--white); }
 /* Obraz */
 .allinv__card-media {
   aspect-ratio: 4 / 3 !important;
-  border-radius: 10px !important;
+  border-radius: 14px !important;
   overflow: hidden !important;
-  background: transparent !important;
+  background: #e8e4d8 !important;
+  position: relative !important;
 }
-.allinv__card-media::before { display: none !important; }
+/* Zachowaj subtelny gradient pod logo/badge - bez ciemnego efektu ksiezyca */
+.allinv__card-media::before {
+  display: block !important;
+  content: '' !important;
+  position: absolute !important; inset: 0 !important;
+  background: linear-gradient(180deg, rgba(0,0,0,.12) 0%, transparent 22%, transparent 72%, rgba(0,0,0,.18) 100%) !important;
+  z-index: 3 !important;
+  pointer-events: none !important;
+}
 .allinv__card-media img {
   width: 100% !important; height: 100% !important;
   object-fit: cover !important;
   transform: none !important;
-  filter: none !important;
+  /* rozjasnione zdjecia - usuniety efekt ksiezyca */
+  filter: brightness(1.18) contrast(0.96) saturate(1.08) !important;
   transition: transform 0.6s ease !important;
+}
+.allinv__card:hover .allinv__slide.is-active img {
+  transform: scale(1.04) !important;
 }
 .allinv__card:hover .allinv__card-media img {
   transform: scale(1.03) !important;
@@ -4648,36 +4847,114 @@ html.a11y-light body { background:var(--bg); color:var(--white); }
   z-index: 0;
 }
 
-/* Portfolio-hub — subtelna siatka na krawędzi */
+/* ================================================================
+   Portfolio-hub — rozbudowane dekoracje 3D (wielowarstwowe)
+   ================================================================ */
 .portfolio-hub {
   overflow: hidden;
+  position: relative;
 }
 .portfolio-hub__intro {
   position: relative;
 }
+/* WARSTWA 1: duże łuki arcs w prawym górnym rogu (wyraziste) */
+.portfolio-hub__intro::before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  right: -60px;
+  width: 440px; height: 440px;
+  background: url('/media/decor/arcs.svg') no-repeat top right;
+  background-size: contain;
+  opacity: 0.75;
+  filter: drop-shadow(0 12px 24px rgba(0, 60, 113, 0.18));
+  pointer-events: none;
+  z-index: 0;
+  animation: floatSlow 12s ease-in-out infinite;
+}
+/* WARSTWA 2: siatka krzywych w prawym dolnym intro */
 .portfolio-hub__intro::after {
   content: '';
   position: absolute;
-  top: -20px;
-  right: 0;
-  width: 200px; height: 200px;
-  background: url('/media/decor/grid.svg') no-repeat top right;
+  top: 20px;
+  left: -40px;
+  width: 320px; height: 320px;
+  background: url('/media/decor/grid.svg') no-repeat top left;
   background-size: contain;
-  opacity: 0.6;
+  opacity: 0.65;
+  filter: drop-shadow(0 8px 16px rgba(0, 60, 113, 0.12));
   pointer-events: none;
   z-index: 0;
+  transform: scaleX(-1);
+  animation: floatSlow 14s ease-in-out infinite 2s;
 }
-.portfolio-hub__header { position: relative; z-index: 1; }
+.portfolio-hub__header { position: relative; z-index: 2; }
+
+/* WARSTWA 3: dekoracje w całej sekcji portfolio-hub (.portfolio-hub::after) — dots + waves */
+.portfolio-hub::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    /* konstelacja punktów w lewym górnym */
+    url('/media/decor/dots.svg'),
+    /* fale po prawej środkowej */
+    url('/media/decor/waves.svg'),
+    /* krzywa w lewym dolnym */
+    url('/media/decor/curve.svg'),
+    /* dodatkowa konstelacja w prawym dolnym */
+    url('/media/decor/dots.svg');
+  background-repeat: no-repeat;
+  background-position:
+    2% 12%,         /* dots LT */
+    98% 45%,        /* waves R-mid */
+    -3% 92%,        /* curve LB */
+    102% 95%;       /* dots RB */
+  background-size:
+    260px 260px,
+    320px 280px,
+    380px 260px,
+    220px 220px;
+  opacity: 0.8;
+  filter: drop-shadow(0 6px 14px rgba(0, 60, 113, 0.12));
+}
+
+/* Animacja unoszenia — lekki efekt 3D */
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-10px) scale(1.02); }
+}
+/* Drugi wariant dla zeszkalowanych (scaleX(-1)) elementów */
+.portfolio-hub__intro::after {
+  animation-name: floatSlowFlipped;
+}
+@keyframes floatSlowFlipped {
+  0%, 100% { transform: scaleX(-1) translateY(0); }
+  50% { transform: scaleX(-1) translateY(-10px); }
+}
 
 /* Na mobile dekoracje się kurczą / chowają */
+@media (max-width: 900px) {
+  .portfolio-hub__intro::before { width: 280px; height: 280px; opacity: 0.5; }
+  .portfolio-hub__intro::after { width: 220px; height: 220px; opacity: 0.4; }
+  .portfolio-hub::after {
+    background-size:
+      180px 180px,
+      220px 190px,
+      240px 180px,
+      160px 160px;
+    opacity: 0.5;
+  }
+}
 @media (max-width: 768px) {
   .why::after,
   .programs::before,
   .programs::after,
   .reviews::before,
   .reviews::after,
-  .finder::after,
-  .portfolio-hub__intro::after { opacity: 0.45; transform: scale(0.75); transform-origin: right top; }
+  .finder::after { opacity: 0.45; transform: scale(0.75); transform-origin: right top; }
 }
 @media (max-width: 480px) {
   .why::after,
@@ -4686,5 +4963,7 @@ html.a11y-light body { background:var(--bg); color:var(--white); }
   .reviews::before,
   .reviews::after,
   .finder::after,
-  .portfolio-hub__intro::after { display: none; }
+  .portfolio-hub__intro::before,
+  .portfolio-hub__intro::after,
+  .portfolio-hub::after { display: none; }
 }

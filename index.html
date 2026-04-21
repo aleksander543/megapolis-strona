@@ -290,11 +290,24 @@
         <div class="invmap__wrap" data-reveal>
           <!-- Left: lista inwestycji -->
           <aside class="invmap__list">
+            <!-- City buttons — szybki przeskok do miasta -->
+            <div class="invmap__cities" role="group" aria-label="Wybierz miasto">
+              <button type="button" class="invmap__city" data-city="krakow">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Kraków
+                <span class="invmap__city-count">4</span>
+              </button>
+              <button type="button" class="invmap__city" data-city="wroclaw">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Wrocław
+                <span class="invmap__city-count">1</span>
+              </button>
+            </div>
             <button type="button" class="invmap__item is-active" data-inv="ozon">
               <span class="invmap__item-num">01</span>
               <span class="invmap__item-body">
                 <span class="invmap__item-name">Osiedle OZON</span>
-                <span class="invmap__item-loc">Kraków, ul. Banacha</span>
+                <span class="invmap__item-loc">Kraków, Ruczaj</span>
               </span>
               <span class="invmap__item-pin" aria-hidden="true"></span>
             </button>
@@ -326,7 +339,7 @@
               <span class="invmap__item-num">05</span>
               <span class="invmap__item-body">
                 <span class="invmap__item-name">Michalczyka 15</span>
-                <span class="invmap__item-loc">Kraków, Krowodrza</span>
+                <span class="invmap__item-loc">Wrocław, Szczepin</span>
               </span>
               <span class="invmap__item-pin" aria-hidden="true"></span>
             </button>
@@ -375,8 +388,11 @@
 
           <!-- 1. Nowe Osiedle Fi - W BUDOWIE -->
           <a href="/osiedle-fi/" class="allinv__card" data-status="building" data-inv="fi" id="card-fi">
-            <div class="allinv__card-media">
-              <img src="https://megapolis.pl/wp-content/uploads/2025/04/08_noc_a-1024x576.jpg" alt="Nowe Osiedle Fi - wizualizacja nocna" loading="lazy">
+            <div class="allinv__card-media"
+                 data-slider
+                 data-images="https://megapolis.pl/wp-content/uploads/2025/04/08_noc_a-1024x576.jpg|https://megapolis.pl/wp-content/uploads/2024/07/fi-noc-max-res-1-1024x576.webp|https://megapolis.pl/wp-content/uploads/2025/04/08_noc_a-1024x576.jpg|https://megapolis.pl/wp-content/uploads/2024/07/fi-noc-max-res-1-1024x576.webp"
+                 data-alt="Nowe Osiedle Fi">
+              <span class="allinv__logo"><span class="allinv__logo-mark">Fi<em>OSIEDLE</em></span></span>
               <span class="allinv__card-status allinv__card-status--building">W&nbsp;sprzedaży</span>
               <span class="allinv__card-hint">Zobacz inwestycję <span aria-hidden="true">→</span></span>
             </div>
@@ -399,8 +415,11 @@
 
           <!-- 2. Osiedle OZON - rozdział III - W BUDOWIE -->
           <a href="/osiedle-ozon/" class="allinv__card" data-status="building" data-inv="ozon" id="card-ozon">
-            <div class="allinv__card-media">
-              <img src="https://megapolis.pl/wp-content/uploads/2024/07/ozon-III-noc-max-res-1-1024x576.webp" alt="Osiedle OZON - rozdział III" loading="lazy">
+            <div class="allinv__card-media"
+                 data-slider
+                 data-images="https://megapolis.pl/wp-content/uploads/2024/07/ozon-III-noc-max-res-1-1024x576.webp|https://megapolis.pl/wp-content/uploads/2024/07/ozon-noc-max-res-1024x576.webp|https://megapolis.pl/wp-content/uploads/2024/07/ozon-I-noc-max-res-1024x576.webp|https://megapolis.pl/wp-content/uploads/2024/07/ozon-III-noc-max-res-1-1024x576.webp"
+                 data-alt="Osiedle OZON">
+              <span class="allinv__logo"><span class="allinv__logo-mark">OZ<em>OZON</em></span></span>
               <span class="allinv__card-status allinv__card-status--building">W&nbsp;sprzedaży</span>
               <span class="allinv__card-hint">Zobacz inwestycję <span aria-hidden="true">→</span></span>
             </div>
@@ -423,8 +442,11 @@
 
           <!-- 3. Michalczyka 15 - PLANOWANA - Wrocław -->
           <a href="https://megapolis.pl/inwestycje/michalczyka-15/" target="_blank" rel="noopener" class="allinv__card" data-status="planned" data-inv="michalczyka" id="card-michalczyka">
-            <div class="allinv__card-media">
-              <img src="https://megapolis.pl/wp-content/uploads/2025/10/WIDOK_5-1-1024x576.jpg" alt="Michalczyka 15 Wrocław - wizualizacja" loading="lazy">
+            <div class="allinv__card-media"
+                 data-slider
+                 data-images="https://megapolis.pl/wp-content/uploads/2025/10/WIDOK_5-1-1024x576.jpg|https://megapolis.pl/wp-content/uploads/2025/10/WIDOK_5-1-1024x576.jpg|https://megapolis.pl/wp-content/uploads/2025/10/WIDOK_5-1-1024x576.jpg|https://megapolis.pl/wp-content/uploads/2025/10/WIDOK_5-1-1024x576.jpg"
+                 data-alt="Michalczyka 15 Wrocław">
+              <span class="allinv__logo"><span class="allinv__logo-mark">M15<em>WROCŁAW</em></span></span>
               <span class="allinv__card-status allinv__card-status--planned">Wkrótce</span>
               <span class="allinv__card-hint">Dołącz do VIP-listy <span aria-hidden="true">→</span></span>
             </div>
@@ -447,8 +469,11 @@
 
           <!-- 4. CLOU Lindego - ZREALIZOWANA -->
           <a href="/clou-lindego/" class="allinv__card" data-status="done" data-inv="clou" id="card-clou">
-            <div class="allinv__card-media">
-              <img src="https://cloulindego.pl/wp-content/uploads/251113_CLOU_wizualizacje_02_korektaludzie-min-1024x576.png" alt="CLOU Lindego - wizualizacja" loading="lazy">
+            <div class="allinv__card-media"
+                 data-slider
+                 data-images="/media/clou/lindego-panorama.jpg|/media/clou/lindego-street.jpg|/media/clou/lindego-ogrodek.jpg|/media/clou/lindego-filtrowa.jpg"
+                 data-alt="CLOU Lindego">
+              <span class="allinv__logo allinv__logo--img"><img src="/media/logos/clou.svg" alt="CLOU Lindego" loading="lazy"></span>
               <span class="allinv__card-status allinv__card-status--done">Zrealizowana</span>
               <span class="allinv__card-hint">Zobacz inwestycję <span aria-hidden="true">→</span></span>
             </div>
@@ -471,8 +496,11 @@
 
           <!-- 5. LINK Bunscha - ZREALIZOWANA -->
           <a href="/link-bunscha/" class="allinv__card" data-status="done" data-inv="bunscha" id="card-bunscha">
-            <div class="allinv__card-media">
-              <img src="https://megapolis.pl/wp-content/uploads/2024/07/link-noc-max-res-1-1024x576.webp" alt="LINK Bunscha - elewacja nocna" loading="lazy">
+            <div class="allinv__card-media"
+                 data-slider
+                 data-images="/media/link/link-1.webp|/media/link/link-2.webp|/media/link/link-3.webp|/media/link/link-4.webp"
+                 data-alt="LINK Bunscha">
+              <span class="allinv__logo allinv__logo--img"><img src="/media/logos/link.svg" alt="LINK Bunscha" loading="lazy"></span>
               <span class="allinv__card-status allinv__card-status--done">Zrealizowana</span>
               <span class="allinv__card-hint">Zobacz inwestycję <span aria-hidden="true">→</span></span>
             </div>
@@ -495,8 +523,11 @@
 
           <!-- 6. Osiedle OZON - rozdział II - ZREALIZOWANA -->
           <a href="/inwestycja" class="allinv__card" data-status="done">
-            <div class="allinv__card-media">
-              <img src="https://megapolis.pl/wp-content/uploads/2024/07/ozon-noc-max-res-1024x576.webp" alt="Osiedle OZON - rozdział II" loading="lazy">
+            <div class="allinv__card-media"
+                 data-slider
+                 data-images="https://megapolis.pl/wp-content/uploads/2024/07/ozon-noc-max-res-1024x576.webp|https://megapolis.pl/wp-content/uploads/2024/07/ozon-I-noc-max-res-1024x576.webp|https://megapolis.pl/wp-content/uploads/2024/07/ozon-III-noc-max-res-1-1024x576.webp|https://megapolis.pl/wp-content/uploads/2024/07/ozon-noc-max-res-1024x576.webp"
+                 data-alt="Osiedle OZON II">
+              <span class="allinv__logo"><span class="allinv__logo-mark">OZ<em>II ETAP</em></span></span>
               <span class="allinv__card-status allinv__card-status--done">Zrealizowana</span>
               <span class="allinv__card-hint">Zobacz inwestycję <span aria-hidden="true">→</span></span>
             </div>
@@ -519,8 +550,11 @@
 
           <!-- 7. Osiedle OZON - rozdział I - ZREALIZOWANA -->
           <a href="/inwestycja" class="allinv__card" data-status="done">
-            <div class="allinv__card-media">
-              <img src="https://megapolis.pl/wp-content/uploads/2024/07/ozon-I-noc-max-res-1024x576.webp" alt="Osiedle OZON - rozdział I" loading="lazy">
+            <div class="allinv__card-media"
+                 data-slider
+                 data-images="https://megapolis.pl/wp-content/uploads/2024/07/ozon-I-noc-max-res-1024x576.webp|https://megapolis.pl/wp-content/uploads/2024/07/ozon-noc-max-res-1024x576.webp|https://megapolis.pl/wp-content/uploads/2024/07/ozon-III-noc-max-res-1-1024x576.webp|https://megapolis.pl/wp-content/uploads/2024/07/ozon-I-noc-max-res-1024x576.webp"
+                 data-alt="Osiedle OZON I">
+              <span class="allinv__logo"><span class="allinv__logo-mark">OZ<em>I ETAP</em></span></span>
               <span class="allinv__card-status allinv__card-status--done">Zrealizowana</span>
               <span class="allinv__card-hint">Zobacz inwestycję <span aria-hidden="true">→</span></span>
             </div>
@@ -543,8 +577,11 @@
 
           <!-- 8. Osiedle Fi (stary etap) - ZREALIZOWANA -->
           <a href="/osiedle-fi/" class="allinv__card" data-status="done">
-            <div class="allinv__card-media">
-              <img src="https://megapolis.pl/wp-content/uploads/2024/07/fi-noc-max-res-1-1024x576.webp" alt="Osiedle Fi - etap I" loading="lazy">
+            <div class="allinv__card-media"
+                 data-slider
+                 data-images="https://megapolis.pl/wp-content/uploads/2024/07/fi-noc-max-res-1-1024x576.webp|https://megapolis.pl/wp-content/uploads/2025/04/08_noc_a-1024x576.jpg|https://megapolis.pl/wp-content/uploads/2024/07/fi-noc-max-res-1-1024x576.webp|https://megapolis.pl/wp-content/uploads/2025/04/08_noc_a-1024x576.jpg"
+                 data-alt="Osiedle Fi etap I">
+              <span class="allinv__logo"><span class="allinv__logo-mark">Fi<em>I ETAP</em></span></span>
               <span class="allinv__card-status allinv__card-status--done">Zrealizowana</span>
               <span class="allinv__card-hint">Zobacz inwestycję <span aria-hidden="true">→</span></span>
             </div>
@@ -567,8 +604,11 @@
 
           <!-- 9. Filtry - ZREALIZOWANA -->
           <a href="#" class="allinv__card" data-status="done">
-            <div class="allinv__card-media">
-              <img src="https://megapolis.pl/wp-content/uploads/2024/07/filtry-noc-max-res-3-1024x576.webp" alt="Osiedle Filtry - elewacja" loading="lazy">
+            <div class="allinv__card-media"
+                 data-slider
+                 data-images="/media/filtry/filtry-1.webp|/media/filtry/filtry-3.webp|/media/filtry/filtry-1.webp|/media/filtry/filtry-3.webp"
+                 data-alt="Osiedle Filtry">
+              <span class="allinv__logo allinv__logo--img"><img src="/media/logos/filtry.svg" alt="Osiedle Filtry" loading="lazy"></span>
               <span class="allinv__card-status allinv__card-status--done">Zrealizowana</span>
               <span class="allinv__card-hint">Zobacz inwestycję <span aria-hidden="true">→</span></span>
             </div>
@@ -591,8 +631,11 @@
 
           <!-- 10. Kapelanka 6a - ZREALIZOWANA -->
           <a href="#" class="allinv__card" data-status="done">
-            <div class="allinv__card-media">
-              <img src="https://megapolis.pl/wp-content/uploads/2024/07/kapelanka2-dzien-max-res.webp" alt="Kapelanka 6a - elewacja" loading="lazy">
+            <div class="allinv__card-media"
+                 data-slider
+                 data-images="https://megapolis.pl/wp-content/uploads/2024/07/kapelanka2-dzien-max-res.webp|https://megapolis.pl/wp-content/uploads/2024/07/kapelanka2-dzien-max-res.webp|https://megapolis.pl/wp-content/uploads/2024/07/kapelanka2-dzien-max-res.webp|https://megapolis.pl/wp-content/uploads/2024/07/kapelanka2-dzien-max-res.webp"
+                 data-alt="Kapelanka 6a">
+              <span class="allinv__logo"><span class="allinv__logo-mark">K6<em>DĘBNIKI</em></span></span>
               <span class="allinv__card-status allinv__card-status--done">Zrealizowana</span>
               <span class="allinv__card-hint">Zobacz inwestycję <span aria-hidden="true">→</span></span>
             </div>
@@ -1242,21 +1285,29 @@
     var mapEl = document.getElementById('invMap');
     if (!mapEl) return;
 
-    // Inwestycje z koordynatami (Kraków)
+    // Inwestycje z koordynatami (5 aktywnych/głównych) — adresy wydobyte z linkbunscha.pl, cloulindego.pl, osiedleozon.pl
     var investments = {
-      ozon:        { lat: 50.0248, lng: 19.8840, name: 'Osiedle OZON',    loc: 'Kraków, ul. Banacha',      img: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=85&auto=format&fit=crop', url: '/osiedle-ozon/' },
-      bunscha:     { lat: 50.0200, lng: 19.8920, name: 'LINK BUNSCHA',    loc: 'Kraków, ul. Bunscha 14a',   img: 'https://images.unsplash.com/photo-1460317442991-0ec209397118?w=600&q=85&auto=format&fit=crop', url: '/link-bunscha/' },
-      fi:          { lat: 50.0195, lng: 19.9665, name: 'Nowe Osiedle Fi', loc: 'Kraków, ul. Szafrana',      img: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&q=85&auto=format&fit=crop', url: '/osiedle-fi/' },
-      clou:        { lat: 50.0878, lng: 19.8877, name: 'CLOU Lindego',    loc: 'Kraków, ul. Lindego',       img: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=85&auto=format&fit=crop', url: '/clou-lindego/' },
-      michalczyka: { lat: 50.0811, lng: 19.9156, name: 'Michalczyka 15',  loc: 'Kraków, Krowodrza',         img: 'https://images.unsplash.com/photo-1464146072230-91cabc968266?w=600&q=85&auto=format&fit=crop', url: '#' }
+      ozon:        { lat: 50.0205, lng: 19.8865, city: 'krakow',  name: 'Osiedle OZON',    loc: 'Kraków, Ruczaj, ul. Piltza',        img: 'https://megapolis.pl/wp-content/uploads/2024/07/ozon-III-noc-max-res-1-1024x576.webp', url: '/osiedle-ozon/' },
+      bunscha:     { lat: 50.0170, lng: 19.8860, city: 'krakow',  name: 'LINK Bunscha',    loc: 'Kraków, Ruczaj, ul. Bunscha 14a',   img: 'https://megapolis.pl/wp-content/uploads/2024/07/link-noc-max-res-1-1024x576.webp',    url: '/link-bunscha/' },
+      fi:          { lat: 50.0940, lng: 19.9829, city: 'krakow',  name: 'Nowe Osiedle Fi', loc: 'Kraków, ul. Dobrego Pasterza',      img: 'https://megapolis.pl/wp-content/uploads/2025/04/08_noc_a-1024x576.jpg',               url: '/osiedle-fi/' },
+      clou:        { lat: 50.0882, lng: 19.8992, city: 'krakow',  name: 'CLOU Lindego',    loc: 'Kraków, Bronowice, ul. Lindego',    img: 'https://cloulindego.pl/wp-content/uploads/251113_CLOU_wizualizacje_02_korektaludzie-min-1024x576.png', url: '/clou-lindego/' },
+      michalczyka: { lat: 51.1105, lng: 17.0135, city: 'wroclaw', name: 'Michalczyka 15',  loc: 'Wrocław, Szczepin, ul. Michalczyka', img: 'https://megapolis.pl/wp-content/uploads/2025/10/WIDOK_5-1-1024x576.jpg',             url: '#' }
     };
 
-    // Inicjalizacja mapy — widok Krakowa
+    // Miasta — przyciski do szybkiego przeskoku
+    var cities = {
+      krakow:  { lat: 50.0614, lng: 19.9372, zoom: 12, name: 'Kraków' },
+      wroclaw: { lat: 51.1080, lng: 17.0385, zoom: 12, name: 'Wrocław' }
+    };
+
+    // Inicjalizacja mapy — widok łączący Kraków + Wrocław
     var map = L.map('invMap', {
-      center: [50.0614, 19.9372],
-      zoom: 12,
+      center: [50.5, 18.5],
+      zoom: 7,
       scrollWheelZoom: false,
-      zoomControl: true
+      zoomControl: true,
+      zoomAnimation: true,
+      fadeAnimation: true
     });
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -1303,16 +1354,47 @@
       });
       if (markers[key]) {
         markers[key].setIcon(makePin(true));
-        map.flyTo([investments[key].lat, investments[key].lng], 14, { duration: .6 });
+        // Wolniejszy, bardziej płynny przesuw — 1.4s z easing
+        map.flyTo([investments[key].lat, investments[key].lng], 14, {
+          duration: 1.4,
+          easeLinearity: 0.25
+        });
         markers[key].openPopup();
       }
     }
 
+    // Klik w miasto — płynny przeskok do centrum miasta
+    function flyToCity(cityKey) {
+      var c = cities[cityKey];
+      if (!c) return;
+      // Zamknij popupy, odznacz pinezki i listę
+      map.closePopup();
+      Object.keys(markers).forEach(function(k) { markers[k].setIcon(makePin(false)); });
+      document.querySelectorAll('.invmap__item').forEach(function(el) { el.classList.remove('is-active'); });
+      // Podświetl aktywny city-button
+      document.querySelectorAll('.invmap__city').forEach(function(b) {
+        b.classList.toggle('is-active', b.dataset.city === cityKey);
+      });
+      // Smooth fly
+      map.flyTo([c.lat, c.lng], c.zoom, { duration: 1.6, easeLinearity: 0.25 });
+    }
+
     document.querySelectorAll('.invmap__item').forEach(function(btn) {
-      btn.addEventListener('click', function() { activate(btn.dataset.inv); });
+      btn.addEventListener('click', function() {
+        activate(btn.dataset.inv);
+        // Odznacz city buttons gdy klikamy konkretną inwestycję
+        document.querySelectorAll('.invmap__city').forEach(function(b) { b.classList.remove('is-active'); });
+      });
     });
     Object.keys(markers).forEach(function(key) {
-      markers[key].on('click', function() { activate(key); });
+      markers[key].on('click', function() {
+        activate(key);
+        document.querySelectorAll('.invmap__city').forEach(function(b) { b.classList.remove('is-active'); });
+      });
+    });
+    // Handler city buttons
+    document.querySelectorAll('.invmap__city').forEach(function(btn) {
+      btn.addEventListener('click', function() { flyToCity(btn.dataset.city); });
     });
 
     // Scroll-wheel zoom: włącz tylko po kliknięciu na mapę
@@ -1391,6 +1473,108 @@
       io.observe(mapaEl);
       io.observe(listaEl);
     }
+  })();
+  </script>
+
+  <!-- ===== PORTFOLIO CARDS: slider 4 zdjec per karta + auto-play ===== -->
+  <script>
+  (function() {
+    var SLIDE_MS = 4500;             // czas trwania jednego slajdu
+    var mediaNodes = document.querySelectorAll('.allinv__card-media[data-slider]');
+    if (!mediaNodes.length) return;
+
+    mediaNodes.forEach(function(media) {
+      var raw = media.getAttribute('data-images') || '';
+      var altBase = media.getAttribute('data-alt') || '';
+      var urls = raw.split('|').map(function(u){ return u.trim(); }).filter(Boolean);
+      if (urls.length < 2) return;   // jedno zdjecie - brak potrzeby slidera
+
+      // Zbuduj slides container
+      var slider = document.createElement('div');
+      slider.className = 'allinv__slider';
+
+      urls.forEach(function(url, i) {
+        var slide = document.createElement('div');
+        slide.className = 'allinv__slide' + (i === 0 ? ' is-active' : '');
+        var img = document.createElement('img');
+        img.src = url;
+        img.alt = altBase + (urls.length > 1 ? ' (' + (i + 1) + '/' + urls.length + ')' : '');
+        img.loading = 'lazy';
+        slide.appendChild(img);
+        slider.appendChild(slide);
+      });
+
+      // Dots (kwadraciki)
+      var dots = document.createElement('div');
+      dots.className = 'allinv__dots';
+      dots.setAttribute('role', 'tablist');
+      dots.setAttribute('aria-label', 'Zdjecia: ' + altBase);
+
+      urls.forEach(function(_, i) {
+        var dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'allinv__dot' + (i === 0 ? ' is-active' : '');
+        dot.setAttribute('role', 'tab');
+        dot.setAttribute('aria-label', 'Zdjecie ' + (i + 1));
+        dot.dataset.idx = String(i);
+        dots.appendChild(dot);
+      });
+
+      // Umiesc slider jako PIERWSZY dziecko media, pozostale elementy (logo, status, hint) beda nad nim
+      media.insertBefore(slider, media.firstChild);
+      media.appendChild(dots);
+
+      // === Logika ===
+      var slides = slider.querySelectorAll('.allinv__slide');
+      var dotEls = dots.querySelectorAll('.allinv__dot');
+      var current = 0;
+      var timer = null;
+
+      function go(idx) {
+        idx = ((idx % slides.length) + slides.length) % slides.length;
+        slides[current].classList.remove('is-active');
+        dotEls[current].classList.remove('is-active');
+        current = idx;
+        slides[current].classList.add('is-active');
+        dotEls[current].classList.add('is-active');
+      }
+      function next() { go(current + 1); }
+
+      function start() {
+        stop();
+        timer = setInterval(next, SLIDE_MS);
+      }
+      function stop() {
+        if (timer) { clearInterval(timer); timer = null; }
+      }
+
+      // Dots - klik (stopPropagation zeby nie aktywowac linka karty)
+      dotEls.forEach(function(dot) {
+        dot.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          go(parseInt(dot.dataset.idx, 10));
+          start();      // zresetuj timer
+        });
+      });
+
+      // Hover = pauza (tylko dla myszy)
+      var card = media.closest('.allinv__card');
+      if (card) {
+        card.addEventListener('mouseenter', function() {
+          stop();
+          card.classList.add('is-paused');
+        });
+        card.addEventListener('mouseleave', function() {
+          card.classList.remove('is-paused');
+          start();
+        });
+      }
+
+      // Auto-start: uruchamiamy rotacje natychmiast dla wszystkich kart
+      // (koszt 10x setInterval @4.5s jest pomijalny, a uzytkownik widzi ruch od razu)
+      start();
+    });
   })();
   </script>
 
@@ -1582,6 +1766,79 @@
         });
       });
     }
+  })();
+  </script>
+
+  <!-- ===== AI SEARCH BAR (hero) — wywoluje /api/ai-search, redirect do /wyszukiwarka z filtrami ===== -->
+  <script>
+  (function () {
+    const form  = document.querySelector('.hero__search');
+    const input = document.getElementById('heroSearchInput');
+    const btn   = form ? form.querySelector('.hero__search-submit') : null;
+    if (!form || !input) return;
+
+    // Stan ladowania
+    function setLoading(on) {
+      if (!btn) return;
+      btn.disabled = !!on;
+      btn.style.opacity = on ? '0.6' : '';
+      btn.style.pointerEvents = on ? 'none' : '';
+      input.disabled = !!on;
+      if (on) btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="8" stroke-dasharray="12 40"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="0.9s" repeatCount="indefinite"/></circle></svg>';
+      else btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+    }
+
+    // Cykliczne placeholdery - podpowiedzi, jak mozna pytac
+    const PLACEHOLDERS = [
+      'Opisz swoje wymarzone mieszkanie',
+      'np. 2 pokoje w Krakowie do 500 tys.',
+      'np. kawalerka z balkonem, Ruczaj',
+      'np. rodzinne 4 pokoje z tarasem, OZON',
+      'np. penthouse do 1 mln, ostatnie piętro',
+    ];
+    let phIdx = 0;
+    setInterval(() => {
+      if (document.activeElement === input || input.value) return;
+      phIdx = (phIdx + 1) % PLACEHOLDERS.length;
+      input.placeholder = PLACEHOLDERS[phIdx];
+    }, 3500);
+
+    form.addEventListener('submit', async function (ev) {
+      ev.preventDefault();
+      const query = (input.value || '').trim();
+
+      // Puste zapytanie - od razu do wyszukiwarki (pokaz wszystkie mieszkania)
+      if (!query) {
+        window.location.href = '/wyszukiwarka/';
+        return;
+      }
+
+      setLoading(true);
+      try {
+        const r = await fetch('/api/ai-search', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query }),
+        });
+        const data = await r.json();
+        if (!r.ok || !data.ok) throw new Error((data && data.error) || 'AI error ' + r.status);
+
+        // Zakoduj filtry do URL query + przekieruj do /wyszukiwarka
+        const params = new URLSearchParams();
+        params.set('q', query);
+        const f = data.filters || {};
+        Object.keys(f).forEach(k => {
+          if (f[k] == null) return;
+          if (Array.isArray(f[k])) params.set(k, f[k].join(','));
+          else params.set(k, String(f[k]));
+        });
+        window.location.href = '/wyszukiwarka/?' + params.toString();
+      } catch (err) {
+        console.error('AI search error, fallback redirect:', err && err.message);
+        // fallback: zwykly search z tekstem (zadziala nawet gdy API nieaktywne)
+        window.location.href = '/wyszukiwarka/?q=' + encodeURIComponent(query);
+      }
+    });
   })();
   </script>
 </body>

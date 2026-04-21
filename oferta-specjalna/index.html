@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="pl" data-site="megapolis">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oferta specjalna — Megapolis</title>
+  <meta name="description" content="Aktualne promocje i super oferty we wszystkich inwestycjach Megapolis: OZON (Ozon 8, Etap 7), CLOU Lindego (4–5 pokojowe, antresole), Nowe Osiedle Fi (SUPER OFERTA).">
+  <link rel="preload" href="/fonts/Ubuntu-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/fonts/Ubuntu-Medium.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/fonts/Ubuntu-Bold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .os-page { background: #f4f2ec; color: var(--graphite); }
+
+    /* HERO */
+    .os-hero {
+      position: relative;
+      padding: 180px 0 80px;
+      background: linear-gradient(180deg, #ffffff 0%, #f4f2ec 100%);
+      overflow: hidden;
+    }
+    .os-hero::before {
+      content: ''; position: absolute; top: -40px; right: -60px;
+      width: 460px; height: 460px;
+      background: url('/media/decor/arcs.svg') no-repeat top right;
+      background-size: contain; opacity: 0.35; pointer-events: none;
+    }
+    .os-hero::after {
+      content: ''; position: absolute; bottom: -40px; left: -40px;
+      width: 340px; height: 260px;
+      background: url('/media/decor/curve.svg') no-repeat bottom left;
+      background-size: contain; opacity: 0.75; pointer-events: none;
+    }
+    .os-hero__inner {
+      position: relative; z-index: 1;
+      max-width: 1080px; margin: 0 auto; padding: 0 24px;
+      text-align: center;
+    }
+    .os-crumbs {
+      font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--graphite); opacity: 0.55;
+      margin-bottom: 24px;
+    }
+    .os-crumbs a { color: var(--brand-night); text-decoration: none; }
+    .os-crumbs .sep { margin: 0 10px; opacity: 0.5; }
+    .os-eyebrow {
+      display: inline-flex; align-items: center; gap: 14px;
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-night);
+      margin-bottom: 24px;
+    }
+    .os-eyebrow::before,
+    .os-eyebrow::after { content: ''; width: 44px; height: 1px; background: var(--brand-night); }
+    .os-hero__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(44px, 6.5vw, 92px);
+      font-weight: 800; line-height: 1.02;
+      letter-spacing: -1.8px; color: var(--brand-night);
+      margin: 0 0 22px;
+    }
+    .os-hero__title em { font-style: italic; font-weight: 300; opacity: 0.65; }
+    .os-hero__lead {
+      font-size: clamp(17px, 1.5vw, 20px);
+      line-height: 1.7; color: var(--graphite);
+      max-width: 700px; margin: 0 auto;
+    }
+
+    /* INVEST GROUP — nagłówek grupy inwestycji */
+    .os-group {
+      max-width: 1240px; margin: 0 auto;
+      padding: 50px 24px 30px;
+    }
+    .os-group__head {
+      display: flex; align-items: end; justify-content: space-between;
+      gap: 24px; flex-wrap: wrap;
+      padding-bottom: 24px;
+      border-bottom: 1.5px solid rgba(0, 60, 113, 0.15);
+      margin-bottom: 30px;
+    }
+    .os-group__title-block { }
+    .os-group__kicker {
+      font-size: 11px; letter-spacing: 3px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-night); opacity: 0.6;
+      margin-bottom: 8px;
+    }
+    .os-group__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(30px, 4vw, 44px);
+      font-weight: 800;
+      color: var(--brand-night);
+      margin: 0;
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+    }
+    .os-group__title em { font-style: italic; font-weight: 300; opacity: 0.65; }
+    .os-group__badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 7px 16px;
+      background: var(--brand-night);
+      color: #ffffff;
+      font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
+      border-radius: 9999px;
+      flex-shrink: 0;
+    }
+    .os-group__badge::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--brand-moon);
+    }
+
+    /* Cards w grupie */
+    .os-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .os-cards--single { grid-template-columns: 1fr; }
+    .os-card {
+      display: flex; flex-direction: column;
+      background: #ffffff;
+      border: 1px solid rgba(0, 60, 113, 0.1);
+      border-radius: 16px;
+      overflow: hidden;
+      text-decoration: none; color: inherit;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    .os-card:hover {
+      border-color: var(--brand-night);
+      box-shadow: 0 30px 70px rgba(0, 60, 113, 0.15);
+      transform: translateY(-5px);
+    }
+    .os-card__cover {
+      aspect-ratio: 16 / 9;
+      background: linear-gradient(135deg, #003C71 0%, #1a5490 100%);
+      position: relative; overflow: hidden;
+    }
+    .os-card__cover img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .os-card:hover .os-card__cover img { transform: scale(1.06); }
+    .os-card__badge {
+      position: absolute; top: 14px; left: 14px;
+      padding: 6px 13px;
+      background: var(--brand-moon);
+      color: var(--brand-night);
+      font-size: 10px; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase;
+      border-radius: 9999px;
+      box-shadow: 0 4px 14px rgba(0, 60, 113, 0.18);
+      z-index: 2;
+    }
+    .os-card__body {
+      padding: 24px 24px 26px;
+      display: flex; flex-direction: column; gap: 8px;
+      flex: 1;
+    }
+    .os-card__label {
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-night); opacity: 0.65;
+    }
+    .os-card__name {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: 22px; font-weight: 800;
+      line-height: 1.15; letter-spacing: -0.3px;
+      color: var(--brand-night);
+      margin: 2px 0 4px;
+    }
+    .os-card__desc {
+      font-size: 14px; line-height: 1.6;
+      color: var(--graphite); opacity: 0.85;
+      margin: 0 0 12px;
+      flex: 1;
+    }
+    .os-card__more {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--brand-night);
+      margin-top: auto;
+    }
+    .os-card__more-arr {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: 50%;
+      border: 1.5px solid var(--brand-night);
+      transition: all 0.25s ease;
+    }
+    .os-card:hover .os-card__more-arr {
+      background: var(--brand-night); color: #fff;
+      transform: translate(3px, -3px);
+    }
+
+    /* INFO section */
+    .os-info {
+      padding: 30px 24px 20px;
+      max-width: 960px; margin: 0 auto;
+      text-align: center;
+    }
+    .os-info__text {
+      font-size: 14px; line-height: 1.8;
+      color: var(--graphite); opacity: 0.7;
+      margin: 0;
+    }
+    .os-info__text strong { color: var(--brand-night); font-weight: 700; }
+
+    /* CTA */
+    .os-cta-wrap {
+      padding: 40px 24px 120px;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .os-cta {
+      padding: 60px 48px;
+      background: linear-gradient(135deg, #003C71 0%, #1a5490 100%);
+      color: #fff;
+      border-radius: 20px;
+      text-align: center;
+      position: relative; overflow: hidden;
+      box-shadow: 0 40px 100px rgba(0, 60, 113, 0.25);
+    }
+    .os-cta::before {
+      content: ''; position: absolute;
+      top: -80px; right: -80px;
+      width: 320px; height: 320px;
+      background: url('/media/decor/arcs.svg') no-repeat top right;
+      background-size: contain; opacity: 0.2; filter: invert(1);
+      pointer-events: none;
+    }
+    .os-cta__eyebrow {
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-moon);
+      margin-bottom: 14px;
+    }
+    .os-cta__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(28px, 3.2vw, 44px);
+      font-weight: 800; line-height: 1.1;
+      margin: 0 0 18px; letter-spacing: -0.4px;
+    }
+    .os-cta__title em { font-style: italic; font-weight: 300; color: var(--brand-moon); }
+    .os-cta__text {
+      font-size: 16px; line-height: 1.7;
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 620px; margin: 0 auto 30px;
+    }
+    .os-cta__btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 34px;
+      background: var(--brand-moon); color: var(--brand-night);
+      border-radius: 9999px;
+      font-size: 14px; font-weight: 700; letter-spacing: 0.5px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+    .os-cta__btn:hover {
+      background: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 14px 32px rgba(183, 201, 211, 0.35);
+    }
+
+    /* Reveal */
+    [data-rev] {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    [data-rev].is-revealed { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+      .os-hero { padding: 140px 0 70px; }
+      .os-cards { grid-template-columns: 1fr; }
+      .os-group__head { flex-direction: column; align-items: flex-start; gap: 14px; }
+    }
+    @media (max-width: 560px) {
+      .os-cta { padding: 44px 24px; }
+    }
+  </style>
+</head>
+<body class="os-page">
+
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a class="header__logo" href="/">
+        <img src="/media/megapolis-logo-whitetext.svg" alt="Megapolis" class="header__logo-img">
+      </a>
+      <div class="header__actions">
+        <a class="header__cta header__cta--find" href="/wyszukiwarka">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span>Znajdź swoje mieszkanie</span>
+        </a>
+        <a class="header__cta header__cta--special" href="/oferta-specjalna">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>Oferta specjalna</span>
+        </a>
+        <a class="header__phone" href="tel:+48123000077">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span>12 300 00 77</span>
+        </a>
+        <button class="header__burger" id="burgerBtn" aria-label="Otwórz menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__inner">
+      <ul class="mobile-menu__list">
+        <li class="mobile-menu__has-sub">
+          <a href="/o-nas" class="mobile-menu__toggle"><span>O nas</span>
+            <svg class="mobile-menu__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </a>
+          <ul class="mobile-menu__sub">
+            <li><a href="/o-nas/historia">Historia firmy</a></li>
+            <li><a href="/o-nas/zespol">Zespół</a></li>
+            <li><a href="/o-nas/misja">Misja i wartości</a></li>
+            <li><a href="/o-nas/holding">Grupa Holding 1</a></li>
+          </ul>
+        </li>
+        <li><a href="/nasze-standardy">Nasze standardy</a></li>
+        <li><a href="/realizacje">Nasze realizacje</a></li>
+        <li><a href="/lokale-uslugowe">Lokale usługowe</a></li>
+        <li><a href="/program-wykonczenia">Program wykończenia mieszkań</a></li>
+        <li><a href="/finansowanie">Finansowanie</a></li>
+        <li><a href="/kariera">Kariera i społecznie odpowiedzialni</a></li>
+        <li><a href="/aktualnosci">Aktualności</a></li>
+        <li><a href="/kontakt">Kontakt</a></li>
+      </ul>
+      <div class="mobile-menu__footer">
+        <a href="tel:+48123000077" class="mobile-menu__phone">12 300 00 77</a>
+        <a href="mailto:biuro@megapolis.pl" class="mobile-menu__email">biuro@megapolis.pl</a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content">
+
+    <!-- HERO -->
+    <section class="os-hero">
+      <div class="os-hero__inner">
+        <nav class="os-crumbs" data-rev>
+          <a href="/">Strona główna</a><span class="sep">·</span>
+          <span>Oferta specjalna</span>
+        </nav>
+        <p class="os-eyebrow" data-rev>Promocje Megapolis</p>
+        <h1 class="os-hero__title" data-rev>Super oferty <em>w&nbsp;jednym miejscu</em></h1>
+        <p class="os-hero__lead" data-rev>
+          Aktualne promocje na&nbsp;mieszkania w&nbsp;trzech inwestycjach Megapolis. Sprawdź wybrane oferty — duże mieszkania, gotowe do&nbsp;odbioru lokale, apartamenty z&nbsp;antresolami i&nbsp;najnowsze promocje Super Oferty Fi.
+        </p>
+      </div>
+    </section>
+
+    <!-- GRUPA: OZON -->
+    <section class="os-group">
+      <div class="os-group__head" data-rev>
+        <div class="os-group__title-block">
+          <p class="os-group__kicker">Osiedle 01 · Kraków, Ruczaj</p>
+          <h2 class="os-group__title">Osiedle&nbsp;<em>OZON</em></h2>
+        </div>
+        <span class="os-group__badge">2 oferty</span>
+      </div>
+      <div class="os-cards">
+
+        <a class="os-card" href="/oferta-specjalna/ozon-8/" data-rev>
+          <div class="os-card__cover">
+            <span class="os-card__badge">Już w&nbsp;sprzedaży</span>
+            <img src="https://megapolis.pl/wp-content/uploads/2024/07/ozon-III-noc-max-res-1-1024x576.webp" alt="OZON 8" loading="lazy">
+          </div>
+          <div class="os-card__body">
+            <div class="os-card__label">Etap&nbsp;8 · Duże mieszkania</div>
+            <h3 class="os-card__name">Ozon&nbsp;8 — duże mieszkania do&nbsp;100&nbsp;m²</h3>
+            <p class="os-card__desc">Najnowszy etap Osiedla OZON z&nbsp;przestronnymi układami — idealny dla&nbsp;rodzin i&nbsp;osób szukających więcej miejsca na&nbsp;Ruczaju.</p>
+            <span class="os-card__more">
+              Zobacz ofertę
+              <span class="os-card__more-arr">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              </span>
+            </span>
+          </div>
+        </a>
+
+        <a class="os-card" href="/oferta-specjalna/ozon-etap-7/" data-rev>
+          <div class="os-card__cover">
+            <span class="os-card__badge">Gotowe do odbioru</span>
+            <img src="https://megapolis.pl/wp-content/uploads/2024/07/ozon-noc-max-res-1024x576.webp" alt="OZON Etap 7" loading="lazy">
+          </div>
+          <div class="os-card__body">
+            <div class="os-card__label">Etap&nbsp;7 · Finalny etap</div>
+            <h3 class="os-card__name">Etap&nbsp;7 — mieszkania gotowe do&nbsp;odbioru</h3>
+            <p class="os-card__desc">Ostatnie dostępne mieszkania z&nbsp;etapu&nbsp;7 — gotowe do&nbsp;odbioru w&nbsp;najbliższym czasie. Wprowadzasz się bez&nbsp;czekania.</p>
+            <span class="os-card__more">
+              Zobacz ofertę
+              <span class="os-card__more-arr">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              </span>
+            </span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- GRUPA: CLOU Lindego -->
+    <section class="os-group">
+      <div class="os-group__head" data-rev>
+        <div class="os-group__title-block">
+          <p class="os-group__kicker">Osiedle 02 · Kraków, Bronowice</p>
+          <h2 class="os-group__title">CLOU&nbsp;<em>Lindego</em></h2>
+        </div>
+        <span class="os-group__badge">2 oferty</span>
+      </div>
+      <div class="os-cards">
+
+        <a class="os-card" href="/oferta-specjalna/clou-4-5/" data-rev>
+          <div class="os-card__cover">
+            <span class="os-card__badge">Mieszkania rodzinne</span>
+            <img src="https://cloulindego.pl/wp-content/uploads/251113_CLOU_wizualizacje_02_korektaludzie-min-1024x576.png" alt="CLOU — mieszkania 4-5 pokojowe" loading="lazy">
+          </div>
+          <div class="os-card__body">
+            <div class="os-card__label">Mieszkania 4- i&nbsp;5-pokojowe</div>
+            <h3 class="os-card__name">Mieszkania&nbsp;4- i&nbsp;5-pokojowe</h3>
+            <p class="os-card__desc">Duże mieszkania łączone — idealne dla&nbsp;rodzin w&nbsp;premium-inwestycji CLOU na&nbsp;Bronowicach. Przestronne układy i&nbsp;wysoki standard wykończenia części wspólnych.</p>
+            <span class="os-card__more">
+              Zobacz ofertę
+              <span class="os-card__more-arr">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              </span>
+            </span>
+          </div>
+        </a>
+
+        <a class="os-card" href="/oferta-specjalna/clou-antresole/" data-rev>
+          <div class="os-card__cover">
+            <span class="os-card__badge">Unikatowe układy</span>
+            <img src="https://megapolis.pl/wp-content/uploads/2024/07/clou-dzien-max-res-1024x576.webp" alt="CLOU — mieszkania z antresolami" loading="lazy" onerror="this.src='https://cloulindego.pl/wp-content/uploads/251113_CLOU_wizualizacje_02_korektaludzie-min-1024x576.png'">
+          </div>
+          <div class="os-card__body">
+            <div class="os-card__label">Mieszkania dwupoziomowe</div>
+            <h3 class="os-card__name">Mieszkania z&nbsp;<em>antresolami</em></h3>
+            <p class="os-card__desc">Dwupoziomowe apartamenty z&nbsp;antresolami — rzadki układ na&nbsp;krakowskim rynku premium. Podwyższone sufity, unikatowe widoki, limitowana dostępność.</p>
+            <span class="os-card__more">
+              Zobacz ofertę
+              <span class="os-card__more-arr">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              </span>
+            </span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- GRUPA: Fi -->
+    <section class="os-group">
+      <div class="os-group__head" data-rev>
+        <div class="os-group__title-block">
+          <p class="os-group__kicker">Osiedle 03 · Kraków</p>
+          <h2 class="os-group__title">Nowe&nbsp;Osiedle&nbsp;<em>Fi</em></h2>
+        </div>
+        <span class="os-group__badge">Super oferta</span>
+      </div>
+      <div class="os-cards os-cards--single">
+
+        <a class="os-card" href="/oferta-specjalna/fi/" data-rev>
+          <div class="os-card__cover">
+            <span class="os-card__badge">Tylko SUPER OFERTA</span>
+            <img src="https://megapolis.pl/wp-content/uploads/2025/04/08_noc_a-1024x576.jpg" alt="Nowe Osiedle Fi — super oferty" loading="lazy">
+          </div>
+          <div class="os-card__body">
+            <div class="os-card__label">Filtrowana lista z&nbsp;osiedlefi.pl</div>
+            <h3 class="os-card__name">Apartamenty z&nbsp;badge'em&nbsp;<em>SUPER OFERTA</em></h3>
+            <p class="os-card__desc">Automatycznie przefiltrowana wyszukiwarka mieszkań Fi — widzisz wyłącznie apartamenty oznaczone jako SUPER OFERTA. Bez&nbsp;przewijania całej listy — tylko aktualne promocje.</p>
+            <span class="os-card__more">
+              Zobacz super oferty Fi
+              <span class="os-card__more-arr">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              </span>
+            </span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- INFO -->
+    <section class="os-info" data-rev>
+      <p class="os-info__text">
+        Szczegółowe informacje o&nbsp;promocjach, <strong>regulaminy</strong> i&nbsp;aktualna dostępność zawsze na&nbsp;stronie danej inwestycji. Oferty mogą ulec zmianie — skontaktuj się z&nbsp;doradcą, żeby potwierdzić warunki.
+      </p>
+    </section>
+
+    <!-- CTA -->
+    <section class="os-cta-wrap">
+      <div class="os-cta" data-rev>
+        <p class="os-cta__eyebrow">Nie&nbsp;jesteś pewien, którą ofertę wybrać?</p>
+        <h2 class="os-cta__title">Doradca Megapolis <em>pomoże&nbsp;Ci</em></h2>
+        <p class="os-cta__text">
+          Opowiedz nam o&nbsp;Twoich potrzebach — dopasujemy ofertę, wyjaśnimy szczegóły promocji i&nbsp;zaprezentujemy mieszkania na&nbsp;żywo. Konsultacja jest bezpłatna i&nbsp;niezobowiązująca.
+        </p>
+        <a href="/kontakt" class="os-cta__btn">
+          Umów konsultację
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__bottom" style="padding:32px 0;">
+        <p style="font-size:12px;color:var(--white-40);">&copy; 2026 Megapolis Sp. z&nbsp;o.o. &nbsp;·&nbsp; <a href="/polityka-prywatnosci" style="color:var(--white-60);">Polityka prywatności</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/main.js"></script>
+  <script>
+    (function () {
+      const els = document.querySelectorAll('[data-rev]');
+      if (!('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('is-revealed')); return; }
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-revealed'); io.unobserve(e.target); } });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      els.forEach(e => io.observe(e));
+    })();
+  </script>
+</body>
+</html>

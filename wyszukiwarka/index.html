@@ -1,675 +1,1954 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="pl" data-site="megapolis">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wyszukiwarka mieszkań — Megapolis</title>
-  <!-- Fonty lokalne Ubuntu (z /fonts/) — @font-face w /css/style.css -->
+  <title>Znajdź swoje mieszkanie — Megapolis</title>
+  <meta name="description" content="Wyszukiwarka mieszkań Megapolis — filtruj ofertę po lokalizacji, powierzchni, cenie, piętrze i stronie świata. Aktualne mieszkania z czterech osiedli w Krakowie i Wrocławiu.">
   <link rel="preload" href="/fonts/Ubuntu-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="/fonts/Ubuntu-Medium.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/fonts/Ubuntu-Bold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="/css/style.css">
   <style>
-    .search-page { padding-top: 120px; }
-    .search-page__header { margin-bottom: 40px; }
-    .results-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; padding:0 4px; }
-    .results-header__count { font-size:14px; color:var(--white-40); }
-    .results-header__count strong { color:var(--white); }
-    .results-header__sort { display:flex; align-items:center; gap:8px; font-size:13px; color:var(--white-40); }
-    .results-header__sort select { padding:6px 10px; border:1px solid var(--white-10); border-radius:8px; font-size:13px; background:var(--bg-card); color:var(--white); }
-    .filter-tags { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
-    .filter-tag { display:inline-flex; align-items:center; gap:6px; padding:6px 14px; background:var(--bg-surface); border-radius:9999px; font-size:13px; color:var(--white-60); cursor:pointer; transition:all 0.2s; border:1.5px solid var(--white-10); }
-    .filter-tag:hover, .filter-tag.active { border-color:var(--accent); color:var(--accent); background:rgba(197,165,90,0.1); }
-    .filter-tag svg { width:14px; height:14px; }
-    .pagination { display:flex; align-items:center; justify-content:center; gap:4px; margin-top:32px; }
-    .pagination__btn { width:40px; height:40px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:500; color:var(--white-40); border:1px solid var(--white-10); background:transparent; transition:all 0.2s; }
-    .pagination__btn:hover { border-color:var(--accent); color:var(--accent); }
-    .pagination__btn--active { background:var(--accent); color:var(--bg); border-color:var(--accent); }
+    .ws-page { background: #f4f2ec; color: var(--graphite); }
 
-    .search-filters__extra { display:grid; grid-template-columns:repeat(auto-fill, minmax(180px,1fr)); gap:16px; margin-bottom:16px; padding-top:16px; border-top:1px solid var(--white-10); }
-    .search-filters__actions { display:flex; gap:12px; justify-content:flex-end; padding-top:16px; border-top:1px solid var(--white-10); }
-    .status-badge--sold { background:var(--white-05); color:var(--white-40); }
-    .direction-badge { display:inline-flex; align-items:center; gap:4px; font-size:12px; color:var(--white-40); }
-
-    /* === Layout 2-kolumnowy: filtry po lewej + kompas po prawej === */
-    .search-filters--split {
+    /* =================== HERO =================== */
+    .ws-hero {
+      position: relative;
+      padding: 190px 0 70px;
+      background: #ffffff;
+      overflow: hidden;
+    }
+    .ws-hero::before {
+      content: ''; position: absolute; top: -30px; right: -80px;
+      width: 360px; height: 360px;
+      background: url('/media/decor/arcs.svg') no-repeat top right;
+      background-size: contain; opacity: 0.18; pointer-events: none;
+    }
+    .ws-hero__pattern { display: none; }
+    .ws-hero__inner {
+      position: relative; z-index: 1;
+      max-width: 1200px; margin: 0 auto;
+      padding: 0 40px;
       display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 40px;
-      align-items: center;              /* kompas wycentrowany pionowo */
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+      gap: 64px;
+      align-items: center;
     }
-    .search-filters__split-main { min-width: 0; }
-    .search-filters__split-side {
+    .ws-hero__copy { text-align: left; }
+    .ws-crumbs {
+      font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--graphite); opacity: 0.55;
+      margin-bottom: 24px;
+    }
+    .ws-crumbs a { color: var(--brand-night); text-decoration: none; }
+    .ws-crumbs .sep { margin: 0 10px; opacity: 0.5; }
+    .ws-eyebrow {
+      display: inline-flex; align-items: center; gap: 14px;
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-night);
+      margin-bottom: 24px;
+    }
+    .ws-eyebrow::before { content: ''; width: 44px; height: 1px; background: var(--brand-night); }
+    .ws-hero__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(38px, 4.8vw, 68px);
+      font-weight: 800; line-height: 1.05;
+      letter-spacing: -1.5px; color: var(--brand-night);
+      margin: 0 0 22px;
+    }
+    .ws-hero__title em { font-style: italic; font-weight: 300; opacity: 0.65; }
+    .ws-hero__title::after { display: none; }
+    .ws-hero__lead {
+      font-size: 16px;
+      line-height: 1.7; color: var(--graphite); opacity: 0.82;
+      max-width: 520px; margin: 0;
+    }
+
+    /* HERO VIDEO — lekko szerszy, bez dekoracji */
+    .ws-hero-video-wrap {
+      position: relative; z-index: 2;
+      width: 100%; max-width: 420px;
+      margin-left: auto;
+    }
+    .ws-hero-video {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      min-height: 440px;              /* fallback dla starszych Safari bez aspect-ratio */
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0, 60, 113, 0.15),
+                  0 0 0 1px rgba(0, 60, 113, 0.06);
+      background: #0a1e35 url('/media/clou/lindego-panorama.jpg') center / cover;
+    }
+    .ws-hero-video video {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
+    /* Delikatny gradient na dole - dla czytelnosci podpisu */
+    .ws-hero-video::after {
+      content: ''; position: absolute;
+      bottom: 0; left: 0; right: 0; height: 38%;
+      background: linear-gradient(180deg, transparent 0%, rgba(0, 60, 113, 0.55) 100%);
+      pointer-events: none; z-index: 2;
+    }
+    /* Podpis na dole - minimalny */
+    .ws-hero-video__caption {
+      position: absolute; bottom: 16px; left: 18px; right: 18px;
+      z-index: 3;
+      color: #fff; text-align: left;
+    }
+    .ws-hero-video__caption-eyebrow {
+      font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase; font-weight: 700;
+      color: rgba(183, 201, 211, 0.95);
+      margin: 0 0 4px;
+    }
+    .ws-hero-video__caption-title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: 15px; font-weight: 700;
+      line-height: 1.25; letter-spacing: -0.2px;
+      margin: 0; color: #fff;
+    }
+    .ws-hero-video__caption-title em { font-style: italic; font-weight: 300; opacity: 0.9; }
+
+    /* Mobile - stack hero columns */
+    @media (max-width: 960px) {
+      .ws-hero__inner {
+        grid-template-columns: 1fr;
+        gap: 40px; padding: 0 24px;
+        text-align: center;
+      }
+      .ws-hero__copy { text-align: center; }
+      .ws-hero__lead { margin: 0 auto; }
+      .ws-eyebrow::before { display: none; }
+      .ws-eyebrow { justify-content: center; }
+      .ws-hero-video-wrap { margin: 0 auto; max-width: 360px; }
+    }
+    @media (max-width: 640px) {
+      .ws-hero { padding: 150px 0 50px; }
+      .ws-hero-video-wrap { max-width: 300px; }
+    }
+
+    /* STATS premium grid with dividers */
+    .ws-stats-wrap {
+      max-width: 1100px; margin: 56px auto 0;
+      padding: 0 24px;
+    }
+    .ws-stats {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0; padding: 32px 20px;
+      background: #ffffff;
+      border: 1px solid rgba(0, 60, 113, 0.12);
+      border-radius: 18px;
+      box-shadow: 0 18px 50px rgba(0, 60, 113, 0.08),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      position: relative;
+    }
+    .ws-stats::before {
+      content: ''; position: absolute;
+      top: 0; left: 40px; right: 40px; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--brand-night) 50%, transparent);
+      opacity: 0.25;
+    }
+    .ws-stat {
+      text-align: center; padding: 6px 20px;
+      position: relative;
+    }
+    .ws-stat + .ws-stat::before {
+      content: ''; position: absolute;
+      left: 0; top: 20%; height: 60%; width: 1px;
+      background: rgba(0, 60, 113, 0.12);
+    }
+    .ws-stat__ico {
+      width: 38px; height: 38px; margin: 0 auto 14px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0, 60, 113, 0.07);
+      border-radius: 50%; color: var(--brand-night);
+    }
+    .ws-stat__ico svg { width: 18px; height: 18px; }
+    .ws-stat__num {
+      display: block;
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(30px, 3.4vw, 42px);
+      font-weight: 800; color: var(--brand-night);
+      line-height: 1; letter-spacing: -0.8px;
+    }
+    .ws-stat__lbl {
+      display: block; margin-top: 10px;
+      font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; font-weight: 700;
+      color: var(--graphite); opacity: 0.62;
+    }
+    @media (max-width: 720px) {
+      .ws-stats { grid-template-columns: 1fr 1fr; gap: 20px 0; }
+      .ws-stat + .ws-stat::before { display: none; }
+    }
+
+    /* =================== SEARCH PANEL - luxury =================== */
+    .ws-search-wrap {
+      padding: 48px 24px 30px;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .ws-panel {
+      background: #ffffff;
+      border: 1px solid rgba(0, 60, 113, 0.08);
+      border-radius: 22px;
+      padding: 34px 40px 30px;
+      box-shadow: 0 20px 60px rgba(0, 60, 113, 0.08),
+                  0 2px 8px rgba(0, 60, 113, 0.04);
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    /* Luxury top accent - mosiezna nitka */
+    .ws-panel::before {
+      content: ''; position: absolute;
+      top: 0; left: 40px; right: 40px; height: 1px;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(201, 165, 92, 0.5) 20%,
+        rgba(201, 165, 92, 0.9) 50%,
+        rgba(201, 165, 92, 0.5) 80%,
+        transparent 100%);
+      z-index: 1;
+    }
+    /* Luxury corner ornament (subtelne) */
+    .ws-panel::after {
+      content: ''; position: absolute;
+      top: -40px; right: -40px;
+      width: 200px; height: 200px;
+      background: url('/media/decor/arcs.svg') no-repeat;
+      background-size: contain; opacity: 0.04;
+      pointer-events: none; z-index: 0;
+    }
+    .ws-panel > * { position: relative; z-index: 1; }
+    .ws-panel__head {
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 20px; flex-wrap: wrap;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(0, 60, 113, 0.08);
+    }
+    .ws-panel__head-left {
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .ws-panel__eyebrow {
+      display: inline-flex; align-items: center; gap: 14px;
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 900;
+      color: var(--brand-night); opacity: 0.85;
+      margin: 0;
+    }
+    .ws-panel__eyebrow::after {
+      content: ''; width: 32px; height: 2px;
+      background: #c9a55c;
+    }
+    .ws-panel__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(28px, 2.5vw, 34px);
+      font-weight: 800; color: var(--brand-night);
+      letter-spacing: -0.8px; margin: 0; line-height: 1;
+      display: inline-flex; align-items: baseline; gap: 14px;
+    }
+    .ws-panel__title em {
+      font-style: italic; font-weight: 400;
+      color: #c9a55c;
+    }
+    .ws-panel__sub { display: none; }  /* redundant subhead - chowamy */
+    .ws-panel__toggle { display: none; }  /* zastapione przez .ws-more-link nizej */
+
+    /* City pills - segmented control premium */
+    .ws-cities {
+      display: inline-flex; gap: 4px;
+      margin: 0;
+      padding: 5px;
+      background: rgba(0, 60, 113, 0.05);
+      border-radius: 9999px;
+      border: 1px solid rgba(0, 60, 113, 0.06);
+    }
+    .ws-city-pill {
+      padding: 10px 22px;
+      background: transparent;
+      border: 0;
+      border-radius: 9999px;
+      font-size: 12px; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase;
+      color: var(--brand-night); opacity: 0.7;
+      font-family: inherit;
+      cursor: pointer; transition: all 0.25s ease;
+    }
+    .ws-city-pill:hover { opacity: 1; background: rgba(0, 60, 113, 0.05); }
+    .ws-city-pill.is-active {
+      background: var(--brand-night); color: #fff;
+      opacity: 1;
+      box-shadow: 0 6px 18px rgba(0, 60, 113, 0.28);
+    }
+
+    /* ====== BODY: 2-kolumnowy premium layout - pola LEFT / kompas RIGHT ====== */
+    .ws-body {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 48px;
+      align-items: start;
+    }
+    .ws-body__main { min-width: 0; }
+    .ws-body__side {
       flex-shrink: 0;
-      align-self: center;
+      padding: 18px 18px 20px;
+      background: linear-gradient(180deg,
+        rgba(0, 60, 113, 0.025) 0%,
+        rgba(183, 201, 211, 0.08) 100%);
+      border: 1px solid rgba(0, 60, 113, 0.08);
+      border-radius: 18px;
+      text-align: center;
     }
 
-    /* === Strona świata (róża wiatrów 3×3) i Przynależności === */
-    /* Markowa paleta: Mega Night Sky #003C71, Mega Moon #B7C9D3, grafit #333 */
-    .search-filters__features { padding-top:20px; margin-bottom:8px; border-top:1px solid var(--white-10); }
-    .search-filters__compass { padding:0; }           /* kompas jest już w asidzie, bez górnej kreski */
-    .search-filters__grouplabel {
-      display:block; font-size:11px; letter-spacing:3px; text-transform:uppercase;
-      color:#B7C9D3;                    /* Mega Moon — tytuły na dark bg */
-      margin-bottom:14px; text-align:center; font-weight:700;
+    /* Pola filtrow - underline style luxury */
+    .ws-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px 22px;
+    }
+    .ws-grid + .ws-grid {
+      margin-top: 18px;
+      padding-top: 20px;
+      position: relative;
+    }
+    /* Elegancki zloty separator miedzy grupami */
+    .ws-grid + .ws-grid::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(0, 60, 113, 0.1) 15%,
+        rgba(201, 165, 92, 0.35) 50%,
+        rgba(0, 60, 113, 0.1) 85%,
+        transparent 100%);
+    }
+    .ws-field {
+      display: flex; flex-direction: column; gap: 6px;
+      min-width: 0;
+      position: relative;
+    }
+    .ws-field label {
+      font-size: 10px; letter-spacing: 2.8px; text-transform: uppercase; font-weight: 900;
+      color: var(--brand-night); opacity: 0.75;
+    }
+    .ws-field select,
+    .ws-field input {
+      width: 100%;
+      padding: 12px 0 12px;
+      background: transparent;
+      border: 0;
+      border-bottom: 1.5px solid rgba(0, 60, 113, 0.16);
+      border-radius: 0;
+      font-family: inherit;
+      font-size: 17px; font-weight: 800;
+      letter-spacing: -0.2px;
+      color: var(--brand-night);
+      transition: border-color 0.3s ease;
+      appearance: none;
+      cursor: pointer;
+      position: relative;
+    }
+    /* Premium focus hairline - animacja od zera (mosiezna) */
+    .ws-field::after {
+      content: ''; position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--brand-night), #c9a55c);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.45s cubic-bezier(.2,.8,.2,1);
+      pointer-events: none;
+    }
+    .ws-field:focus-within::after { transform: scaleX(1); }
+    .ws-field select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath fill='none' stroke='%23003C71' stroke-width='2.2' stroke-linecap='round' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 4px center;
+      padding-right: 22px;
+    }
+    .ws-field input::placeholder {
+      color: var(--graphite); opacity: 0.32; font-weight: 500;
+    }
+    .ws-field select:hover,
+    .ws-field input:hover { border-bottom-color: rgba(0, 60, 113, 0.35); }
+    .ws-field select:focus,
+    .ws-field input:focus {
+      outline: none;
     }
 
-    /* Róża wiatrów 3×3 */
-    .compass-rose {
-      display:grid;
-      grid-template-columns:repeat(3, 1fr);
-      grid-template-rows:repeat(3, 1fr);
-      gap:8px;
-      width:280px;
-      aspect-ratio:1 / 1;
-      margin:0 auto;
+    /* ---------- Collapsible advanced section ---------- */
+    .ws-advanced {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(0, 60, 113, 0.08);
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 40px;
+      align-items: center;
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      padding-top: 0;
+      border-top-color: transparent;
+      transition: max-height 0.5s cubic-bezier(.2,.8,.2,1),
+                  opacity 0.3s ease,
+                  padding-top 0.3s ease,
+                  margin-top 0.3s ease,
+                  border-top-color 0.3s ease;
     }
-    .rose-btn {
-      display:flex; flex-direction:column; align-items:center; justify-content:center;
-      gap:4px; padding:8px 4px;
-      background:#eae6dc;
-      border:1.5px solid #c7c0ae;
-      border-radius:10px;
-      color:#333;                       /* grafit */
-      font-family:inherit;
-      cursor:pointer;
-      transition:all 0.2s ease;
+    .ws-advanced.is-open {
+      max-height: 480px;
+      opacity: 1;
+      padding-top: 20px;
+      border-top-color: rgba(0, 60, 113, 0.08);
     }
-    .rose-btn:hover {
-      background:#ddd8cb; border-color:#003C71;
-      transform:translateY(-1px);
+    .ws-advanced__group { min-width: 0; }
+    .ws-advanced__label {
+      display: block;
+      font-size: 11px; letter-spacing: 3.5px; text-transform: uppercase; font-weight: 900;
+      color: var(--brand-night); opacity: 0.85;
+      margin-bottom: 14px;
     }
-    .rose-btn.is-active {
-      background:#003C71;               /* Mega Night Sky */
-      border-color:#003C71;
-      color:#fff;
-    }
-    .rose-btn__arrow { width:24px; height:24px; color:#333; stroke:#333; }
-    .rose-btn.is-active .rose-btn__arrow { color:#fff; stroke:#fff; }
-    .rose-btn__lbl { font-size:11px; font-weight:700; letter-spacing:0.6px; color:#333; }
-    .rose-btn.is-active .rose-btn__lbl { color:#fff; }
 
-    /* Grid placement — matchowane przez modyfikatory klasy */
-    .rose-btn--nw { grid-area:1 / 1; }
-    .rose-btn--n  { grid-area:1 / 2; }
-    .rose-btn--ne { grid-area:1 / 3; }
-    .rose-btn--w  { grid-area:2 / 1; }
-    .rose-center  { grid-area:2 / 2; }
-    .rose-btn--e  { grid-area:2 / 3; }
-    .rose-btn--sw { grid-area:3 / 1; }
-    .rose-btn--s  { grid-area:3 / 2; }
-    .rose-btn--se { grid-area:3 / 3; }
+    /* ---------- Features pills (przynależności) ---------- */
+    .ws-features {
+      display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-start;
+    }
+    .ws-feat-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 9px 16px; border-radius: 9999px;
+      background: rgba(0, 60, 113, 0.04);
+      border: 1.5px solid transparent;
+      color: var(--brand-night);
+      font-size: 12px; font-weight: 800; letter-spacing: 0.4px;
+      font-family: inherit; cursor: pointer; transition: all 0.25s ease;
+    }
+    .ws-feat-btn svg { flex: 0 0 auto; color: var(--brand-night); stroke: var(--brand-night); opacity: 0.7; }
+    .ws-feat-btn:hover {
+      background: rgba(0, 60, 113, 0.08);
+      border-color: rgba(0, 60, 113, 0.15);
+    }
+    .ws-feat-btn.is-active {
+      background: var(--brand-night); color: #fff;
+      border-color: var(--brand-night);
+      box-shadow: 0 6px 18px rgba(0, 60, 113, 0.25);
+    }
+    .ws-feat-btn.is-active svg { color: #fff; stroke: #fff; opacity: 1; }
 
-    .rose-center {
-      display:flex; align-items:center; justify-content:center;
-      color:#003C71;                    /* Mega Night Sky — dekoracyjna róża */
-      pointer-events:none; opacity:0.6;
+    /* ---------- Compass (róża wiatrów 3×3) - luxury elegant ---------- */
+    .ws-compass-wrap {
+      width: 220px;
+      text-align: center;
     }
-    .rose-center svg { width:52px; height:52px; }
+    .ws-compass-title {
+      display: block;
+      font-size: 11px; letter-spacing: 3.5px; text-transform: uppercase; font-weight: 900;
+      color: var(--brand-night); opacity: 0.85;
+      margin-bottom: 6px;
+    }
+    .ws-compass-sub {
+      display: block;
+      font-family: 'Ubuntu', sans-serif;
+      font-size: 12px; font-style: italic; font-weight: 400;
+      color: var(--brand-night); opacity: 0.65;
+      margin-bottom: 16px;
+    }
+    .ws-compass {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 6px;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+    }
+    .ws-rose {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 2px; padding: 6px 2px;
+      background: #ffffff;
+      border: 1px solid rgba(0, 60, 113, 0.08);
+      border-radius: 10px;
+      color: var(--brand-night);
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(.2,.8,.2,1);
+    }
+    .ws-rose:hover {
+      border-color: var(--brand-night);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 60, 113, 0.08);
+    }
+    .ws-rose.is-active {
+      background: var(--brand-night); border-color: var(--brand-night); color: #fff;
+      box-shadow: 0 4px 14px rgba(0, 60, 113, 0.25);
+    }
+    .ws-rose__arrow { width: 16px; height: 16px; color: var(--brand-night); stroke: var(--brand-night); opacity: 0.75; }
+    .ws-rose.is-active .ws-rose__arrow { color: #fff; stroke: #fff; opacity: 1; }
+    .ws-rose__lbl { font-size: 10px; font-weight: 900; letter-spacing: 0.5px; }
+    /* Center ornament - mosiezna roza */
+    .ws-rose-center svg { filter: drop-shadow(0 1px 2px rgba(0, 60, 113, 0.15)); }
+    .ws-rose--nw { grid-area: 1 / 1; }
+    .ws-rose--n  { grid-area: 1 / 2; }
+    .ws-rose--ne { grid-area: 1 / 3; }
+    .ws-rose--w  { grid-area: 2 / 1; }
+    .ws-rose-center { grid-area: 2 / 2; }
+    .ws-rose--e  { grid-area: 2 / 3; }
+    .ws-rose--sw { grid-area: 3 / 1; }
+    .ws-rose--s  { grid-area: 3 / 2; }
+    .ws-rose--se { grid-area: 3 / 3; }
+    .ws-rose-center {
+      display: flex; align-items: center; justify-content: center;
+      color: var(--brand-night); pointer-events: none; opacity: 0.5;
+    }
+    .ws-rose-center svg { width: 56px; height: 56px; }
 
-    /* Przynależności — cream + grafit */
-    .feature-grid {
-      display:flex; flex-wrap:wrap; gap:12px;
-      justify-content:center;
+    /* Quick filter tags */
+    .ws-tags {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      margin-top: 26px; padding-top: 22px;
+      border-top: 1px solid rgba(0, 60, 113, 0.1);
     }
-    .feature-btn {
-      display:inline-flex; align-items:center; gap:8px;
-      padding:11px 20px; border-radius:9999px;
-      background:#eae6dc;
-      border:1.5px solid #c7c0ae;
-      color:#333;                       /* grafit */
-      font-size:14px; font-weight:500;
-      font-family:inherit; cursor:pointer; transition:all 0.2s ease;
+    .ws-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 14px;
+      background: transparent;
+      border: 1.5px solid transparent;
+      border-radius: 9999px;
+      font-size: 11px; font-weight: 800; letter-spacing: 0.7px; text-transform: uppercase;
+      color: var(--brand-night); opacity: 0.62;
+      font-family: inherit; cursor: pointer; transition: all 0.25s ease;
     }
-    .feature-btn svg { flex:0 0 auto; color:#333; stroke:#333; opacity:1; }
-    .feature-btn:hover {
-      background:#ddd8cb; border-color:#003C71;
-      transform:translateY(-1px);
+    .ws-tag:hover { opacity: 1; border-color: rgba(0, 60, 113, 0.12); }
+    .ws-tag.is-active {
+      background: rgba(0, 60, 113, 0.06);
+      border-color: rgba(201, 165, 92, 0.5);
+      opacity: 1;
     }
-    .feature-btn.is-active {
-      background:#003C71;               /* Mega Night Sky */
-      border-color:#003C71;
-      color:#fff;
+    .ws-tag svg { width: 12px; height: 12px; opacity: 0.7; }
+
+    /* Bottom bar: tags + more toggle + actions w jednej linii */
+    .ws-panel__bottom {
+      display: flex; align-items: center;
+      gap: 16px; flex-wrap: wrap;
+      margin-top: 26px; padding-top: 22px;
+      border-top: 1px solid rgba(0, 60, 113, 0.1);
     }
-    .feature-btn.is-active svg { color:#fff; stroke:#fff; }
+    .ws-tags-wrap {
+      display: flex; align-items: center; gap: 6px;
+      flex-wrap: wrap;
+      flex: 1 1 auto;
+    }
+    .ws-more-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 14px;
+      background: transparent;
+      border: 1.5px dashed rgba(201, 165, 92, 0.4);
+      border-radius: 9999px;
+      font-size: 11px; font-weight: 900; letter-spacing: 1.4px; text-transform: uppercase;
+      color: var(--brand-night); opacity: 0.82;
+      font-family: inherit; cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .ws-more-link:hover {
+      opacity: 1;
+      border-color: #c9a55c;
+      background: rgba(201, 165, 92, 0.06);
+    }
+    .ws-more-link svg { transition: transform 0.3s ease; }
+    .ws-more-link.is-open svg { transform: rotate(45deg); }
+    .ws-more-link.is-open {
+      border-style: solid;
+      border-color: #c9a55c;
+      background: rgba(201, 165, 92, 0.08);
+    }
+
+    /* Actions (wyczyść / szukaj) - w bottom bar po prawej */
+    .ws-actions {
+      display: inline-flex; align-items: center; gap: 12px;
+      margin-left: auto;
+    }
+    .ws-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 13px 26px;
+      border-radius: 9999px;
+      font-size: 12px; font-weight: 900; letter-spacing: 1.2px; text-transform: uppercase;
+      font-family: inherit; cursor: pointer;
+      border: 1.5px solid transparent;
+      background: transparent; color: var(--brand-night); opacity: 0.78;
+      transition: all 0.25s ease;
+      text-decoration: none;
+    }
+    .ws-btn:hover { opacity: 1; background: rgba(0, 60, 113, 0.04); }
+    .ws-btn--primary {
+      background: var(--brand-night); color: #fff;
+      border-color: var(--brand-night);
+      opacity: 1;
+      padding: 14px 32px;
+      box-shadow: 0 8px 22px rgba(0, 60, 113, 0.22);
+    }
+    .ws-btn--primary:hover {
+      background: #002c55; border-color: #002c55;
+      transform: translateY(-1px);
+      box-shadow: 0 14px 36px rgba(0, 60, 113, 0.32);
+    }
+    .ws-btn svg { transition: transform 0.25s ease; }
+    .ws-btn--primary:hover svg { transform: scale(1.1); }
+
+    /* ===== AI banner (pokazuje zapytanie z AI search) ===== */
+    .ws-ai-banner {
+      display: flex; align-items: center; gap: 16px;
+      padding: 16px 22px;
+      margin: 0 auto 24px;
+      max-width: 1180px;
+      background: linear-gradient(135deg, rgba(0, 60, 113, 0.97) 0%, #1a3a5e 100%);
+      border-radius: 16px;
+      color: #fff;
+      box-shadow: 0 10px 30px rgba(0, 60, 113, 0.22);
+      transition: opacity 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .ws-ai-banner::before {
+      content: ''; position: absolute;
+      top: -50px; right: -50px;
+      width: 180px; height: 180px;
+      background: url('/media/decor/arcs.svg') no-repeat;
+      background-size: contain;
+      opacity: 0.12; filter: invert(1);
+    }
+    .ws-ai-banner__ico {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, #c9a55c, #b38f47);
+      border-radius: 10px;
+      font-size: 11px; font-weight: 900; letter-spacing: 1px;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(201, 165, 92, 0.35);
+      flex-shrink: 0;
+      position: relative; z-index: 1;
+    }
+    .ws-ai-banner__body {
+      flex: 1 1 auto;
+      font-size: 14px; line-height: 1.5;
+      position: relative; z-index: 1;
+    }
+    .ws-ai-banner__body strong {
+      font-weight: 800; color: var(--brand-moon);
+      margin-right: 6px;
+    }
+    .ws-ai-banner__close {
+      background: rgba(255, 255, 255, 0.12);
+      border: 0;
+      width: 32px; height: 32px; border-radius: 50%;
+      color: #fff;
+      font-size: 20px; line-height: 1;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative; z-index: 1;
+      flex-shrink: 0;
+    }
+    .ws-ai-banner__close:hover {
+      background: rgba(255, 255, 255, 0.22);
+    }
+
+    /* =================== RESULTS =================== */
+    .ws-results-wrap {
+      padding: 20px 24px 40px;
+      max-width: 1280px; margin: 0 auto;
+    }
+    .ws-results-head {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 24px; padding: 0 4px;
+      flex-wrap: wrap; gap: 16px;
+    }
+    .ws-results-count {
+      font-size: 14px; color: var(--graphite); opacity: 0.75;
+    }
+    .ws-results-count strong { color: var(--brand-night); font-weight: 700; }
+    .ws-sort {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 12px; letter-spacing: 1px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-night); opacity: 0.8;
+    }
+    .ws-sort select {
+      padding: 9px 14px;
+      background: #ffffff;
+      border: 1.5px solid rgba(0, 60, 113, 0.15);
+      border-radius: 9999px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--brand-night);
+      cursor: pointer;
+    }
+
+    /* ====== Result cards grid - luxury listing z rzutem ====== */
+    .ws-results {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 20px;
+    }
+    .ws-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 140px;
+      gap: 18px;
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 24px 24px 22px;
+      border: 1px solid rgba(0, 60, 113, 0.08);
+      box-shadow: 0 1px 2px rgba(0, 60, 113, 0.04);
+      transition: transform 0.4s cubic-bezier(.2,.8,.2,1),
+                  box-shadow 0.4s ease,
+                  border-color 0.4s ease;
+      isolation: isolate;
+    }
+    .ws-card__main {
+      display: flex; flex-direction: column;
+      min-width: 0;
+    }
+    .ws-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 60px rgba(0, 60, 113, 0.14);
+      border-color: rgba(0, 60, 113, 0.18);
+    }
+    .ws-card--reserved,
+    .ws-card--sold { opacity: 0.78; }
+
+    /* Mini wizualizacja rzutu - po prawej stronie karty */
+    .ws-card__plan {
+      display: flex; flex-direction: column;
+      align-items: stretch; justify-content: space-between;
+      gap: 10px;
+    }
+    .ws-card__plan-img {
+      position: relative;
+      background: #faf8f2;
+      border: 1px solid rgba(0, 60, 113, 0.08);
+      border-radius: 12px;
+      padding: 8px;
+      aspect-ratio: 4 / 5;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .ws-card__plan-img img {
+      max-width: 100%; max-height: 100%;
+      object-fit: contain;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .ws-card:hover .ws-card__plan-img {
+      background: #ffffff;
+      border-color: rgba(0, 60, 113, 0.18);
+    }
+    .ws-card:hover .ws-card__plan-img img {
+      transform: scale(1.03);
+    }
+    .ws-card__plan-label {
+      display: flex; align-items: center; justify-content: center; gap: 5px;
+      font-size: 9px; letter-spacing: 1.8px; text-transform: uppercase; font-weight: 800;
+      color: var(--brand-night); opacity: 0.55;
+    }
+    .ws-card__plan-label svg { opacity: 0.7; }
+
+    /* Tagi na gorze: inwestycja | status */
+    .ws-card__tags {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .ws-card__inv {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700;
+      color: var(--graphite); opacity: 0.72;
+    }
+    .ws-card__inv::before {
+      content: ''; width: 7px; height: 7px; border-radius: 50%;
+      background: var(--inv-c, var(--brand-night));
+      box-shadow: 0 0 0 3px rgba(0, 60, 113, 0.08);
+    }
+    .ws-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 11px; border-radius: 9999px;
+      font-size: 9px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase;
+      margin-left: auto;
+    }
+    .ws-badge::before {
+      content: ''; width: 5px; height: 5px; border-radius: 50%;
+    }
+    .ws-badge--available {
+      background: rgba(45, 122, 45, 0.08); color: #2d7a2d;
+    }
+    .ws-badge--available::before { background: #2d7a2d; }
+    .ws-badge--reserved {
+      background: rgba(201, 165, 92, 0.12); color: #9c7935;
+    }
+    .ws-badge--reserved::before { background: #c9a55c; }
+    .ws-badge--sold {
+      background: rgba(0, 0, 0, 0.05); color: rgba(0, 0, 0, 0.45);
+    }
+    .ws-badge--sold::before { background: rgba(0, 0, 0, 0.35); }
+
+    /* Glowny naglowek: ID mieszkania */
+    .ws-card__id {
+      display: flex; align-items: baseline; gap: 10px;
+      margin-bottom: 6px;
+    }
+    .ws-card__id-nr {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: 34px; font-weight: 800; letter-spacing: -1px;
+      color: var(--brand-night);
+      line-height: 1;
+    }
+    .ws-card__id-sub {
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700;
+      color: var(--graphite); opacity: 0.5;
+    }
+
+    /* Mini podsumowanie jednym zdaniem - w stylu Rightmove/Onet */
+    .ws-card__summary {
+      font-size: 13px; line-height: 1.5;
+      color: var(--graphite); opacity: 0.85;
+      margin: 0 0 22px;
+    }
+    .ws-card__summary strong {
+      color: var(--brand-night); font-weight: 700;
+    }
+
+    /* Specyfikacje - poziomy rzad pigulek */
+    .ws-card__specs {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      padding: 0; margin: 0 0 24px;
+      border: 0;
+    }
+    .ws-spec {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 7px 12px;
+      background: rgba(0, 60, 113, 0.045);
+      border-radius: 9px;
+      font-size: 12px; font-weight: 700;
+      color: var(--brand-night);
+      transition: background 0.25s ease;
+    }
+    .ws-card:hover .ws-spec { background: rgba(0, 60, 113, 0.07); }
+    .ws-spec svg {
+      flex-shrink: 0;
+      color: var(--brand-night); opacity: 0.65;
+    }
+    .ws-spec__val { font-weight: 800; }
+
+    /* Stopka: cena + CTA */
+    .ws-card__foot {
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 14px;
+      padding-top: 20px;
+      margin-top: auto;
+      border-top: 1px solid rgba(0, 60, 113, 0.08);
+    }
+    .ws-price-wrap { display: flex; flex-direction: column; gap: 4px; }
+    .ws-price-lbl {
+      font-size: 9px; letter-spacing: 1.8px; text-transform: uppercase; font-weight: 700;
+      color: var(--graphite); opacity: 0.5;
+    }
+    .ws-price {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: 22px; font-weight: 800;
+      color: var(--brand-night); letter-spacing: -0.6px;
+      line-height: 1; white-space: nowrap;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .ws-price__cur { font-size: 14px; font-weight: 700; opacity: 0.75; }
+    .ws-price__promo {
+      display: inline-flex; align-items: center;
+      padding: 3px 9px;
+      background: linear-gradient(135deg, #c9a55c 0%, #b38f47 100%);
+      color: #fff;
+      border-radius: 6px;
+      font-size: 10px; font-weight: 800; letter-spacing: 0.6px;
+      box-shadow: 0 4px 12px rgba(179, 143, 71, 0.22);
+    }
+    .ws-card__cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 11px 20px;
+      background: transparent;
+      border: 1.5px solid rgba(0, 60, 113, 0.22);
+      border-radius: 9999px;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.5px;
+      color: var(--brand-night);
+      text-decoration: none;
+      transition: all 0.25s ease;
+      flex-shrink: 0;
+    }
+    .ws-card__cta svg { transition: transform 0.25s ease; }
+    .ws-card:hover .ws-card__cta {
+      background: var(--brand-night); color: #fff;
+      border-color: var(--brand-night);
+      box-shadow: 0 8px 22px rgba(0, 60, 113, 0.22);
+    }
+    .ws-card:hover .ws-card__cta svg { transform: translateX(3px); }
+    .ws-card--reserved .ws-card__cta,
+    .ws-card--sold .ws-card__cta {
+      pointer-events: none; opacity: 0.4;
+    }
+    .ws-card--reserved:hover .ws-card__cta,
+    .ws-card--sold:hover .ws-card__cta {
+      background: transparent; color: var(--brand-night);
+      border-color: rgba(0, 60, 113, 0.22);
+      box-shadow: none;
+    }
+
+    /* Pagination */
+    .ws-pagination {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      margin-top: 44px;
+    }
+    .ws-page-btn {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700;
+      color: var(--brand-night); opacity: 0.55;
+      border: 1.5px solid rgba(0, 60, 113, 0.12);
+      background: #ffffff;
+      cursor: pointer; transition: all 0.2s ease;
+    }
+    .ws-page-btn:hover {
+      border-color: var(--brand-night); opacity: 1;
+    }
+    .ws-page-btn.is-active {
+      background: var(--brand-night); color: #fff;
+      border-color: var(--brand-night); opacity: 1;
+    }
+
+    /* Info note */
+    .ws-note-wrap {
+      padding: 40px 24px 0;
+      max-width: 1280px; margin: 0 auto;
+    }
+    .ws-note {
+      display: flex; gap: 18px; align-items: flex-start;
+      padding: 24px 28px;
+      background: #ffffff;
+      border: 1px solid rgba(0, 60, 113, 0.1);
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 60, 113, 0.04);
+    }
+    .ws-note__icon {
+      flex-shrink: 0; width: 44px; height: 44px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0, 60, 113, 0.08);
+      border-radius: 50%;
+      color: var(--brand-night);
+    }
+    .ws-note__text {
+      font-size: 14px; line-height: 1.7; color: var(--graphite); opacity: 0.85;
+      margin: 0;
+    }
+    .ws-note__text a { color: var(--brand-night); font-weight: 700; text-decoration: none; }
+    .ws-note__text a:hover { text-decoration: underline; }
+
+    /* =================== CTA =================== */
+    .ws-cta-wrap {
+      padding: 80px 24px 120px;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .ws-cta {
+      padding: 60px 48px;
+      background: linear-gradient(135deg, #003C71 0%, #1a5490 100%);
+      color: #fff;
+      border-radius: 20px;
+      text-align: center;
+      position: relative; overflow: hidden;
+      box-shadow: 0 40px 100px rgba(0, 60, 113, 0.25);
+    }
+    .ws-cta::before {
+      content: ''; position: absolute;
+      top: -80px; right: -80px;
+      width: 320px; height: 320px;
+      background: url('/media/decor/arcs.svg') no-repeat top right;
+      background-size: contain;
+      opacity: 0.2; filter: invert(1);
+      pointer-events: none;
+    }
+    .ws-cta__eyebrow {
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-moon);
+      margin-bottom: 14px;
+    }
+    .ws-cta__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(28px, 3.2vw, 44px);
+      font-weight: 800; line-height: 1.1;
+      margin: 0 0 18px; letter-spacing: -0.4px;
+    }
+    .ws-cta__title em { font-style: italic; font-weight: 300; color: var(--brand-moon); }
+    .ws-cta__text {
+      font-size: 16px; line-height: 1.7;
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 560px; margin: 0 auto 28px;
+    }
+    .ws-cta__buttons {
+      display: inline-flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+    }
+    .ws-cta__btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 34px;
+      background: var(--brand-moon); color: var(--brand-night);
+      border-radius: 9999px;
+      font-size: 14px; font-weight: 700; letter-spacing: 0.5px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+    .ws-cta__btn:hover {
+      background: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 14px 32px rgba(183, 201, 211, 0.35);
+    }
+    .ws-cta__btn--ghost {
+      background: transparent; color: #fff;
+      border: 1.5px solid rgba(255, 255, 255, 0.35);
+    }
+    .ws-cta__btn--ghost:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: #fff;
+    }
+
+    [data-rev] {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    [data-rev].is-revealed { opacity: 1; transform: translateY(0); }
 
     @media (max-width: 960px) {
-      /* Na mniejszych ekranach kompas schodzi pod filtry */
-      .search-filters--split { grid-template-columns: 1fr; gap: 24px; }
-      .search-filters__split-side { justify-self: center; }
+      .ws-panel { padding: 26px 22px; }
+      .ws-body { grid-template-columns: 1fr; gap: 28px; }
+      .ws-body__side { justify-self: center; width: 280px; }
+      .ws-advanced { grid-template-columns: 1fr; gap: 22px; }
     }
-    @media (max-width: 768px) {
-      .search-filters__grid { grid-template-columns: 1fr 1fr; }
-      .search-filters__extra { grid-template-columns: 1fr 1fr; }
-      .results-table { display: block; overflow-x: auto; }
-      .search-filters__actions { flex-direction: column; }
-      .compass-rose { width: 260px; gap: 8px; }
-      .rose-btn__arrow { width: 20px; height: 20px; }
-      .rose-center svg { width: 42px; height: 42px; }
+    @media (max-width: 720px) {
+      .ws-hero { padding: 140px 0 60px; }
+      .ws-stats { flex-direction: column; gap: 20px; padding: 22px 28px; }
+      .ws-panel__head { flex-direction: column; align-items: flex-start; }
+      .ws-panel__bottom { flex-direction: column; align-items: stretch; }
+      .ws-actions { margin-left: 0; justify-content: stretch; }
+      .ws-actions .ws-btn { flex: 1; justify-content: center; }
+      .ws-compass { width: 180px; }
+      .ws-cta { padding: 44px 24px; }
     }
     @media (max-width: 480px) {
-      .search-filters__grid { grid-template-columns: 1fr; }
-      .search-filters__extra { grid-template-columns: 1fr; }
-      .feature-btn { font-size:13px; padding:9px 16px; }
-      .compass-rose { width: 220px; gap: 6px; }
-      .rose-btn { padding: 6px 2px; }
-      .rose-btn__arrow { width: 16px; height: 16px; }
-      .rose-btn__lbl { font-size: 10px; }
-      .rose-center svg { width: 34px; height: 34px; }
+      .ws-grid { grid-template-columns: 1fr; }
+      .ws-card__specs { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .ws-card { grid-template-columns: 1fr; gap: 0; }
+      .ws-card__plan { display: none; }
     }
   </style>
 </head>
-<body>
+<body class="ws-page">
 
-  <a href="#main-content" class="skip-nav">Przejdź do treści</a>
-
-  <!-- Cookie Consent -->
-  <div class="cookie-banner" id="cookieBanner">
-    <div class="container cookie-banner__inner">
-      <p class="cookie-banner__text">Używamy plików cookies, aby zapewnić najlepsze doświadczenia na naszej stronie. <a href="#">Polityka prywatności</a></p>
-      <div class="cookie-banner__actions">
-        <button class="cookie-banner__btn cookie-banner__btn--accept" data-cookie="accepted">Akceptuję</button>
-        <button class="cookie-banner__btn cookie-banner__btn--reject" data-cookie="rejected">Odrzuć</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Header -->
-  <header class="header scrolled" id="header" style="position:fixed;">
+  <header class="header" id="header">
     <div class="container header__inner">
-      <a class='header__logo' href='/'><img src="/media/megapolis-logo-whitetext.svg" alt="Megapolis" width="160"></a>
-      <nav class="header__nav" id="mainNav"><ul class="nav__list">
-        <li class="nav__item nav__item--has-sub"><a href="#" class="nav__link">Inwestycje</a><ul class="nav__sub"><li><a href='/inwestycja'>OZON</a></li><li><a href="#">CLOU Lindego</a></li><li><a href="#">Nowe Osiedle Fi</a></li><li><a href="#">LINK BUNSCHA</a></li></ul></li>
-        <li class="nav__item"><a class='nav__link' href='/o-nas'>O nas</a></li>
-        <li class="nav__item"><a class='nav__link' href='/realizacje'>Nasze realizacje</a></li>
-        <li class="nav__item"><a class='nav__link' href='/generalny-wykonawca'>Generalny wykonawca</a></li>
-        <li class="nav__item"><a class='nav__link' href='/kariera'>Kariera</a></li>
-        <li class="nav__item"><a class='nav__link' href='/kontakt'>Kontakt</a></li>
-      </ul></nav>
+      <a class="header__logo" href="/">
+        <img src="/media/megapolis-logo-darktext.svg" alt="Megapolis" class="header__logo-img">
+      </a>
       <div class="header__actions">
-        <div class="lang-switch"><button class="lang-switch__btn lang-switch__btn--active">PL</button><span class="lang-switch__sep">|</span><button class="lang-switch__btn">EN</button></div>
+        <a class="header__cta header__cta--find" href="/wyszukiwarka">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span>Znajdź swoje mieszkanie</span>
+        </a>
+        <a class="header__cta header__cta--special" href="/oferta-specjalna">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>Oferta specjalna</span>
+        </a>
+        <a class="header__phone" href="tel:+48123000077">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span>12 300 00 77</span>
+        </a>
         <button class="header__burger" id="burgerBtn" aria-label="Otwórz menu"><span></span><span></span><span></span></button>
       </div>
     </div>
   </header>
-  <div class="mobile-menu" id="mobileMenu"><div class="mobile-menu__inner"><ul class="mobile-menu__list"><li><a href='/inwestycja'>Inwestycje</a></li><li><a href='/o-nas'>O nas</a></li><li><a href='/realizacje'>Nasze realizacje</a></li><li><a href='/generalny-wykonawca'>Generalny wykonawca</a></li><li><a href='/kariera'>Kariera</a></li><li><a href='/kontakt'>Kontakt</a></li></ul><div class="mobile-menu__footer"><a href="tel:+48123000077" class="mobile-menu__phone">12 300 00 77</a></div></div></div>
 
-  <main id="main-content" class="search-page">
-    <div class="container">
-
-      <!-- Page Header -->
-      <div class="search-page__header">
-        <nav class="breadcrumbs" style="margin-bottom:12px;">
-          <a href='/'>Strona g&#322;&#243;wna</a>
-          <span class="sep">/</span>
-          <span>Wyszukiwarka mieszka&#324;</span>
-        </nav>
-        <h1 style="font-size:36px; font-weight:700; color:#B7C9D3; margin-bottom:8px;">Wyszukiwarka mieszka&#324;</h1>
-        <p style="font-size:16px; color:var(--white-60);">Znajd&#378; idealne mieszkanie filtruj&#261;c po lokalizacji, powierzchni, cenie i wielu innych parametrach.</p>
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__inner">
+      <ul class="mobile-menu__list">
+        <li class="mobile-menu__has-sub">
+          <a href="/o-nas" class="mobile-menu__toggle"><span>O nas</span>
+            <svg class="mobile-menu__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </a>
+          <ul class="mobile-menu__sub">
+            <li><a href="/o-nas/historia">Historia firmy</a></li>
+            <li><a href="/o-nas/zespol">Zespół</a></li>
+            <li><a href="/o-nas/misja">Misja i wartości</a></li>
+            <li><a href="/o-nas/holding">Grupa Holding 1</a></li>
+          </ul>
+        </li>
+        <li><a href="/nasze-standardy">Nasze standardy</a></li>
+        <li><a href="/realizacje">Nasze realizacje</a></li>
+        <li><a href="/lokale-uslugowe">Lokale usługowe</a></li>
+        <li><a href="/program-wykonczenia">Program wykończenia mieszkań</a></li>
+        <li><a href="/finansowanie">Finansowanie</a></li>
+        <li><a href="/kariera">Kariera i społecznie odpowiedzialni</a></li>
+        <li><a href="/aktualnosci">Aktualności</a></li>
+        <li><a href="/kontakt">Kontakt</a></li>
+      </ul>
+      <div class="mobile-menu__footer">
+        <a href="tel:+48123000077" class="mobile-menu__phone">12 300 00 77</a>
+        <a href="mailto:biuro@megapolis.pl" class="mobile-menu__email">biuro@megapolis.pl</a>
       </div>
+    </div>
+  </div>
 
-      <!-- Filters -->
-      <div class="search-filters search-filters--split">
-       <div class="search-filters__split-main">
-        <div class="search-filters__grid">
-          <div class="filter-field">
-            <label>Miasto</label>
-            <select>
-              <option value="">Wszystkie</option>
-              <option value="krakow" selected>Krak&#243;w</option>
-              <option value="warszawa">Warszawa</option>
-            </select>
-          </div>
-          <div class="filter-field">
-            <label>Inwestycja</label>
-            <select>
-              <option value="">Wszystkie</option>
-              <option value="ozon">OZON</option>
-              <option value="clou">CLOU Lindego</option>
-              <option value="fi">Nowe Osiedle Fi</option>
-              <option value="link">LINK BUNSCHA</option>
-            </select>
-          </div>
-          <div class="filter-field">
-            <label>Pokoje</label>
-            <select>
-              <option value="">Dowolna liczba</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5+</option>
-            </select>
-          </div>
-          <div class="filter-field">
-            <label>Powierzchnia od</label>
-            <input type="number" placeholder="m&#178;">
-          </div>
-          <div class="filter-field">
-            <label>Powierzchnia do</label>
-            <input type="number" placeholder="m&#178;">
-          </div>
-          <div class="filter-field">
-            <label>Cena od</label>
-            <input type="number" placeholder="z&#322;">
-          </div>
-          <div class="filter-field">
-            <label>Cena do</label>
-            <input type="number" placeholder="z&#322;">
-          </div>
-          <div class="filter-field">
-            <label>Pi&#281;tro</label>
-            <select>
-              <option value="">Dowolne</option>
-              <option value="0">Parter</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4+</option>
-            </select>
-          </div>
+  <main id="main-content">
+
+    <!-- HERO -->
+    <section class="ws-hero">
+      <div class="ws-hero__inner">
+
+        <!-- LEFT: copy -->
+        <div class="ws-hero__copy">
+          <nav class="ws-crumbs" data-rev>
+            <a href="/">Strona główna</a>
+            <span class="sep">/</span>
+            <span>Znajdź swoje mieszkanie</span>
+          </nav>
+          <p class="ws-eyebrow" data-rev>Oferta &middot; Mieszkania</p>
+          <h1 class="ws-hero__title" data-rev>Znajdź <em>swoje</em> mieszkanie</h1>
+          <p class="ws-hero__lead" data-rev>
+            Ponad 300&nbsp;mieszkań w&nbsp;czterech inwestycjach Megapolis. Zawęź wyniki filtrami i&nbsp;poznaj szczegóły każdego lokalu — ceny, rzuty i&nbsp;dostępność w&nbsp;czasie rzeczywistym.
+          </p>
         </div>
 
-        <!-- Extra filters -->
-        <div class="search-filters__extra">
-          <div class="filter-field">
-            <label>Status</label>
-            <select>
-              <option value="">Wszystkie</option>
-              <option value="available">Dost&#281;pne</option>
-              <option value="reserved">Zarezerwowane</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Przynależności — checkbox pills -->
-        <div class="search-filters__features">
-          <label class="search-filters__grouplabel">Przynale&#380;no&#347;ci</label>
-          <div class="feature-grid" role="group" aria-label="Wybierz przynale&#380;no&#347;ci mieszkania">
-            <button type="button" class="feature-btn" data-feat="balkon">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="10" width="16" height="11" rx="1"/><path d="M4 14h16M9 14v7M15 14v7"/></svg>
-              Balkon
-            </button>
-            <button type="button" class="feature-btn" data-feat="loggia">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h16v16H4z"/><path d="M4 12h10v8"/></svg>
-              Loggia
-            </button>
-            <button type="button" class="feature-btn" data-feat="ogrodek">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22V10m0 0c-4 0-7-3-7-6 3 0 7 1 7 6zm0 0c4 0 7-3 7-6-3 0-7 1-7 6z"/><path d="M3 22h18"/></svg>
-              Ogr&#243;dek
-            </button>
-            <button type="button" class="feature-btn" data-feat="taras">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 20h18M5 20V8h14v12M5 14h14M9 8v12M15 8v12"/></svg>
-              Taras
-            </button>
-            <button type="button" class="feature-btn" data-feat="wykusz">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20V4h16v16"/><path d="M4 20h16M8 8v12M16 8v12M8 8l8 0"/></svg>
-              Wykusz
-            </button>
-          </div>
-        </div>
-
-        <!-- Quick filter tags -->
-        <div class="filter-tags">
-          <button class="filter-tag active">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-            Wszystkie
-          </button>
-          <button class="filter-tag">Promocje</button>
-          <button class="filter-tag">Parter</button>
-          <button class="filter-tag">Ostatnie pi&#281;tro</button>
-        </div>
-
-        <div class="search-filters__actions">
-          <button class="btn btn--pill" style="background:transparent; color:var(--white-40); border-color:var(--white-10);">Wyczy&#347;&#263; filtry</button>
-          <button class="btn btn--pill" style="background:var(--accent); color:var(--bg); border-color:var(--accent);">Szukaj</button>
-        </div>
-       </div><!-- /search-filters__split-main -->
-
-       <!-- Aside: kompas po prawej, vertical-center względem panelu -->
-       <aside class="search-filters__split-side" aria-label="Strona &#347;wiata">
-        <div class="search-filters__compass">
-          <label class="search-filters__grouplabel">Strona &#347;wiata</label>
-          <div class="compass-rose" role="group" aria-label="Wybierz strony &#347;wiata">
-            <button type="button" class="rose-btn rose-btn--nw" data-dir="NW" title="P&#243;&#322;nocny zach&#243;d" aria-pressed="false">
-              <svg class="rose-btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="17" y1="17" x2="7" y2="7"/><polyline points="7 14 7 7 14 7"/></svg>
-              <span class="rose-btn__lbl">Pn-Z</span>
-            </button>
-            <button type="button" class="rose-btn rose-btn--n" data-dir="N" title="P&#243;&#322;noc" aria-pressed="false">
-              <svg class="rose-btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="6 11 12 5 18 11"/></svg>
-              <span class="rose-btn__lbl">Pn</span>
-            </button>
-            <button type="button" class="rose-btn rose-btn--ne" data-dir="NE" title="P&#243;&#322;nocny wsch&#243;d" aria-pressed="false">
-              <svg class="rose-btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="10 7 17 7 17 14"/></svg>
-              <span class="rose-btn__lbl">Pn-W</span>
-            </button>
-
-            <button type="button" class="rose-btn rose-btn--w" data-dir="W" title="Zach&#243;d" aria-pressed="false">
-              <svg class="rose-btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="11 6 5 12 11 18"/></svg>
-              <span class="rose-btn__lbl">Z</span>
-            </button>
-            <div class="rose-center" aria-hidden="true">
-              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
-                <circle cx="24" cy="24" r="2" fill="currentColor"/>
-                <path d="M24 6 L28 22 L24 20 L20 22 Z" fill="currentColor"/>
-                <path d="M24 42 L28 26 L24 28 L20 26 Z" opacity=".35"/>
-                <path d="M6 24 L22 20 L20 24 L22 28 Z" opacity=".5"/>
-                <path d="M42 24 L26 20 L28 24 L26 28 Z" opacity=".5"/>
-              </svg>
+        <!-- RIGHT: video reel (pionowy, minimalny) -->
+        <div class="ws-hero-video-wrap">
+          <div class="ws-hero-video">
+            <video
+              src="/media/hero-2026.mp4"
+              poster="/media/clou/lindego-panorama.jpg"
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="auto"
+              aria-label="Inwestycje Megapolis — przegląd"
+            ></video>
+            <div class="ws-hero-video__caption">
+              <p class="ws-hero-video__caption-eyebrow">Megapolis</p>
+              <h2 class="ws-hero-video__caption-title">Zobacz, <em>gdzie zamieszkasz</em></h2>
             </div>
-            <button type="button" class="rose-btn rose-btn--e" data-dir="E" title="Wsch&#243;d" aria-pressed="false">
-              <svg class="rose-btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
-              <span class="rose-btn__lbl">W</span>
-            </button>
+          </div>
+        </div>
 
-            <button type="button" class="rose-btn rose-btn--sw" data-dir="SW" title="Po&#322;udniowy zach&#243;d" aria-pressed="false">
-              <svg class="rose-btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="17" y1="7" x2="7" y2="17"/><polyline points="7 10 7 17 14 17"/></svg>
-              <span class="rose-btn__lbl">Pd-Z</span>
+      </div>
+
+      <div class="ws-stats-wrap" data-rev>
+        <div class="ws-stats">
+          <div class="ws-stat">
+            <div class="ws-stat__ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>
+            </div>
+            <span class="ws-stat__num" data-count="300" data-suffix="+">300+</span>
+            <span class="ws-stat__lbl">mieszkań</span>
+          </div>
+          <div class="ws-stat">
+            <div class="ws-stat__ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            </div>
+            <span class="ws-stat__num" data-count="4">4</span>
+            <span class="ws-stat__lbl">inwestycje</span>
+          </div>
+          <div class="ws-stat">
+            <div class="ws-stat__ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <span class="ws-stat__num" data-count="2">2</span>
+            <span class="ws-stat__lbl">miasta</span>
+          </div>
+          <div class="ws-stat">
+            <div class="ws-stat__ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            </div>
+            <span class="ws-stat__num" data-count="24">24</span>
+            <span class="ws-stat__lbl">dostępne dziś</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEARCH PANEL - compact premium -->
+    <section class="ws-search-wrap">
+      <div class="ws-panel" data-rev>
+
+        <!-- Header: eyebrow + title + cities -->
+        <div class="ws-panel__head">
+          <div class="ws-panel__head-left">
+            <span class="ws-panel__eyebrow">Filtry</span>
+            <h2 class="ws-panel__title">Wyszukaj <em>mieszkanie</em></h2>
+          </div>
+          <div class="ws-cities" role="group" aria-label="Wybierz miasto">
+            <button type="button" class="ws-city-pill is-active" data-city="">Wszystkie</button>
+            <button type="button" class="ws-city-pill" data-city="krakow">Kraków</button>
+            <button type="button" class="ws-city-pill" data-city="wroclaw">Wrocław</button>
+          </div>
+        </div>
+
+        <!-- BODY: pola LEFT, kompas RIGHT (zawsze widoczny) -->
+        <div class="ws-body">
+          <div class="ws-body__main">
+
+            <!-- Main filters: 4 selects w 2 kolumnach -->
+            <div class="ws-grid">
+              <div class="ws-field">
+                <label>Inwestycja</label>
+                <select>
+                  <option value="">Wszystkie</option>
+                  <option value="ozon">OZON</option>
+                  <option value="clou">CLOU Lindego</option>
+                  <option value="fi">Nowe Osiedle Fi</option>
+                  <option value="link">LINK BUNSCHA</option>
+                </select>
+              </div>
+              <div class="ws-field">
+                <label>Pokoje</label>
+                <select>
+                  <option value="">Dowolna liczba</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5+</option>
+                </select>
+              </div>
+              <div class="ws-field">
+                <label>Piętro</label>
+                <select>
+                  <option value="">Dowolne</option>
+                  <option value="0">Parter</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4+</option>
+                </select>
+              </div>
+              <div class="ws-field">
+                <label>Status</label>
+                <select>
+                  <option value="">Wszystkie</option>
+                  <option value="available">Dostępne</option>
+                  <option value="reserved">Zarezerwowane</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Range filters: powierzchnia + cena -->
+            <div class="ws-grid">
+              <div class="ws-field">
+                <label>Powierzchnia od</label>
+                <input type="number" placeholder="m²">
+              </div>
+              <div class="ws-field">
+                <label>Powierzchnia do</label>
+                <input type="number" placeholder="m²">
+              </div>
+              <div class="ws-field">
+                <label>Cena od</label>
+                <input type="number" placeholder="zł">
+              </div>
+              <div class="ws-field">
+                <label>Cena do</label>
+                <input type="number" placeholder="zł">
+              </div>
+            </div>
+
+          </div><!-- /ws-body__main -->
+
+          <!-- KOMPAS - zawsze widoczny, premium -->
+          <aside class="ws-body__side" aria-label="Strona świata">
+            <div class="ws-compass-wrap">
+              <span class="ws-compass-title">Strona świata</span>
+              <span class="ws-compass-sub">wybierz ekspozycję</span>
+              <div class="ws-compass" role="group" aria-label="Wybierz strony świata">
+                <button type="button" class="ws-rose ws-rose--nw" data-dir="NW" title="Północny zachód">
+                  <svg class="ws-rose__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="17" y1="17" x2="7" y2="7"/><polyline points="7 14 7 7 14 7"/></svg>
+                  <span class="ws-rose__lbl">Pn-Z</span>
+                </button>
+                <button type="button" class="ws-rose ws-rose--n" data-dir="N" title="Północ">
+                  <svg class="ws-rose__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="6 11 12 5 18 11"/></svg>
+                  <span class="ws-rose__lbl">Pn</span>
+                </button>
+                <button type="button" class="ws-rose ws-rose--ne" data-dir="NE" title="Północny wschód">
+                  <svg class="ws-rose__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="10 7 17 7 17 14"/></svg>
+                  <span class="ws-rose__lbl">Pn-W</span>
+                </button>
+                <button type="button" class="ws-rose ws-rose--w" data-dir="W" title="Zachód">
+                  <svg class="ws-rose__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="11 6 5 12 11 18"/></svg>
+                  <span class="ws-rose__lbl">Z</span>
+                </button>
+                <div class="ws-rose-center" aria-hidden="true">
+                  <svg viewBox="0 0 48 48" fill="none" stroke="#c9a55c" stroke-width="1.2">
+                    <circle cx="24" cy="24" r="2" fill="#c9a55c"/>
+                    <path d="M24 6 L28 22 L24 20 L20 22 Z" fill="#c9a55c"/>
+                    <path d="M24 42 L28 26 L24 28 L20 26 Z" opacity=".35" fill="#c9a55c"/>
+                    <path d="M6 24 L22 20 L20 24 L22 28 Z" opacity=".5" fill="#c9a55c"/>
+                    <path d="M42 24 L26 20 L28 24 L26 28 Z" opacity=".5" fill="#c9a55c"/>
+                  </svg>
+                </div>
+                <button type="button" class="ws-rose ws-rose--e" data-dir="E" title="Wschód">
+                  <svg class="ws-rose__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
+                  <span class="ws-rose__lbl">W</span>
+                </button>
+                <button type="button" class="ws-rose ws-rose--sw" data-dir="SW" title="Południowy zachód">
+                  <svg class="ws-rose__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="17" y1="7" x2="7" y2="17"/><polyline points="7 10 7 17 14 17"/></svg>
+                  <span class="ws-rose__lbl">Pd-Z</span>
+                </button>
+                <button type="button" class="ws-rose ws-rose--s" data-dir="S" title="Południe">
+                  <svg class="ws-rose__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="6 13 12 19 18 13"/></svg>
+                  <span class="ws-rose__lbl">Pd</span>
+                </button>
+                <button type="button" class="ws-rose ws-rose--se" data-dir="SE" title="Południowy wschód">
+                  <svg class="ws-rose__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="7" x2="17" y2="17"/><polyline points="17 10 17 17 10 17"/></svg>
+                  <span class="ws-rose__lbl">Pd-W</span>
+                </button>
+              </div>
+            </div>
+          </aside>
+        </div><!-- /ws-body -->
+
+        <!-- ADVANCED (tylko przynaleznosci) - progressive disclosure -->
+        <div class="ws-advanced" id="wsAdvanced">
+          <div class="ws-advanced__group" style="grid-column: 1 / -1;">
+            <span class="ws-advanced__label">Przynależności</span>
+            <div class="ws-features" role="group" aria-label="Wybierz przynależności mieszkania">
+              <button type="button" class="ws-feat-btn" data-feat="balkon">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="10" width="16" height="11" rx="1"/><path d="M4 14h16"/></svg>
+                Balkon
+              </button>
+              <button type="button" class="ws-feat-btn" data-feat="loggia">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v16H4z"/><path d="M4 12h10v8"/></svg>
+                Loggia
+              </button>
+              <button type="button" class="ws-feat-btn" data-feat="ogrodek">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22V10m0 0c-4 0-7-3-7-6 3 0 7 1 7 6zm0 0c4 0 7-3 7-6-3 0-7 1-7 6z"/></svg>
+                Ogródek
+              </button>
+              <button type="button" class="ws-feat-btn" data-feat="taras">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 20h18M5 20V8h14v12"/></svg>
+                Taras
+              </button>
+              <button type="button" class="ws-feat-btn" data-feat="antresola">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 20h18M5 20V10h14v10M3 10l9-6 9 6"/></svg>
+                Antresola
+              </button>
+              <button type="button" class="ws-feat-btn" data-feat="miejsce">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Parking
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- BOTTOM BAR: tags + more toggle + actions -->
+        <div class="ws-panel__bottom">
+          <div class="ws-tags-wrap">
+            <button type="button" class="ws-tag is-active">Wszystkie</button>
+            <button type="button" class="ws-tag">Promocje</button>
+            <button type="button" class="ws-tag">Parter z&nbsp;ogródkiem</button>
+            <button type="button" class="ws-tag">Z&nbsp;tarasem</button>
+            <button type="button" class="ws-more-link" id="wsMoreToggle" aria-expanded="false" aria-controls="wsAdvanced">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              <span class="ws-more-link__text">Więcej opcji</span>
             </button>
-            <button type="button" class="rose-btn rose-btn--s" data-dir="S" title="Po&#322;udnie" aria-pressed="false">
-              <svg class="rose-btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="6 13 12 19 18 13"/></svg>
-              <span class="rose-btn__lbl">Pd</span>
-            </button>
-            <button type="button" class="rose-btn rose-btn--se" data-dir="SE" title="Po&#322;udniowy wsch&#243;d" aria-pressed="false">
-              <svg class="rose-btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="7" x2="17" y2="17"/><polyline points="17 10 17 17 10 17"/></svg>
-              <span class="rose-btn__lbl">Pd-W</span>
+          </div>
+          <div class="ws-actions">
+            <button type="button" class="ws-btn">Wyczyść</button>
+            <button type="button" class="ws-btn ws-btn--primary">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              Pokaż <strong style="font-weight:900;">24</strong> mieszkania
             </button>
           </div>
         </div>
-       </aside><!-- /search-filters__split-side -->
       </div>
+    </section>
 
-      <!-- Results Header -->
-      <div class="results-header">
-        <div class="results-header__count">Znaleziono: <strong>24 mieszkania</strong></div>
-        <div class="results-header__sort">
+    <!-- RESULTS -->
+    <section class="ws-results-wrap">
+      <div class="ws-results-head" data-rev>
+        <div class="ws-results-count">Znaleziono: <strong>24&nbsp;mieszkania</strong></div>
+        <div class="ws-sort">
           <span>Sortuj:</span>
           <select>
-            <option>Cena: od najni&#380;szej</option>
-            <option>Cena: od najwy&#380;szej</option>
+            <option>Cena: od najniższej</option>
+            <option>Cena: od najwyższej</option>
             <option>Powierzchnia: od najmniejszej</option>
-            <option>Powierzchnia: od najwi&#281;kszej</option>
-            <option>Pi&#281;tro: rosn&#261;co</option>
+            <option>Powierzchnia: od największej</option>
+            <option>Piętro: rosnąco</option>
           </select>
         </div>
       </div>
 
-      <!-- Results Table -->
-      <table class="results-table">
-        <thead>
-          <tr>
-            <th>Nr</th>
-            <th>Inwestycja</th>
-            <th>Pokoje</th>
-            <th>Powierzchnia</th>
-            <th>Pi&#281;tro</th>
-            <th>Kierunek</th>
-            <th>Cena</th>
-            <th>Status</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>A-01</strong></td>
-            <td>OZON</td>
-            <td>2</td>
-            <td>42.3 m&#178;</td>
-            <td>Parter</td>
-            <td><span class="direction-badge">S</span></td>
-            <td class="price-cell">359 550 z&#322; <span class="promo-badge">-5%</span></td>
-            <td><span class="status-badge status-badge--available">Dost&#281;pne</span></td>
-            <td><a href="#" class="btn btn--pill" style="padding:8px 18px; font-size:13px;">Szczeg&#243;&#322;y</a></td>
-          </tr>
-          <tr>
-            <td><strong>A-03</strong></td>
-            <td>OZON</td>
-            <td>1</td>
-            <td>29.8 m&#178;</td>
-            <td>1</td>
-            <td><span class="direction-badge">E</span></td>
-            <td class="price-cell">253 300 z&#322;</td>
-            <td><span class="status-badge status-badge--available">Dost&#281;pne</span></td>
-            <td><a href="#" class="btn btn--pill" style="padding:8px 18px; font-size:13px;">Szczeg&#243;&#322;y</a></td>
-          </tr>
-          <tr>
-            <td><strong>A-05</strong></td>
-            <td>OZON</td>
-            <td>3</td>
-            <td>65.8 m&#178;</td>
-            <td>1</td>
-            <td><span class="direction-badge">SW</span></td>
-            <td class="price-cell">559 300 z&#322;</td>
-            <td><span class="status-badge status-badge--available">Dost&#281;pne</span></td>
-            <td><a href="#" class="btn btn--pill" style="padding:8px 18px; font-size:13px;">Szczeg&#243;&#322;y</a></td>
-          </tr>
-          <tr>
-            <td><strong>A-07</strong></td>
-            <td>OZON</td>
-            <td>2</td>
-            <td>44.5 m&#178;</td>
-            <td>2</td>
-            <td><span class="direction-badge">N</span></td>
-            <td class="price-cell">378 250 z&#322;</td>
-            <td><span class="status-badge status-badge--reserved">Zarezerwowane</span></td>
-            <td><a href="#" class="btn btn--pill" style="padding:8px 18px; font-size:13px; opacity:0.4; pointer-events:none;">Szczeg&#243;&#322;y</a></td>
-          </tr>
-          <tr>
-            <td><strong>A-08</strong></td>
-            <td>OZON</td>
-            <td>2</td>
-            <td>48.1 m&#178;</td>
-            <td>2</td>
-            <td><span class="direction-badge">E</span></td>
-            <td class="price-cell">408 850 z&#322;</td>
-            <td><span class="status-badge status-badge--reserved">Zarezerwowane</span></td>
-            <td><a href="#" class="btn btn--pill" style="padding:8px 18px; font-size:13px; opacity:0.4; pointer-events:none;">Szczeg&#243;&#322;y</a></td>
-          </tr>
-          <tr>
-            <td><strong>A-10</strong></td>
-            <td>OZON</td>
-            <td>3</td>
-            <td>61.2 m&#178;</td>
-            <td>3</td>
-            <td><span class="direction-badge">W</span></td>
-            <td class="price-cell">520 200 z&#322; <span class="promo-badge">-3%</span></td>
-            <td><span class="status-badge status-badge--available">Dost&#281;pne</span></td>
-            <td><a href="#" class="btn btn--pill" style="padding:8px 18px; font-size:13px;">Szczeg&#243;&#322;y</a></td>
-          </tr>
-          <tr>
-            <td><strong>A-12</strong></td>
-            <td>OZON</td>
-            <td>3</td>
-            <td>72.4 m&#178;</td>
-            <td>2</td>
-            <td><span class="direction-badge">W</span></td>
-            <td class="price-cell">615 400 z&#322;</td>
-            <td><span class="status-badge status-badge--available">Dost&#281;pne</span></td>
-            <td><a href="#" class="btn btn--pill" style="padding:8px 18px; font-size:13px;">Szczeg&#243;&#322;y</a></td>
-          </tr>
-          <tr>
-            <td><strong>A-14</strong></td>
-            <td>OZON</td>
-            <td>4</td>
-            <td>85.9 m&#178;</td>
-            <td>3</td>
-            <td><span class="direction-badge">SE</span></td>
-            <td class="price-cell">730 150 z&#322;</td>
-            <td><span class="status-badge status-badge--available">Dost&#281;pne</span></td>
-            <td><a href="#" class="btn btn--pill" style="padding:8px 18px; font-size:13px;">Szczeg&#243;&#322;y</a></td>
-          </tr>
-          <tr>
-            <td><strong>A-15</strong></td>
-            <td>OZON</td>
-            <td>4</td>
-            <td>89.2 m&#178;</td>
-            <td>3</td>
-            <td><span class="direction-badge">SE</span></td>
-            <td class="price-cell">758 200 z&#322; <span class="promo-badge">-3%</span></td>
-            <td><span class="status-badge status-badge--available">Dost&#281;pne</span></td>
-            <td><a href="#" class="btn btn--pill" style="padding:8px 18px; font-size:13px;">Szczeg&#243;&#322;y</a></td>
-          </tr>
-          <tr>
-            <td><strong>B-02</strong></td>
-            <td>CLOU Lindego</td>
-            <td>2</td>
-            <td>45.6 m&#178;</td>
-            <td>1</td>
-            <td><span class="direction-badge">N</span></td>
-            <td class="price-cell">419 520 z&#322;</td>
-            <td><span class="status-badge status-badge--available">Dost&#281;pne</span></td>
-            <td><a href="#" class="btn btn--pill" style="padding:8px 18px; font-size:13px;">Szczeg&#243;&#322;y</a></td>
-          </tr>
-          <tr>
-            <td><strong>B-07</strong></td>
-            <td>CLOU Lindego</td>
-            <td>3</td>
-            <td>68.9 m&#178;</td>
-            <td>3</td>
-            <td><span class="direction-badge">SW</span></td>
-            <td class="price-cell">633 880 z&#322;</td>
-            <td><span class="status-badge status-badge--available">Dost&#281;pne</span></td>
-            <td><a href="#" class="btn btn--pill" style="padding:8px 18px; font-size:13px;">Szczeg&#243;&#322;y</a></td>
-          </tr>
-          <tr>
-            <td><strong>B-11</strong></td>
-            <td>CLOU Lindego</td>
-            <td>5</td>
-            <td>110.3 m&#178;</td>
-            <td>4</td>
-            <td><span class="direction-badge">S</span></td>
-            <td class="price-cell">1 014 760 z&#322;</td>
-            <td><span class="status-badge status-badge--available">Dost&#281;pne</span></td>
-            <td><a href="#" class="btn btn--pill" style="padding:8px 18px; font-size:13px;">Szczeg&#243;&#322;y</a></td>
-          </tr>
-          <tr>
-            <td><strong>C-03</strong></td>
-            <td>OZON</td>
-            <td>3</td>
-            <td>58.4 m&#178;</td>
-            <td>1</td>
-            <td><span class="direction-badge">E</span></td>
-            <td class="price-cell">455 520 z&#322;</td>
-            <td><span class="status-badge status-badge--available">Dost&#281;pne</span></td>
-            <td><a href="#" class="btn btn--pill" style="padding:8px 18px; font-size:13px;">Szczeg&#243;&#322;y</a></td>
-          </tr>
-          <tr>
-            <td><strong>C-09</strong></td>
-            <td>OZON</td>
-            <td>4</td>
-            <td>82.1 m&#178;</td>
-            <td>2</td>
-            <td><span class="direction-badge">W</span></td>
-            <td class="price-cell">640 380 z&#322;</td>
-            <td><span class="status-badge status-badge--sold">Sprzedane</span></td>
-            <td><a href="#" class="btn btn--pill" style="padding:8px 18px; font-size:13px; opacity:0.4; pointer-events:none;">Szczeg&#243;&#322;y</a></td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="ws-results">
+        <!-- A-01 -->
+        <article class="ws-card" data-rev style="--inv-c:#2d7a5f;">
+          <div class="ws-card__main">
+          <div class="ws-card__tags">
+            <span class="ws-card__inv">OZON &middot; Kraków</span>
+            <span class="ws-badge ws-badge--available">Dostępne</span>
+          </div>
+          <div class="ws-card__id">
+            <span class="ws-card__id-nr">A-01</span>
+            <span class="ws-card__id-sub">Mieszkanie</span>
+          </div>
+          <p class="ws-card__summary"><strong>2 pokoje</strong> z&nbsp;oknami na&nbsp;południe, na&nbsp;parterze &mdash; idealne do&nbsp;aranżacji pod potrzeby rodziny.</p>
+          <div class="ws-card__specs">
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M12 3v18M3 12h18"/></svg><span class="ws-spec__val">2 pokoje</span></span>
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M3 21L21 3"/></svg><span class="ws-spec__val">42,3&nbsp;m²</span></span>
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V2M5 9l7-7 7 7"/></svg><span class="ws-spec__val">Parter</span></span>
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span class="ws-spec__val">S</span></span>
+          </div>
+          <div class="ws-card__foot">
+            <div class="ws-price-wrap">
+              <span class="ws-price-lbl">Cena</span>
+              <span class="ws-price">359 550&nbsp;<span class="ws-price__cur">zł</span> <span class="ws-price__promo">-5%</span></span>
+            </div>
+            <a href="#" class="ws-card__cta">Szczegóły
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+          <div class="ws-card__plan">
+            <div class="ws-card__plan-img"><img src="/media/plans/plan-3p.avif" alt="Rzut mieszkania A-01" loading="lazy"></div>
+            <span class="ws-card__plan-label"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M12 3v18M3 12h18"/></svg>Rzut</span>
+          </div>
+        </article>
+
+        <!-- A-03 -->
+        <article class="ws-card" data-rev style="--inv-c:#2d7a5f;">
+          <div class="ws-card__main">
+          <div class="ws-card__tags">
+            <span class="ws-card__inv">OZON &middot; Kraków</span>
+            <span class="ws-badge ws-badge--available">Dostępne</span>
+          </div>
+          <div class="ws-card__id">
+            <span class="ws-card__id-nr">A-03</span>
+            <span class="ws-card__id-sub">Mieszkanie</span>
+          </div>
+          <p class="ws-card__summary"><strong>Kompaktowa kawalerka</strong> na&nbsp;pierwszym piętrze, z&nbsp"oknem na&nbsp;wschód &mdash; najlepsze poranne światło.</p>
+          <div class="ws-card__specs">
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/></svg><span class="ws-spec__val">1 pokój</span></span>
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M3 21L21 3"/></svg><span class="ws-spec__val">29,8&nbsp;m²</span></span>
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V2M5 9l7-7 7 7"/></svg><span class="ws-spec__val">1&nbsp;piętro</span></span>
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span class="ws-spec__val">E</span></span>
+          </div>
+          <div class="ws-card__foot">
+            <div class="ws-price-wrap">
+              <span class="ws-price-lbl">Cena</span>
+              <span class="ws-price">253 300&nbsp;<span class="ws-price__cur">zł</span></span>
+            </div>
+            <a href="#" class="ws-card__cta">Szczegóły
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+          <div class="ws-card__plan">
+            <div class="ws-card__plan-img"><img src="/media/plans/plan-1p.avif" alt="Rzut mieszkania A-03" loading="lazy"></div>
+            <span class="ws-card__plan-label"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M12 3v18M3 12h18"/></svg>Rzut</span>
+          </div>
+        </article>
+
+        <!-- A-05 -->
+        <article class="ws-card" data-rev style="--inv-c:#2d7a5f;">
+          <div class="ws-card__main">
+          <div class="ws-card__tags">
+            <span class="ws-card__inv">OZON &middot; Kraków</span>
+            <span class="ws-badge ws-badge--available">Dostępne</span>
+          </div>
+          <div class="ws-card__id">
+            <span class="ws-card__id-nr">A-05</span>
+            <span class="ws-card__id-sub">Mieszkanie</span>
+          </div>
+          <p class="ws-card__summary">Przestronne <strong>3 pokoje</strong> z&nbsp;ekspozycją południowo-zachodnią &mdash; ciepło słońca do&nbsp;późnego popołudnia.</p>
+          <div class="ws-card__specs">
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M12 3v18M3 12h18"/></svg><span class="ws-spec__val">3 pokoje</span></span>
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M3 21L21 3"/></svg><span class="ws-spec__val">65,8&nbsp;m²</span></span>
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V2M5 9l7-7 7 7"/></svg><span class="ws-spec__val">1&nbsp;piętro</span></span>
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span class="ws-spec__val">SW</span></span>
+          </div>
+          <div class="ws-card__foot">
+            <div class="ws-price-wrap">
+              <span class="ws-price-lbl">Cena</span>
+              <span class="ws-price">559 300&nbsp;<span class="ws-price__cur">zł</span></span>
+            </div>
+            <a href="#" class="ws-card__cta">Szczegóły
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+          <div class="ws-card__plan">
+            <div class="ws-card__plan-img"><img src="/media/plans/plan-8p.avif" alt="Rzut mieszkania A-05" loading="lazy"></div>
+            <span class="ws-card__plan-label"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M12 3v18M3 12h18"/></svg>Rzut</span>
+          </div>
+        </article>
+
+        <!-- A-07 reserved -->
+        <article class="ws-card ws-card--reserved" data-rev style="--inv-c:#2d7a5f;">
+          <div class="ws-card__main">
+          <div class="ws-card__tags">
+            <span class="ws-card__inv">OZON &middot; Kraków</span>
+            <span class="ws-badge ws-badge--reserved">Zarezerwowane</span>
+          </div>
+          <div class="ws-card__id">
+            <span class="ws-card__id-nr">A-07</span>
+            <span class="ws-card__id-sub">Mieszkanie</span>
+          </div>
+          <p class="ws-card__summary"><strong>2 pokoje</strong> na&nbsp;drugim piętrze, od&nbsp;strony północnej &mdash; stabilne rozproszone światło.</p>
+          <div class="ws-card__specs">
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M12 3v18M3 12h18"/></svg><span class="ws-spec__val">2 pokoje</span></span>
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M3 21L21 3"/></svg><span class="ws-spec__val">44,5&nbsp;m²</span></span>
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V2M5 9l7-7 7 7"/></svg><span class="ws-spec__val">2&nbsp;piętro</span></span>
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span class="ws-spec__val">N</span></span>
+          </div>
+          <div class="ws-card__foot">
+            <div class="ws-price-wrap">
+              <span class="ws-price-lbl">Cena</span>
+              <span class="ws-price">378 250&nbsp;<span class="ws-price__cur">zł</span></span>
+            </div>
+            <a href="#" class="ws-card__cta">Niedostępne
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+          <div class="ws-card__plan">
+            <div class="ws-card__plan-img"><img src="/media/plans/plan-3p.avif" alt="Rzut mieszkania A-07" loading="lazy"></div>
+            <span class="ws-card__plan-label"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M12 3v18M3 12h18"/></svg>Rzut</span>
+          </div>
+        </article>
+
+        <!-- A-10 -->
+        <article class="ws-card" data-rev style="--inv-c:#2d7a5f;">
+          <div class="ws-card__main">
+          <div class="ws-card__tags">
+            <span class="ws-card__inv">OZON &middot; Kraków</span>
+            <span class="ws-badge ws-badge--available">Dostępne</span>
+          </div>
+          <div class="ws-card__id">
+            <span class="ws-card__id-nr">A-10</span>
+            <span class="ws-card__id-sub">Mieszkanie</span>
+          </div>
+          <p class="ws-card__summary"><strong>3 pokoje</strong> na&nbsp;trzecim piętrze, okna na&nbsp;zachód &mdash; widoki na&nbsp;zielone wnętrze osiedla.</p>
+          <div class="ws-card__specs">
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M12 3v18M3 12h18"/></svg><span class="ws-spec__val">3 pokoje</span></span>
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M3 21L21 3"/></svg><span class="ws-spec__val">61,2&nbsp;m²</span></span>
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V2M5 9l7-7 7 7"/></svg><span class="ws-spec__val">3&nbsp;piętro</span></span>
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span class="ws-spec__val">W</span></span>
+          </div>
+          <div class="ws-card__foot">
+            <div class="ws-price-wrap">
+              <span class="ws-price-lbl">Cena</span>
+              <span class="ws-price">520 200&nbsp;<span class="ws-price__cur">zł</span> <span class="ws-price__promo">-3%</span></span>
+            </div>
+            <a href="#" class="ws-card__cta">Szczegóły
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+          <div class="ws-card__plan">
+            <div class="ws-card__plan-img"><img src="/media/plans/plan-8p.avif" alt="Rzut mieszkania A-10" loading="lazy"></div>
+            <span class="ws-card__plan-label"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M12 3v18M3 12h18"/></svg>Rzut</span>
+          </div>
+        </article>
+
+        <!-- A-14 -->
+        <article class="ws-card" data-rev style="--inv-c:#2d7a5f;">
+          <div class="ws-card__main">
+          <div class="ws-card__tags">
+            <span class="ws-card__inv">OZON &middot; Kraków</span>
+            <span class="ws-badge ws-badge--available">Dostępne</span>
+          </div>
+          <div class="ws-card__id">
+            <span class="ws-card__id-nr">A-14</span>
+            <span class="ws-card__id-sub">Mieszkanie</span>
+          </div>
+          <p class="ws-card__summary">Rodzinne <strong>4 pokoje</strong> z&nbsp;ekspozycją południowo-wschodnią &mdash; dużo światła od&nbsp;samego rana.</p>
+          <div class="ws-card__specs">
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M12 3v18M3 12h18"/></svg><span class="ws-spec__val">4 pokoje</span></span>
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M3 21L21 3"/></svg><span class="ws-spec__val">85,9&nbsp;m²</span></span>
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V2M5 9l7-7 7 7"/></svg><span class="ws-spec__val">3&nbsp;piętro</span></span>
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span class="ws-spec__val">SE</span></span>
+          </div>
+          <div class="ws-card__foot">
+            <div class="ws-price-wrap">
+              <span class="ws-price-lbl">Cena</span>
+              <span class="ws-price">730 150&nbsp;<span class="ws-price__cur">zł</span></span>
+            </div>
+            <a href="#" class="ws-card__cta">Szczegóły
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+          <div class="ws-card__plan">
+            <div class="ws-card__plan-img"><img src="/media/plans/plan-8p.avif" alt="Rzut mieszkania A-14" loading="lazy"></div>
+            <span class="ws-card__plan-label"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M12 3v18M3 12h18"/></svg>Rzut</span>
+          </div>
+        </article>
+
+        <!-- B-02 CLOU -->
+        <article class="ws-card" data-rev style="--inv-c:#c9a55c;">
+          <div class="ws-card__main">
+          <div class="ws-card__tags">
+            <span class="ws-card__inv">CLOU Lindego &middot; Kraków</span>
+            <span class="ws-badge ws-badge--available">Dostępne</span>
+          </div>
+          <div class="ws-card__id">
+            <span class="ws-card__id-nr">B-02</span>
+            <span class="ws-card__id-sub">Mieszkanie</span>
+          </div>
+          <p class="ws-card__summary"><strong>2 pokoje</strong> w&nbsp;premium kwartale Bronowic, na&nbsp;pierwszym piętrze z&nbsp;oknami od&nbsp;północy.</p>
+          <div class="ws-card__specs">
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M12 3v18M3 12h18"/></svg><span class="ws-spec__val">2 pokoje</span></span>
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M3 21L21 3"/></svg><span class="ws-spec__val">45,6&nbsp;m²</span></span>
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V2M5 9l7-7 7 7"/></svg><span class="ws-spec__val">1&nbsp;piętro</span></span>
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span class="ws-spec__val">N</span></span>
+          </div>
+          <div class="ws-card__foot">
+            <div class="ws-price-wrap">
+              <span class="ws-price-lbl">Cena</span>
+              <span class="ws-price">419 520&nbsp;<span class="ws-price__cur">zł</span></span>
+            </div>
+            <a href="#" class="ws-card__cta">Szczegóły
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+          <div class="ws-card__plan">
+            <div class="ws-card__plan-img"><img src="/media/plans/plan-3p.avif" alt="Rzut mieszkania B-02" loading="lazy"></div>
+            <span class="ws-card__plan-label"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M12 3v18M3 12h18"/></svg>Rzut</span>
+          </div>
+        </article>
+
+        <!-- B-07 -->
+        <article class="ws-card" data-rev style="--inv-c:#c9a55c;">
+          <div class="ws-card__main">
+          <div class="ws-card__tags">
+            <span class="ws-card__inv">CLOU Lindego &middot; Kraków</span>
+            <span class="ws-badge ws-badge--available">Dostępne</span>
+          </div>
+          <div class="ws-card__id">
+            <span class="ws-card__id-nr">B-07</span>
+            <span class="ws-card__id-sub">Mieszkanie</span>
+          </div>
+          <p class="ws-card__summary"><strong>3 pokoje</strong> z&nbsp;widokiem na&nbsp;Młynówkę Królewską &mdash; ekspozycja SW, trzecie piętro.</p>
+          <div class="ws-card__specs">
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M12 3v18M3 12h18"/></svg><span class="ws-spec__val">3 pokoje</span></span>
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M3 21L21 3"/></svg><span class="ws-spec__val">68,9&nbsp;m²</span></span>
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V2M5 9l7-7 7 7"/></svg><span class="ws-spec__val">3&nbsp;piętro</span></span>
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span class="ws-spec__val">SW</span></span>
+          </div>
+          <div class="ws-card__foot">
+            <div class="ws-price-wrap">
+              <span class="ws-price-lbl">Cena</span>
+              <span class="ws-price">633 880&nbsp;<span class="ws-price__cur">zł</span></span>
+            </div>
+            <a href="#" class="ws-card__cta">Szczegóły
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+          <div class="ws-card__plan">
+            <div class="ws-card__plan-img"><img src="/media/plans/plan-8p.avif" alt="Rzut mieszkania B-07" loading="lazy"></div>
+            <span class="ws-card__plan-label"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M12 3v18M3 12h18"/></svg>Rzut</span>
+          </div>
+        </article>
+
+        <!-- B-11 CLOU penthouse -->
+        <article class="ws-card" data-rev style="--inv-c:#c9a55c;">
+          <div class="ws-card__main">
+          <div class="ws-card__tags">
+            <span class="ws-card__inv">CLOU Lindego &middot; Kraków</span>
+            <span class="ws-badge ws-badge--available">Dostępne</span>
+          </div>
+          <div class="ws-card__id">
+            <span class="ws-card__id-nr">B-11</span>
+            <span class="ws-card__id-sub">Penthouse</span>
+          </div>
+          <p class="ws-card__summary"><strong>Przestronne 5 pokoi</strong> na&nbsp;ostatnim piętrze &mdash; pełna ekspozycja południowa, panoramiczne widoki.</p>
+          <div class="ws-card__specs">
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M12 3v18M3 12h18"/></svg><span class="ws-spec__val">5 pokoi</span></span>
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M3 21L21 3"/></svg><span class="ws-spec__val">110,3&nbsp;m²</span></span>
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V2M5 9l7-7 7 7"/></svg><span class="ws-spec__val">4&nbsp;piętro</span></span>
+            <span class="ws-spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span class="ws-spec__val">S</span></span>
+          </div>
+          <div class="ws-card__foot">
+            <div class="ws-price-wrap">
+              <span class="ws-price-lbl">Cena</span>
+              <span class="ws-price">1 014 760&nbsp;<span class="ws-price__cur">zł</span></span>
+            </div>
+            <a href="#" class="ws-card__cta">Szczegóły
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+          <div class="ws-card__plan">
+            <div class="ws-card__plan-img"><img src="/media/plans/plan-8p.avif" alt="Rzut mieszkania B-11" loading="lazy"></div>
+            <span class="ws-card__plan-label"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M12 3v18M3 12h18"/></svg>Rzut</span>
+          </div>
+        </article>
+      </div>
 
       <!-- Pagination -->
-      <div class="pagination">
-        <button class="pagination__btn" aria-label="Poprzednia strona">
+      <div class="ws-pagination" data-rev>
+        <button class="ws-page-btn" aria-label="Poprzednia strona">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
         </button>
-        <button class="pagination__btn pagination__btn--active">1</button>
-        <button class="pagination__btn">2</button>
-        <button class="pagination__btn">3</button>
-        <button class="pagination__btn" aria-label="Nast&#281;pna strona">
+        <button class="ws-page-btn is-active">1</button>
+        <button class="ws-page-btn">2</button>
+        <button class="ws-page-btn">3</button>
+        <button class="ws-page-btn" aria-label="Następna strona">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
       </div>
+    </section>
 
-      <!-- Info note -->
-      <div style="margin-top:48px; padding:24px; background:var(--bg-surface); border:1px solid var(--white-10); border-radius:var(--radius); display:flex; align-items:flex-start; gap:16px; margin-bottom:80px;">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" style="flex-shrink:0; margin-top:2px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-        <p style="font-size:14px; color:var(--white-40); line-height:1.7;">Dane mieszka&#324; s&#261; pobierane bezpo&#347;rednio z systemu CRM THTG. Dost&#281;pno&#347;&#263; i ceny mog&#261; ulec zmianie. Skontaktuj si&#281; z doradc&#261;, aby potwierdzi&#263; aktualno&#347;&#263; oferty. <a href='/kontakt' style='color:var(--accent); font-weight:600;'>Skontaktuj si&#281; &rarr;</a></p>
+    <!-- Info note -->
+    <section class="ws-note-wrap">
+      <div class="ws-note" data-rev>
+        <div class="ws-note__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        </div>
+        <p class="ws-note__text">
+          Dane mieszkań są pobierane bezpośrednio z&nbsp;systemu CRM THTG. Dostępność i&nbsp;ceny mogą ulec zmianie — skontaktuj się z&nbsp;doradcą, aby potwierdzić aktualność oferty. <a href="/kontakt">Skontaktuj się &rarr;</a>
+        </p>
       </div>
+    </section>
 
-    </div>
+    <!-- CTA -->
+    <section class="ws-cta-wrap">
+      <div class="ws-cta" data-rev>
+        <p class="ws-cta__eyebrow">Potrzebujesz pomocy?</p>
+        <h2 class="ws-cta__title">Porozmawiaj <em>z&nbsp;doradcą</em></h2>
+        <p class="ws-cta__text">
+          Nasi doradcy pomogą Ci&nbsp;wybrać mieszkanie dopasowane do&nbsp;potrzeb i&nbsp;budżetu, umówią prezentację i&nbsp;zaproponują rozwiązania finansowania.
+        </p>
+        <div class="ws-cta__buttons">
+          <a href="/kontakt" class="ws-cta__btn">
+            Skontaktuj się
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href="tel:+48123000077" class="ws-cta__btn ws-cta__btn--ghost">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            12 300 00 77
+          </a>
+        </div>
+      </div>
+    </section>
+
   </main>
 
-  <!-- Footer -->
   <footer class="footer">
     <div class="container">
-      <div class="footer__top">
-        <div class="footer__brand">
-          <img src="/media/megapolis-logo-whitetext.svg" alt="Megapolis" width="140" class="footer__logo">
-          <p>Tworzymy przestrzenie dla t&#281;tni&#261;cych &#380;yciem spo&#322;eczno&#347;ci.</p>
-          <span class="footer__holding">Cz&#281;&#347;&#263; grupy Holding 1 &#8212; 35+ lat do&#347;wiadczenia</span>
-        </div>
-        <div class="footer__links">
-          <div class="footer__col">
-            <h4>Inwestycje</h4>
-            <ul>
-              <li><a href='/inwestycja'>Osiedle OZON</a></li>
-              <li><a href="#">CLOU Lindego</a></li>
-              <li><a href="#">Nowe Osiedle Fi</a></li>
-              <li><a href="#">LINK BUNSCHA</a></li>
-            </ul>
-          </div>
-          <div class="footer__col">
-            <h4>Firma</h4>
-            <ul>
-              <li><a href='/o-nas'>O nas</a></li>
-              <li><a href='/realizacje'>Nasze realizacje</a></li>
-              <li><a href='/generalny-wykonawca'>Generalny wykonawca</a></li>
-              <li><a href='/kariera'>Kariera</a></li>
-              <li><a href='/kontakt'>Kontakt</a></li>
-            </ul>
-          </div>
-          <div class="footer__col">
-            <h4>Kontakt</h4>
-            <ul>
-              <li><a href="tel:+48123000077">12 300 00 77</a></li>
-              <li><a href="mailto:biuro@megapolis.pl">biuro@megapolis.pl</a></li>
-              <li>ul. Rzemie&#347;lnicza 26</li>
-              <li>30-403 Krak&#243;w</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="footer__bottom">
-        <p>&copy; 2026 Megapolis Sp. z o.o. Wszelkie prawa zastrze&#380;one.</p>
-        <div class="footer__bottom-links">
-          <a href="#">Polityka prywatno&#347;ci</a>
-          <a href="#">Regulamin</a>
-        </div>
+      <div class="footer__bottom" style="padding:32px 0;">
+        <p style="font-size:12px;color:var(--white-40);">&copy; 2026 Megapolis Sp. z&nbsp;o.o. &nbsp;·&nbsp; <a href="/polityka-prywatnosci" style="color:var(--white-60);">Polityka prywatności</a></p>
       </div>
     </div>
   </footer>
 
-
-    
-  </div>
-
-  <!-- Back to top -->
-  <button class="back-to-top" id="backToTop" aria-label="Przewiń do góry">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
-  </button>
-
-  <!-- Sticky Mobile Contact Bar -->
-  <div class="sticky-contact">
-    <a href="tel:+48123000077" class="sticky-contact__call">Zadzwoń</a>
-    <a class='sticky-contact__search' href='/wyszukiwarka'>Szukaj mieszkania</a>
-  </div>
-
   <script src="/js/main.js"></script>
   <script>
-    // Filter tags toggle
-    document.querySelectorAll('.filter-tag').forEach(tag => {
-      tag.addEventListener('click', () => {
-        document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
-        tag.classList.add('active');
+    // Reveal animation on scroll
+    (function () {
+      const els = document.querySelectorAll('[data-rev]');
+      if (!('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('is-revealed')); return; }
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-revealed'); io.unobserve(e.target); } });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      els.forEach(e => io.observe(e));
+    })();
+
+    // City pills — single select
+    document.querySelectorAll('.ws-city-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        document.querySelectorAll('.ws-city-pill').forEach(p => p.classList.remove('is-active'));
+        pill.classList.add('is-active');
       });
     });
 
-    // Strony świata (róża wiatrów) + Przynależności — multi-toggle
-    document.querySelectorAll('.rose-btn, .feature-btn').forEach(btn => {
+    // Quick filter tags — single select
+    document.querySelectorAll('.ws-tag').forEach(tag => {
+      tag.addEventListener('click', () => {
+        document.querySelectorAll('.ws-tag').forEach(t => t.classList.remove('is-active'));
+        tag.classList.add('is-active');
+      });
+    });
+
+    // Compass + features — multi toggle
+    document.querySelectorAll('.ws-rose, .ws-feat-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         btn.classList.toggle('is-active');
         btn.setAttribute('aria-pressed', btn.classList.contains('is-active') ? 'true' : 'false');
       });
     });
+
+    // "Więcej filtrów" toggle — progressive disclosure kompas+przynależności
+    const moreBtn = document.getElementById('wsMoreToggle');
+    const advanced = document.getElementById('wsAdvanced');
+    const moreTxt = moreBtn ? moreBtn.querySelector('.ws-more-link__text') : null;
+    if (moreBtn && advanced) {
+      moreBtn.addEventListener('click', () => {
+        const isOpen = advanced.classList.toggle('is-open');
+        moreBtn.classList.toggle('is-open', isOpen);
+        moreBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        if (moreTxt) moreTxt.textContent = isOpen ? 'Ukryj opcje' : 'Więcej opcji';
+      });
+    }
+
+    // ===== AI SEARCH: aplikacja filtrow z URL params (przyszlo z landing page) =====
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      if (!params.toString()) return;  // brak parametrow - nic nie robimy
+
+      const get = k => params.get(k);
+
+      // 1. Miasto (city pill)
+      const miasto = get('miasto');
+      if (miasto) {
+        document.querySelectorAll('.ws-city-pill').forEach(p => {
+          p.classList.toggle('is-active', p.dataset.city === miasto);
+        });
+      }
+
+      // 2. Selecty
+      const setSelect = (labelText, value) => {
+        document.querySelectorAll('.ws-field').forEach(f => {
+          const lbl = f.querySelector('label');
+          if (!lbl || !value) return;
+          if (lbl.textContent.trim().toLowerCase() === labelText.toLowerCase()) {
+            const sel = f.querySelector('select');
+            if (sel) {
+              // dopasuj value lub text
+              const opt = Array.from(sel.options).find(o =>
+                String(o.value).toLowerCase() === String(value).toLowerCase() ||
+                String(o.textContent).trim().toLowerCase() === String(value).toLowerCase()
+              );
+              if (opt) sel.value = opt.value;
+            }
+          }
+        });
+      };
+      setSelect('Inwestycja', get('inwestycja'));
+      setSelect('Pokoje', get('pokoje'));
+      const pietroVal = get('pietro');
+      if (pietroVal === 'parter') setSelect('Piętro', '0');
+      else if (pietroVal === 'ostatnie') setSelect('Piętro', '4');
+      else setSelect('Piętro', pietroVal);
+
+      // 3. Inputy liczbowe (powierzchnia/cena)
+      const setInput = (labelText, value) => {
+        if (!value) return;
+        document.querySelectorAll('.ws-field').forEach(f => {
+          const lbl = f.querySelector('label');
+          if (lbl && lbl.textContent.trim().toLowerCase() === labelText.toLowerCase()) {
+            const inp = f.querySelector('input');
+            if (inp) inp.value = value;
+          }
+        });
+      };
+      setInput('Powierzchnia od', get('powierzchnia_od'));
+      setInput('Powierzchnia do', get('powierzchnia_do'));
+      setInput('Cena od', get('cena_od'));
+      setInput('Cena do', get('cena_do'));
+
+      // 4. Features (przynaleznosci) — otworz drawer jesli jest cokolwiek
+      const features = (get('features') || '').split(',').filter(Boolean);
+      if (features.length && advanced) {
+        advanced.classList.add('is-open');
+        if (moreBtn) {
+          moreBtn.classList.add('is-open');
+          moreBtn.setAttribute('aria-expanded', 'true');
+          if (moreTxt) moreTxt.textContent = 'Ukryj opcje';
+        }
+        features.forEach(feat => {
+          const btn = document.querySelector('.ws-feat-btn[data-feat="' + feat + '"]');
+          if (btn) btn.classList.add('is-active');
+        });
+      }
+
+      // 5. Strona swiata (kompas)
+      const dirs = (get('strona_swiata') || '').split(',').filter(Boolean);
+      dirs.forEach(d => {
+        const rose = document.querySelector('.ws-rose[data-dir="' + d + '"]');
+        if (rose) rose.classList.add('is-active');
+      });
+
+      // 6. AI SUMMARY BANNER — pokaz na gorze panelu wyników
+      const summary = get('q');
+      if (summary) {
+        const resultsHead = document.querySelector('.ws-results-head');
+        if (resultsHead && !document.getElementById('wsAiBanner')) {
+          const banner = document.createElement('div');
+          banner.id = 'wsAiBanner';
+          banner.className = 'ws-ai-banner';
+          banner.innerHTML = '<span class="ws-ai-banner__ico">AI</span>' +
+            '<div class="ws-ai-banner__body">' +
+              '<strong>Twoje zapytanie:</strong> ' + summary.replace(/[<>]/g, '') +
+            '</div>' +
+            '<button type="button" class="ws-ai-banner__close" aria-label="Zamknij">×</button>';
+          resultsHead.parentNode.insertBefore(banner, resultsHead);
+          banner.querySelector('.ws-ai-banner__close').addEventListener('click', () => {
+            banner.style.opacity = '0';
+            setTimeout(() => banner.remove(), 300);
+          });
+        }
+      }
+
+      // 7. Filtrowanie kart wedlug filtrow z URL (dla prototypu - klient-side)
+      function applyCardFilters() {
+        const cards = document.querySelectorAll('.ws-card');
+        let visibleCount = 0;
+        const cityFilter = (get('miasto') || '').toLowerCase();
+        const invFilter  = (get('inwestycja') || '').toLowerCase();
+        const roomsFilter = parseInt(get('pokoje') || '0', 10);
+        const priceMaxFilter = parseInt(get('cena_do') || '0', 10);
+        const priceMinFilter = parseInt(get('cena_od') || '0', 10);
+        const areaMaxFilter  = parseFloat(get('powierzchnia_do') || '0');
+        const areaMinFilter  = parseFloat(get('powierzchnia_od') || '0');
+
+        cards.forEach(card => {
+          let show = true;
+          const invTxt = (card.querySelector('.ws-card__inv')?.textContent || '').toLowerCase();
+          const summaryTxt = (card.querySelector('.ws-card__summary')?.textContent || '').toLowerCase();
+
+          // Miasto
+          if (cityFilter && !invTxt.includes(cityFilter === 'krakow' ? 'kraków' : 'wrocław')) show = false;
+          // Inwestycja
+          if (invFilter) {
+            const invMap = { ozon: 'ozon', clou: 'clou', fi: 'fi', link: 'link' };
+            if (invMap[invFilter] && !invTxt.includes(invMap[invFilter])) show = false;
+          }
+          // Pokoje - wyciagnij ze specs
+          if (roomsFilter) {
+            const roomsMatch = summaryTxt.match(/(\d+)\s*(pokoje?|pokoi|pokój|pokoi)/) ||
+                               (card.querySelector('.ws-spec__val')?.textContent || '').match(/^(\d+)/);
+            const roomsVal = roomsMatch ? parseInt(roomsMatch[1], 10) : 0;
+            if (roomsVal && roomsVal !== roomsFilter) show = false;
+          }
+          // Cena
+          const priceTxt = card.querySelector('.ws-price')?.textContent || '';
+          const priceVal = parseInt(priceTxt.replace(/[^\d]/g, ''), 10) || 0;
+          if (priceVal) {
+            if (priceMaxFilter && priceVal > priceMaxFilter) show = false;
+            if (priceMinFilter && priceVal < priceMinFilter) show = false;
+          }
+
+          card.style.display = show ? '' : 'none';
+          if (show) visibleCount++;
+        });
+
+        // Update licznika
+        const countEl = document.querySelector('.ws-results-count strong');
+        if (countEl) countEl.textContent = visibleCount + (visibleCount === 1 ? ' mieszkanie' : ' mieszkań');
+      }
+      applyCardFilters();
+    })();
   </script>
 </body>
 </html>
