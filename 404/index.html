@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - Strona nie znaleziona | Megapolis</title>
+  <meta name="robots" content="noindex">
+  <!-- Fonty lokalne Ubuntu (z /fonts/) — @font-face w /css/style.css -->
+  <link rel="preload" href="/fonts/Ubuntu-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="header scrolled" id="header" style="position:fixed;">
+    <div class="container header__inner">
+      <a class="header__logo" href="/"><img src="https://megapolis.pl/wp-content/uploads/2024/06/megapolis-logo-opt.svg" alt="Megapolis" width="160"></a>
+    </div>
+  </header>
+  <main id="main-content" style="min-height:80vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:120px 20px;">
+    <div style="max-width:560px;">
+      <p style="font-size:clamp(120px, 18vw, 200px); line-height:1; color:var(--accent); margin:0; font-weight:300;">404</p>
+      <h1 style="font-size:36px; font-weight:400; margin:16px 0 12px;">Strona nie znaleziona</h1>
+      <p style="color:var(--white-60); font-size:16px; line-height:1.6; margin-bottom:32px;">Szukana strona nie istnieje lub zostala przeniesiona. Sprawdz link lub wroc do menu.</p>
+      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+        <a class="btn btn--pill" href="/">Strona glowna</a>
+        <a class="btn btn--pill btn--outline" href="/wyszukiwarka">Szukaj mieszkania</a>
+      </div>
+    </div>
+  </main>
+  <footer class="footer" style="margin-top:auto;">
+    <div class="container"><div class="footer__bottom"><p>&copy; 2026 Megapolis Sp. z o.o.</p></div></div>
+  </footer>
+</body>
+</html>

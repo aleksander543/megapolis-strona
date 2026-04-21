@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="pl" data-site="megapolis">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Historia firmy — Megapolis</title>
+  <meta name="description" content="Historia Megapolis — ponad 35 lat doświadczenia w budowaniu osiedli, w których ludzie chcą mieszkać. Od pierwszej inwestycji do dziesięciu flagowych projektów w Krakowie i Wrocławiu.">
+  <link rel="preload" href="/fonts/Ubuntu-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/fonts/Ubuntu-Medium.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/fonts/Ubuntu-Bold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    /* ================================================================
+       HISTORIA FIRMY — piękna sub-strona, minimalistyczna, markowa
+       ================================================================ */
+    .hist-page { background: #f4f2ec; color: var(--graphite); }
+
+    /* Hero */
+    .hist-hero {
+      position: relative;
+      padding: 180px 0 120px;
+      overflow: hidden;
+      background: linear-gradient(180deg, #ffffff 0%, #f4f2ec 100%);
+    }
+    .hist-hero::before {
+      content: '';
+      position: absolute;
+      top: 20px; right: 0;
+      width: 420px; height: 420px;
+      background: url('/media/decor/arcs.svg') no-repeat top right;
+      background-size: contain;
+      opacity: 0.8;
+      pointer-events: none;
+    }
+    .hist-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: -40px;
+      width: 360px; height: 360px;
+      background: url('/media/decor/grid.svg') no-repeat bottom left;
+      background-size: contain;
+      pointer-events: none;
+    }
+    .hist-hero__inner {
+      position: relative; z-index: 1;
+      max-width: 1040px; margin: 0 auto;
+      padding: 0 24px;
+      text-align: center;
+    }
+    .hist-hero__crumbs {
+      font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--graphite); opacity: 0.55;
+      margin-bottom: 24px;
+    }
+    .hist-hero__crumbs a { color: var(--brand-night); text-decoration: none; }
+    .hist-hero__crumbs .sep { margin: 0 10px; opacity: 0.5; }
+    .hist-hero__eyebrow {
+      display: inline-flex; align-items: center; gap: 12px;
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-night);
+      margin-bottom: 24px;
+    }
+    .hist-hero__eyebrow::before,
+    .hist-hero__eyebrow::after {
+      content: ''; display: inline-block;
+      width: 40px; height: 1px; background: var(--brand-night);
+    }
+    .hist-hero__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(44px, 6vw, 84px);
+      font-weight: 700;
+      line-height: 1.02;
+      letter-spacing: -1.5px;
+      color: var(--brand-night);
+      margin: 0 0 28px;
+    }
+    .hist-hero__title em {
+      font-style: italic; font-weight: 300;
+      color: var(--brand-night); opacity: 0.7;
+    }
+    .hist-hero__lead {
+      font-size: clamp(17px, 1.5vw, 20px);
+      line-height: 1.7;
+      color: var(--graphite);
+      max-width: 720px; margin: 0 auto 40px;
+    }
+    .hist-hero__stats {
+      display: inline-flex;
+      gap: 48px;
+      padding: 28px 48px;
+      background: #ffffff;
+      border: 1px solid rgba(0, 60, 113, 0.1);
+      border-radius: 12px;
+      box-shadow: 0 14px 40px rgba(0, 60, 113, 0.08);
+      margin-top: 8px;
+    }
+    .hist-hero__stat-num {
+      font-size: clamp(32px, 4vw, 44px);
+      font-weight: 800;
+      line-height: 1;
+      color: var(--brand-night);
+      display: block;
+      letter-spacing: -1px;
+    }
+    .hist-hero__stat-lbl {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--graphite);
+      opacity: 0.6;
+      margin-top: 8px;
+      display: block;
+    }
+
+    /* Intro prose */
+    .hist-intro {
+      padding: 100px 0 60px;
+      max-width: 880px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .hist-intro__text {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(20px, 2vw, 26px);
+      line-height: 1.65;
+      font-weight: 400;
+      color: var(--brand-night);
+      margin: 0;
+      letter-spacing: -0.2px;
+    }
+    .hist-intro__text strong { font-weight: 700; }
+
+    /* Timeline */
+    .hist-timeline {
+      padding: 60px 0 100px;
+      max-width: 1040px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .hist-timeline__title {
+      text-align: center;
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700;
+      color: var(--brand-night);
+      margin: 0 0 72px;
+      letter-spacing: -0.5px;
+    }
+    .hist-timeline__title em {
+      font-style: italic; font-weight: 300;
+      opacity: 0.75;
+    }
+    .hist-line {
+      position: relative;
+      padding: 20px 0;
+    }
+    .hist-line::before {
+      content: '';
+      position: absolute;
+      left: 50%; top: 0; bottom: 0;
+      width: 1.5px;
+      background: linear-gradient(to bottom, transparent, rgba(0, 60, 113, 0.25), rgba(0, 60, 113, 0.25), transparent);
+      transform: translateX(-50%);
+    }
+    .hist-event {
+      position: relative;
+      margin-bottom: 72px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+    .hist-event:last-child { margin-bottom: 0; }
+    .hist-event__dot {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--brand-night);
+      border: 4px solid #f4f2ec;
+      box-shadow: 0 0 0 2px rgba(0, 60, 113, 0.25);
+      justify-self: center;
+      margin-top: 6px;
+    }
+    .hist-event__side {
+      padding: 28px 32px;
+      background: #ffffff;
+      border: 1px solid rgba(0, 60, 113, 0.1);
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 60, 113, 0.05);
+      transition: all 0.3s ease;
+    }
+    .hist-event__side:hover {
+      border-color: var(--brand-night);
+      box-shadow: 0 14px 40px rgba(0, 60, 113, 0.12);
+      transform: translateY(-3px);
+    }
+    .hist-event__year {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--brand-night);
+      margin-bottom: 10px;
+      font-family: 'Ubuntu', sans-serif;
+    }
+    .hist-event__title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--brand-night);
+      margin: 0 0 10px;
+      line-height: 1.3;
+    }
+    .hist-event__desc {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--graphite);
+      opacity: 0.85;
+      margin: 0;
+    }
+    /* Naprzemiennie: nieparzyste po lewej, parzyste po prawej */
+    .hist-event:nth-child(odd) .hist-event__side { grid-column: 1; }
+    .hist-event:nth-child(odd) .hist-event__dot { grid-column: 2; }
+    .hist-event:nth-child(odd) .hist-event__spacer { grid-column: 3; }
+    .hist-event:nth-child(even) .hist-event__spacer { grid-column: 1; }
+    .hist-event:nth-child(even) .hist-event__dot { grid-column: 2; }
+    .hist-event:nth-child(even) .hist-event__side { grid-column: 3; }
+
+    /* Wartości */
+    .hist-values {
+      background: #ffffff;
+      padding: 100px 24px;
+      margin: 60px 0 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .hist-values::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 300px; height: 300px;
+      background: url('/media/decor/dots.svg') no-repeat top right;
+      background-size: contain;
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    .hist-values__inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .hist-values__head {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .hist-values__eyebrow {
+      font-size: 11px; letter-spacing: 3px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-night); margin-bottom: 16px;
+    }
+    .hist-values__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(30px, 3.5vw, 44px);
+      font-weight: 700;
+      color: var(--brand-night);
+      margin: 0;
+      letter-spacing: -0.4px;
+    }
+    .hist-values__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+    .hist-value {
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .hist-value__ico {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: rgba(183, 201, 211, 0.35);
+      color: var(--brand-night);
+      display: inline-flex;
+      align-items: center; justify-content: center;
+      margin-bottom: 20px;
+    }
+    .hist-value__name {
+      font-size: 17px; font-weight: 700;
+      color: var(--brand-night);
+      margin: 0 0 10px;
+    }
+    .hist-value__desc {
+      font-size: 14px; line-height: 1.7;
+      color: var(--graphite);
+      opacity: 0.85;
+      margin: 0;
+    }
+
+    /* Holding 1 */
+    .hist-holding {
+      padding: 100px 24px;
+      background: var(--brand-night);
+      color: #ffffff;
+      position: relative;
+      overflow: hidden;
+    }
+    .hist-holding::before {
+      content: '';
+      position: absolute;
+      top: -40px; left: -40px;
+      width: 400px; height: 400px;
+      background: url('/media/decor/arcs.svg') no-repeat top left;
+      background-size: contain;
+      opacity: 0.2;
+      filter: invert(1);
+      pointer-events: none;
+    }
+    .hist-holding__inner {
+      max-width: 960px; margin: 0 auto;
+      position: relative; z-index: 1;
+      text-align: center;
+    }
+    .hist-holding__eyebrow {
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-moon);
+      margin-bottom: 20px;
+    }
+    .hist-holding__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(32px, 4vw, 48px);
+      font-weight: 700;
+      margin: 0 0 20px;
+      line-height: 1.15;
+    }
+    .hist-holding__title em {
+      font-style: italic; font-weight: 300;
+      color: var(--brand-moon);
+    }
+    .hist-holding__text {
+      font-size: 17px;
+      line-height: 1.75;
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 700px;
+      margin: 0 auto 36px;
+    }
+    .hist-holding__btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      background: transparent;
+      color: var(--brand-moon);
+      border: 1.5px solid var(--brand-moon);
+      border-radius: 9999px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+    .hist-holding__btn:hover {
+      background: var(--brand-moon);
+      color: var(--brand-night);
+    }
+
+    /* Related pages */
+    .hist-related {
+      padding: 80px 24px 120px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .hist-related__title {
+      text-align: center;
+      font-size: 14px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--graphite); opacity: 0.55;
+      margin: 0 0 32px;
+      font-weight: 600;
+    }
+    .hist-related__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .hist-related__card {
+      display: block;
+      padding: 28px;
+      background: #ffffff;
+      border: 1px solid rgba(0, 60, 113, 0.1);
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--graphite);
+      transition: all 0.25s ease;
+    }
+    .hist-related__card:hover {
+      border-color: var(--brand-night);
+      box-shadow: 0 10px 30px rgba(0, 60, 113, 0.1);
+      transform: translateY(-3px);
+    }
+    .hist-related__kicker {
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--brand-night); opacity: 0.7;
+      margin-bottom: 6px; font-weight: 700;
+    }
+    .hist-related__name {
+      font-size: 18px; font-weight: 700;
+      color: var(--brand-night);
+      margin: 0 0 6px;
+    }
+    .hist-related__arr {
+      font-size: 14px; color: var(--brand-night);
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 10px; font-weight: 600;
+    }
+
+    /* Fade-in on scroll */
+    [data-rev] {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    [data-rev].is-revealed { opacity: 1; transform: translateY(0); }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hist-hero { padding: 140px 0 80px; }
+      .hist-hero__stats { flex-direction: column; gap: 24px; padding: 24px 32px; }
+      .hist-event { grid-template-columns: 24px 1fr !important; gap: 20px; }
+      .hist-event__dot { grid-column: 1 !important; justify-self: start; margin-left: 3px; }
+      .hist-event__side { grid-column: 2 !important; }
+      .hist-event__spacer { display: none !important; }
+      .hist-line::before { left: 12px; }
+      .hist-values__grid { grid-template-columns: 1fr; gap: 16px; }
+      .hist-related__grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .hist-hero::before, .hist-hero::after { opacity: 0.4; transform: scale(0.7); }
+      .hist-values::before { opacity: 0.3; }
+    }
+  </style>
+</head>
+<body class="hist-page">
+
+  <!-- Header (pełen z landingu) -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a class="header__logo" href="/">
+        <img src="/media/megapolis-logo-whitetext.svg" alt="Megapolis" class="header__logo-img">
+      </a>
+      <div class="header__actions">
+        <a class="header__cta header__cta--find" href="/wyszukiwarka" title="Znajdź swoje mieszkanie">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span>Znajdź swoje mieszkanie</span>
+        </a>
+        <a class="header__cta header__cta--special" href="/oferta-specjalna" title="Oferta specjalna">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>Oferta specjalna</span>
+        </a>
+        <a class="header__phone" href="tel:+48123000077"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>12 300 00 77</span></a>
+        <button class="header__burger" id="burgerBtn" aria-label="Otwórz menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Drawer -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__inner">
+      <ul class="mobile-menu__list">
+        <li class="mobile-menu__has-sub">
+          <a href="/o-nas" class="mobile-menu__toggle" aria-expanded="true"><span>O nas</span>
+            <svg class="mobile-menu__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </a>
+          <ul class="mobile-menu__sub">
+            <li><a href="/o-nas/historia">Historia firmy</a></li>
+            <li><a href="/o-nas/zespol">Zespół</a></li>
+            <li><a href="/o-nas/misja">Misja i wartości</a></li>
+            <li><a href="/o-nas/holding">Grupa Holding 1</a></li>
+          </ul>
+        </li>
+        <li><a href="/nasze-standardy">Nasze standardy</a></li>
+        <li><a href="/realizacje">Nasze realizacje</a></li>
+        <li><a href="/lokale-uslugowe">Lokale usługowe</a></li>
+        <li><a href="/program-wykonczenia">Program wykończenia mieszkań</a></li>
+        <li><a href="/finansowanie">Finansowanie</a></li>
+        <li><a href="/kariera">Kariera i społecznie odpowiedzialni</a></li>
+        <li><a href="/aktualnosci">Aktualności</a></li>
+        <li><a href="/kontakt">Kontakt</a></li>
+      </ul>
+      <div class="mobile-menu__footer">
+        <a href="tel:+48123000077" class="mobile-menu__phone">12 300 00 77</a>
+        <a href="mailto:biuro@megapolis.pl" class="mobile-menu__email">biuro@megapolis.pl</a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content">
+
+    <!-- HERO -->
+    <section class="hist-hero">
+      <div class="hist-hero__inner">
+        <nav class="hist-hero__crumbs" data-rev>
+          <a href="/">Strona główna</a>
+          <span class="sep">·</span>
+          <a href="/o-nas">O nas</a>
+          <span class="sep">·</span>
+          <span>Historia firmy</span>
+        </nav>
+        <p class="hist-hero__eyebrow" data-rev>Est. 1989 · Kraków</p>
+        <h1 class="hist-hero__title" data-rev>Budujemy <em>od ponad 35 lat</em></h1>
+        <p class="hist-hero__lead" data-rev>
+          Zaczęło się od jednego projektu w&nbsp;Krakowie. Dziś Megapolis to&nbsp;dziesięć osiedli, które zmieniły mapę miasta, i&nbsp;społeczność mieszkańców, którzy wspólnie piszą kolejne rozdziały.
+        </p>
+        <div class="hist-hero__stats" data-rev>
+          <div>
+            <span class="hist-hero__stat-num">35+</span>
+            <span class="hist-hero__stat-lbl">lat doświadczenia</span>
+          </div>
+          <div>
+            <span class="hist-hero__stat-num">10</span>
+            <span class="hist-hero__stat-lbl">osiedli</span>
+          </div>
+          <div>
+            <span class="hist-hero__stat-num">3&nbsp;500+</span>
+            <span class="hist-hero__stat-lbl">mieszkań</span>
+          </div>
+          <div>
+            <span class="hist-hero__stat-num">2</span>
+            <span class="hist-hero__stat-lbl">miasta</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTRO -->
+    <section class="hist-intro" data-rev>
+      <p class="hist-intro__text">
+        Kiedy w&nbsp;1989&nbsp;roku powstawała firma, która&nbsp;dała początek Megapolis, Kraków dopiero zaczynał swoją transformację. Przez lata rósł razem z&nbsp;nami — <strong>a&nbsp;my rośliśmy razem z&nbsp;ludźmi, którzy zdecydowali się nam zaufać</strong>.
+      </p>
+    </section>
+
+    <!-- TIMELINE -->
+    <section class="hist-timeline">
+      <h2 class="hist-timeline__title" data-rev>Nasza <em>droga</em></h2>
+
+      <div class="hist-line">
+
+        <div class="hist-event" data-rev>
+          <div class="hist-event__side">
+            <div class="hist-event__year">1989</div>
+            <h3 class="hist-event__title">Początek</h3>
+            <p class="hist-event__desc">Powstaje firma, która&nbsp;kilka lat później dała początek marce Megapolis. Pierwsze doświadczenia w&nbsp;budownictwie komercyjnym w&nbsp;Małopolsce.</p>
+          </div>
+          <div class="hist-event__dot"></div>
+          <div class="hist-event__spacer"></div>
+        </div>
+
+        <div class="hist-event" data-rev>
+          <div class="hist-event__spacer"></div>
+          <div class="hist-event__dot"></div>
+          <div class="hist-event__side">
+            <div class="hist-event__year">1995 — 2000</div>
+            <h3 class="hist-event__title">Pierwsze osiedla</h3>
+            <p class="hist-event__desc">Wejście w&nbsp;segment mieszkaniowy. Realizujemy pierwsze kameralne projekty wielorodzinne w&nbsp;Krakowie — Podgórze, Dębniki, Krowodrza.</p>
+          </div>
+        </div>
+
+        <div class="hist-event" data-rev>
+          <div class="hist-event__side">
+            <div class="hist-event__year">2005</div>
+            <h3 class="hist-event__title">Marka Megapolis</h3>
+            <p class="hist-event__desc">Konsolidacja działalności pod&nbsp;wspólną marką Megapolis. Rusza pierwsza duża inwestycja osiedlowa — nasz zwrot ku&nbsp;projektom, które&nbsp;budują społeczność, nie tylko metry kwadratowe.</p>
+          </div>
+          <div class="hist-event__dot"></div>
+          <div class="hist-event__spacer"></div>
+        </div>
+
+        <div class="hist-event" data-rev>
+          <div class="hist-event__spacer"></div>
+          <div class="hist-event__dot"></div>
+          <div class="hist-event__side">
+            <div class="hist-event__year">2010 — 2018</div>
+            <h3 class="hist-event__title">Ekspansja w&nbsp;Krakowie</h3>
+            <p class="hist-event__desc">Osiedle Kapelanka, Filtry, Osiedle Fi (etap I), LINK Bunscha — kolejne realizacje w&nbsp;ulubionych dzielnicach krakowian. Wypracowujemy standard, który&nbsp;stał się naszą wizytówką.</p>
+          </div>
+        </div>
+
+        <div class="hist-event" data-rev>
+          <div class="hist-event__side">
+            <div class="hist-event__year">2018 — 2024</div>
+            <h3 class="hist-event__title">Flagowy OZON &amp; CLOU</h3>
+            <p class="hist-event__desc">Trzyetapowe Osiedle OZON na&nbsp;Ruczaju i&nbsp;premium CLOU Lindego w&nbsp;Bronowicach. Łączymy architekturę, zieleń i&nbsp;codzienną funkcjonalność. Ponad 2&nbsp;000 mieszkań oddanych w&nbsp;tym okresie.</p>
+          </div>
+          <div class="hist-event__dot"></div>
+          <div class="hist-event__spacer"></div>
+        </div>
+
+        <div class="hist-event" data-rev>
+          <div class="hist-event__spacer"></div>
+          <div class="hist-event__dot"></div>
+          <div class="hist-event__side">
+            <div class="hist-event__year">2025</div>
+            <h3 class="hist-event__title">Wrocław &amp; nowe osiedle Fi</h3>
+            <p class="hist-event__desc">Pierwsza inwestycja we&nbsp;Wrocławiu (Michalczyka&nbsp;15) i&nbsp;II etap Osiedla Fi w&nbsp;Krakowie. Megapolis wychodzi poza Małopolskę z&nbsp;taką samą filozofią: osiedla, w&nbsp;których dobrze się mieszka.</p>
+          </div>
+        </div>
+
+        <div class="hist-event" data-rev>
+          <div class="hist-event__side">
+            <div class="hist-event__year">Dziś</div>
+            <h3 class="hist-event__title">Ponad 35&nbsp;lat historii</h3>
+            <p class="hist-event__desc">Jesteśmy częścią grupy Holding&nbsp;1. Budujemy z&nbsp;myślą o&nbsp;kolejnych 35&nbsp;latach — świadomie, odpowiedzialnie, razem z&nbsp;mieszkańcami.</p>
+          </div>
+          <div class="hist-event__dot"></div>
+          <div class="hist-event__spacer"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- VALUES -->
+    <section class="hist-values">
+      <div class="hist-values__inner">
+        <div class="hist-values__head" data-rev>
+          <p class="hist-values__eyebrow">Co nas definiuje</p>
+          <h2 class="hist-values__title">Cztery rzeczy, które&nbsp;nie zmieniły się przez 35&nbsp;lat</h2>
+        </div>
+        <div class="hist-values__grid">
+          <div class="hist-value" data-rev>
+            <div class="hist-value__ico">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3 class="hist-value__name">Słowo</h3>
+            <p class="hist-value__desc">Obiecujemy — dotrzymujemy. Terminy, jakość i&nbsp;warunki umów są&nbsp;dla nas zobowiązaniem, nie opcją.</p>
+          </div>
+          <div class="hist-value" data-rev>
+            <div class="hist-value__ico">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <h3 class="hist-value__name">Lokalność</h3>
+            <p class="hist-value__desc">Krakowianie budują w&nbsp;Krakowie. Znamy nasze dzielnice, ludzi i&nbsp;miejsca — projekty rodzą się z&nbsp;tej wiedzy.</p>
+          </div>
+          <div class="hist-value" data-rev>
+            <div class="hist-value__ico">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <h3 class="hist-value__name">Społeczność</h3>
+            <p class="hist-value__desc">Budujemy osiedla, nie tylko budynki. Przestrzenie wspólne, relacje sąsiedzkie i&nbsp;wsparcie po&nbsp;zakupie.</p>
+          </div>
+          <div class="hist-value" data-rev>
+            <div class="hist-value__ico">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+            </div>
+            <h3 class="hist-value__name">Jakość życia</h3>
+            <p class="hist-value__desc">Dobre projekty to&nbsp;te, w&nbsp;których czuje się codzienny komfort. Rozkłady, światło, akustyka — każdy detal ma&nbsp;znaczenie.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOLDING 1 -->
+    <section class="hist-holding">
+      <div class="hist-holding__inner">
+        <p class="hist-holding__eyebrow" data-rev>Grupa</p>
+        <h2 class="hist-holding__title" data-rev>Jesteśmy częścią <em>Holdingu&nbsp;1</em></h2>
+        <p class="hist-holding__text" data-rev>
+          Megapolis działa pod&nbsp;parasolem grupy Holding&nbsp;1 — spółki z&nbsp;ponad 35&nbsp;letnim doświadczeniem, łączącej deweloperów, generalnego wykonawcę i&nbsp;partnerów finansowych. Dzięki tej&nbsp;strukturze każdy nasz projekt ma&nbsp;zaplecze, budżet i&nbsp;zespół na&nbsp;najwyższym poziomie.
+        </p>
+        <a class="hist-holding__btn" href="/o-nas/holding" data-rev>
+          Poznaj Holding&nbsp;1
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- RELATED -->
+    <section class="hist-related">
+      <p class="hist-related__title">Poznaj nas bliżej</p>
+      <div class="hist-related__grid">
+        <a class="hist-related__card" href="/o-nas/zespol" data-rev>
+          <div class="hist-related__kicker">O nas</div>
+          <h3 class="hist-related__name">Zespół</h3>
+          <p style="font-size:13px;color:var(--graphite);opacity:0.75;line-height:1.6;margin:8px 0 0;">Ludzie, dzięki&nbsp;którym Megapolis realizuje obietnice — od&nbsp;zarządu po&nbsp;doradców.</p>
+          <span class="hist-related__arr">Poznaj zespół →</span>
+        </a>
+        <a class="hist-related__card" href="/o-nas/misja" data-rev>
+          <div class="hist-related__kicker">O nas</div>
+          <h3 class="hist-related__name">Misja i&nbsp;wartości</h3>
+          <p style="font-size:13px;color:var(--graphite);opacity:0.75;line-height:1.6;margin:8px 0 0;">Dlaczego robimy to, co&nbsp;robimy, i&nbsp;jak&nbsp;to przekłada się na&nbsp;każdy nasz projekt.</p>
+          <span class="hist-related__arr">Zobacz →</span>
+        </a>
+        <a class="hist-related__card" href="/realizacje" data-rev>
+          <div class="hist-related__kicker">Portfolio</div>
+          <h3 class="hist-related__name">Nasze realizacje</h3>
+          <p style="font-size:13px;color:var(--graphite);opacity:0.75;line-height:1.6;margin:8px 0 0;">10 osiedli w&nbsp;Krakowie i&nbsp;Wrocławiu — zrealizowanych, w&nbsp;budowie, w&nbsp;planowaniu.</p>
+          <span class="hist-related__arr">Zobacz wszystkie →</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer minimalny -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__bottom" style="padding:32px 0;">
+        <p style="font-size:12px;color:var(--white-40);">&copy; 2026 Megapolis Sp. z&nbsp;o.o. &nbsp;·&nbsp; <a href="/polityka-prywatnosci" style="color:var(--white-60);">Polityka prywatności</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/main.js"></script>
+  <script>
+    // Scroll-reveal — fade + translate na każdy [data-rev]
+    (function () {
+      const els = document.querySelectorAll('[data-rev]');
+      if (!('IntersectionObserver' in window)) {
+        els.forEach(e => e.classList.add('is-revealed'));
+        return;
+      }
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-revealed');
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      els.forEach(e => io.observe(e));
+    })();
+  </script>
+</body>
+</html>

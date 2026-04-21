@@ -1,274 +1,564 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="pl" data-site="megapolis">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kariera — Megapolis</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <meta name="description" content="Dołącz do zespołu Megapolis. Aktualne oferty pracy w firmie deweloperskiej z Krakowa — projekty, które kształtują miasto.">
+  <link rel="preload" href="/fonts/Ubuntu-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/fonts/Ubuntu-Medium.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/fonts/Ubuntu-Bold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="/css/style.css">
+  <style>
+    /* Kariera — szata graficzna spójna z landingiem */
+    .kar-page { background: #f4f2ec; color: var(--graphite); }
+
+    /* HERO */
+    .kar-hero {
+      position: relative;
+      padding: 180px 0 100px;
+      background: linear-gradient(180deg, #ffffff 0%, #f4f2ec 100%);
+      overflow: hidden;
+    }
+    .kar-hero::before {
+      content: ''; position: absolute; top: -40px; right: -60px;
+      width: 440px; height: 440px;
+      background: url('/media/decor/arcs.svg') no-repeat top right;
+      background-size: contain;
+      opacity: 0.35; pointer-events: none;
+    }
+    .kar-hero::after {
+      content: ''; position: absolute; bottom: -40px; left: -40px;
+      width: 340px; height: 260px;
+      background: url('/media/decor/curve.svg') no-repeat bottom left;
+      background-size: contain;
+      opacity: 0.75; pointer-events: none;
+    }
+    .kar-hero__inner {
+      position: relative; z-index: 1;
+      max-width: 1080px; margin: 0 auto;
+      padding: 0 24px;
+      text-align: center;
+    }
+    .kar-crumbs {
+      font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--graphite); opacity: 0.55;
+      margin-bottom: 24px;
+    }
+    .kar-crumbs a { color: var(--brand-night); text-decoration: none; }
+    .kar-crumbs .sep { margin: 0 10px; opacity: 0.5; }
+    .kar-eyebrow {
+      display: inline-flex; align-items: center; gap: 14px;
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-night);
+      margin-bottom: 24px;
+    }
+    .kar-eyebrow::before,
+    .kar-eyebrow::after { content: ''; width: 44px; height: 1px; background: var(--brand-night); }
+    .kar-hero__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(44px, 6.5vw, 92px);
+      font-weight: 800;
+      line-height: 1.02;
+      letter-spacing: -1.8px;
+      color: var(--brand-night);
+      margin: 0 0 24px;
+    }
+    .kar-hero__title em {
+      font-style: italic; font-weight: 300; opacity: 0.65;
+    }
+    .kar-hero__lead {
+      font-size: clamp(16px, 1.5vw, 20px);
+      line-height: 1.7;
+      color: var(--graphite);
+      max-width: 680px; margin: 0 auto 32px;
+    }
+
+    /* DLACZEGO MEGAPOLIS — wartości */
+    .kar-values-wrap {
+      padding: 60px 24px 80px;
+      max-width: 1240px; margin: 0 auto;
+    }
+    .kar-values-head {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .kar-section-eyebrow {
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-night); opacity: 0.7;
+      margin-bottom: 12px;
+    }
+    .kar-section-title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(30px, 4vw, 52px);
+      font-weight: 800;
+      color: var(--brand-night);
+      margin: 0;
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+    }
+    .kar-section-title em { font-style: italic; font-weight: 300; opacity: 0.65; }
+    .kar-values {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .kar-value {
+      padding: 32px 28px;
+      background: #ffffff;
+      border: 1px solid rgba(0, 60, 113, 0.1);
+      border-radius: 12px;
+      transition: all 0.3s ease;
+    }
+    .kar-value:hover {
+      border-color: var(--brand-night);
+      box-shadow: 0 14px 40px rgba(0, 60, 113, 0.1);
+      transform: translateY(-4px);
+    }
+    .kar-value__ico {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: rgba(183, 201, 211, 0.35);
+      color: var(--brand-night);
+      margin-bottom: 18px;
+    }
+    .kar-value__title {
+      font-size: 18px; font-weight: 700;
+      color: var(--brand-night);
+      margin: 0 0 10px;
+    }
+    .kar-value__text {
+      font-size: 14px; line-height: 1.7;
+      color: var(--graphite); opacity: 0.85;
+      margin: 0;
+    }
+
+    /* OFERTY PRACY */
+    .kar-jobs-wrap {
+      padding: 60px 24px 80px;
+      max-width: 1240px; margin: 0 auto;
+      position: relative;
+    }
+    .kar-jobs-wrap::before {
+      content: ''; position: absolute; top: 40px; right: 0;
+      width: 240px; height: 240px;
+      background: url('/media/decor/grid.svg') no-repeat top right;
+      background-size: contain;
+      opacity: 0.55; pointer-events: none;
+    }
+    .kar-jobs-head {
+      display: flex; justify-content: space-between; align-items: baseline;
+      flex-wrap: wrap; gap: 24px;
+      margin-bottom: 36px;
+      position: relative;
+    }
+    .kar-jobs-head__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(28px, 3.5vw, 42px);
+      font-weight: 800;
+      color: var(--brand-night);
+      margin: 0;
+      letter-spacing: -0.4px;
+    }
+    .kar-jobs-head__title em { font-style: italic; font-weight: 300; opacity: 0.7; }
+
+    .kar-jobs-filters {
+      display: flex; gap: 8px; flex-wrap: wrap;
+    }
+    .kar-jobs-filter {
+      padding: 8px 18px;
+      font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase;
+      font-weight: 700;
+      background: #ffffff;
+      border: 1.5px solid rgba(0, 60, 113, 0.18);
+      color: var(--brand-night);
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .kar-jobs-filter:hover {
+      background: rgba(0, 60, 113, 0.06);
+      border-color: var(--brand-night);
+    }
+    .kar-jobs-filter.is-active {
+      background: var(--brand-night);
+      border-color: var(--brand-night);
+      color: #ffffff;
+    }
+
+    .kar-jobs {
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    .kar-job {
+      background: #ffffff;
+      border: 1px solid rgba(0, 60, 113, 0.1);
+      border-radius: 14px;
+      padding: 24px 28px;
+      display: grid; grid-template-columns: 1fr auto;
+      gap: 20px; align-items: center;
+      text-decoration: none; color: inherit;
+      transition: all 0.25s ease;
+    }
+    .kar-job:hover {
+      border-color: var(--brand-night);
+      background: #ffffff;
+      box-shadow: 0 12px 32px rgba(0, 60, 113, 0.1);
+      transform: translateY(-2px);
+    }
+    .kar-job__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--brand-night);
+      margin: 0 0 8px;
+      letter-spacing: -0.2px;
+    }
+    .kar-job__meta {
+      display: flex; gap: 16px;
+      font-size: 12px; letter-spacing: 1px; text-transform: uppercase;
+      color: var(--graphite); opacity: 0.7; font-weight: 600;
+      flex-wrap: wrap;
+    }
+    .kar-job__meta span { display: inline-flex; align-items: center; gap: 6px; }
+    .kar-job__meta span::before {
+      content: ''; width: 4px; height: 4px; border-radius: 50%;
+      background: var(--brand-night); opacity: 0.5;
+    }
+    .kar-job__meta span:first-child::before { display: none; }
+    .kar-job__arrow {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1.5px solid var(--brand-night);
+      color: var(--brand-night);
+      transition: all 0.25s ease;
+      flex-shrink: 0;
+    }
+    .kar-job:hover .kar-job__arrow {
+      background: var(--brand-night);
+      color: #fff;
+      transform: translate(3px, -3px);
+    }
+
+    .kar-empty {
+      padding: 60px 24px; text-align: center;
+      color: var(--graphite); opacity: 0.65;
+      font-size: 14px;
+      background: #ffffff;
+      border: 1px dashed rgba(0, 60, 113, 0.15);
+      border-radius: 12px;
+    }
+
+    /* CTA — aplikuj */
+    .kar-cta-wrap {
+      padding: 60px 24px 110px;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .kar-cta {
+      padding: 72px 48px;
+      background: linear-gradient(135deg, #003C71 0%, #1a5490 100%);
+      color: #ffffff;
+      border-radius: 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 40px 100px rgba(0, 60, 113, 0.25);
+    }
+    .kar-cta::before {
+      content: ''; position: absolute;
+      top: -80px; right: -80px;
+      width: 320px; height: 320px;
+      background: url('/media/decor/arcs.svg') no-repeat top right;
+      background-size: contain;
+      opacity: 0.2;
+      filter: invert(1);
+      pointer-events: none;
+    }
+    .kar-cta__eyebrow {
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-moon);
+      margin-bottom: 14px;
+    }
+    .kar-cta__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(28px, 3.5vw, 44px);
+      font-weight: 800;
+      line-height: 1.15;
+      margin: 0 0 18px;
+      letter-spacing: -0.4px;
+    }
+    .kar-cta__title em { font-style: italic; font-weight: 300; color: var(--brand-moon); }
+    .kar-cta__text {
+      font-size: 16px; line-height: 1.7;
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 620px; margin: 0 auto 28px;
+    }
+    .kar-cta__btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 34px;
+      background: var(--brand-moon);
+      color: var(--brand-night);
+      border-radius: 9999px;
+      font-size: 15px; font-weight: 700;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .kar-cta__btn:hover {
+      background: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 14px 40px rgba(183, 201, 211, 0.4);
+    }
+
+    /* Reveal */
+    [data-rev] {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    [data-rev].is-revealed { opacity: 1; transform: translateY(0); }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .kar-hero { padding: 140px 0 70px; }
+      .kar-values { grid-template-columns: 1fr 1fr; }
+      .kar-job { grid-template-columns: 1fr; text-align: left; }
+      .kar-job__arrow { justify-self: start; }
+    }
+    @media (max-width: 560px) {
+      .kar-values { grid-template-columns: 1fr; }
+      .kar-hero::before, .kar-hero::after { opacity: 0.4; transform: scale(0.7); }
+      .kar-cta { padding: 48px 24px; }
+    }
+  </style>
 </head>
-<body>
+<body class="kar-page">
 
-  <a href="#main-content" class="skip-nav">Przejdź do treści</a>
-
-  <!-- Cookie Consent -->
-  <div class="cookie-banner" id="cookieBanner">
-    <div class="container cookie-banner__inner">
-      <p class="cookie-banner__text">Używamy plików cookies, aby zapewnić najlepsze doświadczenia na naszej stronie. <a href="#">Polityka prywatności</a></p>
-      <div class="cookie-banner__actions">
-        <button class="cookie-banner__btn cookie-banner__btn--accept" data-cookie="accepted">Akceptuję</button>
-        <button class="cookie-banner__btn cookie-banner__btn--reject" data-cookie="rejected">Odrzuć</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Header -->
+  <!-- HEADER (identyczny z landingiem) -->
   <header class="header" id="header">
     <div class="container header__inner">
-      <a class='header__logo' href='/'><img src="https://megapolis.pl/wp-content/uploads/2024/06/megapolis-logo-opt.svg" alt="Megapolis" width="160"></a>
-      <nav class="header__nav" id="mainNav"><ul class="nav__list">
-        <li class="nav__item nav__item--has-sub"><a href="#" class="nav__link">Inwestycje</a><ul class="nav__sub"><li><a href='/inwestycja'>OZON</a></li><li><a href="#">CLOU Lindego</a></li><li><a href="#">Nowe Osiedle Fi</a></li><li><a href="#">LINK BUNSCHA</a></li></ul></li>
-        <li class="nav__item"><a class='nav__link' href='/o-nas'>O nas</a></li>
-        <li class="nav__item"><a class='nav__link' href='/realizacje'>Nasze realizacje</a></li>
-        <li class="nav__item"><a class='nav__link' href='/generalny-wykonawca'>Generalny wykonawca</a></li>
-        <li class="nav__item"><a class='nav__link' href='/kariera'>Kariera</a></li>
-        <li class="nav__item"><a class='nav__link' href='/kontakt'>Kontakt</a></li>
-      </ul></nav>
+      <a class="header__logo" href="/">
+        <img src="/media/megapolis-logo-whitetext.svg" alt="Megapolis" class="header__logo-img">
+      </a>
       <div class="header__actions">
-        <div class="lang-switch"><button class="lang-switch__btn lang-switch__btn--active">PL</button><span class="lang-switch__sep">|</span><button class="lang-switch__btn">EN</button></div>
-        <a class='header__cta-btn' href='/wyszukiwarka'>Szukaj mieszkania</a>
+        <a class="header__cta header__cta--find" href="/wyszukiwarka" title="Znajdź swoje mieszkanie">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span>Znajdź swoje mieszkanie</span>
+        </a>
+        <a class="header__cta header__cta--special" href="/oferta-specjalna" title="Oferta specjalna">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>Oferta specjalna</span>
+        </a>
+        <a class="header__phone" href="tel:+48123000077" title="Zadzwoń">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span>12 300 00 77</span>
+        </a>
         <button class="header__burger" id="burgerBtn" aria-label="Otwórz menu"><span></span><span></span><span></span></button>
       </div>
     </div>
   </header>
-  <div class="mobile-menu" id="mobileMenu"><div class="mobile-menu__inner"><ul class="mobile-menu__list"><li><a href='/inwestycja'>Inwestycje</a></li><li><a href='/o-nas'>O nas</a></li><li><a href='/realizacje'>Nasze realizacje</a></li><li><a href='/generalny-wykonawca'>Generalny wykonawca</a></li><li><a href='/kariera'>Kariera</a></li><li><a href='/kontakt'>Kontakt</a></li></ul><div class="mobile-menu__footer"><a href="tel:+48123000077" class="mobile-menu__phone">12 300 00 77</a></div></div></div>
+
+  <!-- DRAWER -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__inner">
+      <ul class="mobile-menu__list">
+        <li class="mobile-menu__has-sub">
+          <a href="/o-nas" class="mobile-menu__toggle"><span>O nas</span>
+            <svg class="mobile-menu__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </a>
+          <ul class="mobile-menu__sub">
+            <li><a href="/o-nas/historia">Historia firmy</a></li>
+            <li><a href="/o-nas/zespol">Zespół</a></li>
+            <li><a href="/o-nas/misja">Misja i wartości</a></li>
+            <li><a href="/o-nas/holding">Grupa Holding 1</a></li>
+          </ul>
+        </li>
+        <li><a href="/nasze-standardy">Nasze standardy</a></li>
+        <li><a href="/realizacje">Nasze realizacje</a></li>
+        <li><a href="/lokale-uslugowe">Lokale usługowe</a></li>
+        <li><a href="/program-wykonczenia">Program wykończenia mieszkań</a></li>
+        <li><a href="/finansowanie">Finansowanie</a></li>
+        <li><a href="/kariera">Kariera i społecznie odpowiedzialni</a></li>
+        <li><a href="/aktualnosci">Aktualności</a></li>
+        <li><a href="/kontakt">Kontakt</a></li>
+      </ul>
+      <div class="mobile-menu__footer">
+        <a href="tel:+48123000077" class="mobile-menu__phone">12 300 00 77</a>
+        <a href="mailto:biuro@megapolis.pl" class="mobile-menu__email">biuro@megapolis.pl</a>
+      </div>
+    </div>
+  </div>
 
   <main id="main-content">
 
-    <!-- Page Hero -->
-    <section class="page-hero">
-      <div class="page-hero__bg" style="background-image: url('https://megapolis.pl/wp-content/uploads/2024/06/bg-stars3-webp.webp')"></div>
-      <div class="container page-hero__content">
-        <nav class="breadcrumbs"><a href='/'>Strona główna</a><span class="sep">/</span><span>Kariera</span></nav>
-        <h1 class="page-hero__title">Kariera</h1>
-        <p class="page-hero__subtitle">Dołącz do zespołu Megapolis. Razem tworzymy wyjątkowe przestrzenie do życia i budujemy przyszłość, z której możemy być dumni.</p>
+    <!-- HERO -->
+    <section class="kar-hero">
+      <div class="kar-hero__inner">
+        <nav class="kar-crumbs" data-rev>
+          <a href="/">Strona główna</a>
+          <span class="sep">·</span>
+          <span>Kariera</span>
+        </nav>
+        <p class="kar-eyebrow" data-rev>Dołącz do zespołu</p>
+        <h1 class="kar-hero__title" data-rev>Budujemy <em>więcej</em> niż&nbsp;miejsca.</h1>
+        <p class="kar-hero__lead" data-rev>
+          Szukamy osób z&nbsp;pasją do&nbsp;projektowania i&nbsp;realizacji przestrzeni, które&nbsp;codziennie poprawiają jakość życia. Jeśli&nbsp;interesuje Cię praca w&nbsp;firmie z&nbsp;35-letnim doświadczeniem — zapraszamy.
+        </p>
       </div>
     </section>
 
-    <!-- Dlaczego my -->
-    <section class="section">
-      <div class="container">
-        <div class="intro__grid">
-          <div class="intro__content" data-reveal>
-            <span style="font-size:12px; font-weight:500; letter-spacing:2px; text-transform:uppercase; color:var(--accent); margin-bottom:16px; display:block;">Dlaczego my</span>
-            <h2 class="section__title">Pracuj z <em>najlepszymi</em></h2>
-            <p style="font-size:16px; color:var(--white-60); line-height:1.8; margin-bottom:8px;">Megapolis to zespół pasjonatów nieruchomości, architektury i nowoczesnych technologii. Oferujemy stabilne zatrudnienie, rozwój zawodowy i przyjazną atmosferę pracy. Jesteśmy częścią Grupy Holding 1 z ponad 35-letnim doświadczeniem na rynku.</p>
-            <div style="display:flex; flex-direction:column; gap:12px; margin:24px 0;">
-              <div style="display:flex; align-items:center; gap:12px;">
-                <span style="width:24px; height:24px; border-radius:50%; background:rgba(197,165,90,0.2); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c5a55a" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                </span>
-                <span>Elastyczny czas pracy i praca hybrydowa</span>
-              </div>
-              <div style="display:flex; align-items:center; gap:12px;">
-                <span style="width:24px; height:24px; border-radius:50%; background:rgba(197,165,90,0.2); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c5a55a" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                </span>
-                <span>Prywatna opieka medyczna i karta sportowa</span>
-              </div>
-              <div style="display:flex; align-items:center; gap:12px;">
-                <span style="width:24px; height:24px; border-radius:50%; background:rgba(197,165,90,0.2); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c5a55a" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                </span>
-                <span>Budżet szkoleniowy i możliwość rozwoju</span>
-              </div>
-              <div style="display:flex; align-items:center; gap:12px;">
-                <span style="width:24px; height:24px; border-radius:50%; background:rgba(197,165,90,0.2); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c5a55a" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                </span>
-                <span>Nowoczesne biuro w centrum Krakowa</span>
-              </div>
-            </div>
-          </div>
-          <div class="intro__visual" data-reveal>
-            <div class="intro__image-wrapper">
-              <img src="https://megapolis.pl/wp-content/uploads/2024/07/deer-realizacje-5.webp" alt="Zespół Megapolis" style="border-radius:var(--radius); width:100%;" loading="lazy">
-            </div>
-          </div>
-        </div>
+    <!-- DLACZEGO MEGAPOLIS -->
+    <section class="kar-values-wrap">
+      <div class="kar-values-head">
+        <p class="kar-section-eyebrow" data-rev>Dlaczego Megapolis</p>
+        <h2 class="kar-section-title" data-rev>Co dajemy <em>ludziom naszego zespołu</em></h2>
       </div>
-    </section>
-
-    <!-- Oferty pracy -->
-    <section class="section" style="border-top:1px solid var(--white-05);">
-      <div class="container">
-        <div class="section__header section__header--center" data-reveal>
-          <span style="font-size:12px; font-weight:500; letter-spacing:2px; text-transform:uppercase; color:var(--accent); margin-bottom:16px; display:block;">Oferty pracy</span>
-          <h2 class="section__title">Aktualne <em>ogłoszenia</em></h2>
-          <p style="font-size:17px; color:var(--white-60); max-width:500px; margin:0 auto;">Ogłoszenia pobierane automatycznie z systemu eRecruiter.</p>
+      <div class="kar-values">
+        <div class="kar-value" data-rev>
+          <div class="kar-value__ico">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <h3 class="kar-value__title">Projekty o&nbsp;znaczeniu</h3>
+          <p class="kar-value__text">Pracujesz przy inwestycjach kształtujących miejski krajobraz Krakowa i&nbsp;Wrocławia — 10&nbsp;osiedli, 3&nbsp;500+ mieszkań.</p>
         </div>
-        <div class="job-list" data-reveal>
-          <a href="#" class="job-card">
-            <div class="job-card__info">
-              <h3>Specjalista ds. Sprzedaży Nieruchomości</h3>
-              <div class="job-card__meta">
-                <span>Kraków</span>
-                <span>Pełny etat</span>
-                <span>Dział Sprzedaży</span>
-              </div>
-            </div>
-            <span class="btn btn--pill">Aplikuj</span>
-          </a>
-          <a href="#" class="job-card">
-            <div class="job-card__info">
-              <h3>Kierownik Budowy</h3>
-              <div class="job-card__meta">
-                <span>Kraków</span>
-                <span>Pełny etat</span>
-                <span>Dział Realizacji</span>
-              </div>
-            </div>
-            <span class="btn btn--pill">Aplikuj</span>
-          </a>
-          <a href="#" class="job-card">
-            <div class="job-card__info">
-              <h3>Architekt — Projektant Wnętrz</h3>
-              <div class="job-card__meta">
-                <span>Kraków</span>
-                <span>Pełny etat / B2B</span>
-                <span>Dział Projektowy</span>
-              </div>
-            </div>
-            <span class="btn btn--pill">Aplikuj</span>
-          </a>
-          <a href="#" class="job-card">
-            <div class="job-card__info">
-              <h3>Specjalista ds. Marketingu</h3>
-              <div class="job-card__meta">
-                <span>Kraków / Zdalnie</span>
-                <span>Pełny etat</span>
-                <span>Dział Marketingu</span>
-              </div>
-            </div>
-            <span class="btn btn--pill">Aplikuj</span>
-          </a>
-          <a href="#" class="job-card">
-            <div class="job-card__info">
-              <h3>Inżynier Robót Instalacyjnych</h3>
-              <div class="job-card__meta">
-                <span>Kraków</span>
-                <span>Pełny etat</span>
-                <span>Dział Techniczny</span>
-              </div>
-            </div>
-            <span class="btn btn--pill">Aplikuj</span>
-          </a>
+        <div class="kar-value" data-rev>
+          <div class="kar-value__ico">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <h3 class="kar-value__title">Rozwój</h3>
+          <p class="kar-value__text">Budżet szkoleniowy, konferencje branżowe, mentoring od&nbsp;seniorów z&nbsp;30-letnim stażem w&nbsp;branży.</p>
+        </div>
+        <div class="kar-value" data-rev>
+          <div class="kar-value__ico">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <h3 class="kar-value__title">Benefity</h3>
+          <p class="kar-value__text">Prywatna opieka medyczna, karta sportowa, hybrydowy tryb pracy, dofinansowanie wakacji i&nbsp;mieszkań.</p>
+        </div>
+        <div class="kar-value" data-rev>
+          <div class="kar-value__ico">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3 class="kar-value__title">Ludzie</h3>
+          <p class="kar-value__text">Zespół ludzi, którzy&nbsp;dzielą się wiedzą, chętnie uczą młodszych i&nbsp;razem świętują sukcesy projektów.</p>
         </div>
       </div>
     </section>
 
-    <!-- CTA — spontaniczne CV -->
-    <section class="search-banner section">
-      <div class="search-banner__stars" style="background-image: url('https://megapolis.pl/wp-content/uploads/2024/06/bg-stars3-webp.webp')"></div>
-      <div class="container">
-        <div class="search-banner__content" data-reveal>
-          <h2>Nie znalazłeś <em>oferty</em>?</h2>
-          <p>Wyślij CV spontanicznie. Zawsze szukamy utalentowanych ludzi — skontaktujemy się, gdy pojawi się odpowiednia oferta.</p>
-          <div class="search-banner__buttons">
-            <a href="mailto:kariera@megapolis.pl" class="btn btn--pill">kariera@megapolis.pl</a>
-          </div>
+    <!-- OFERTY PRACY -->
+    <section class="kar-jobs-wrap">
+      <div class="kar-jobs-head">
+        <h2 class="kar-jobs-head__title" data-rev>Aktualne <em>oferty</em></h2>
+        <div class="kar-jobs-filters" id="jobFilters" data-rev>
+          <button class="kar-jobs-filter is-active" data-f="all">Wszystkie</button>
         </div>
+      </div>
+      <div class="kar-jobs" id="jobList" data-rev>
+        <p class="kar-empty">Ładowanie ofert z eRecruiter...</p>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="kar-cta-wrap">
+      <div class="kar-cta" data-rev>
+        <p class="kar-cta__eyebrow">Nie widzisz swojej roli?</p>
+        <h2 class="kar-cta__title">Wyślij <em>CV spontaniczne</em></h2>
+        <p class="kar-cta__text">
+          Szukamy nie tylko osób pod&nbsp;konkretne ogłoszenia. Jeśli&nbsp;uważasz, że&nbsp;masz coś do&nbsp;zaoferowania, prześlij CV — odezwiemy się, gdy&nbsp;pojawi się pasujące stanowisko.
+        </p>
+        <a href="mailto:kariera@megapolis.pl?subject=CV%20spontaniczne" class="kar-cta__btn">
+          Wyślij CV
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
       </div>
     </section>
 
   </main>
 
-  <!-- Footer -->
   <footer class="footer">
     <div class="container">
-      <div class="footer__top">
-        <div class="footer__brand">
-          <img src="https://megapolis.pl/wp-content/uploads/2024/06/megapolis-logo-opt.svg" alt="Megapolis" width="140" class="footer__logo">
-          <p>Tworzymy przestrzenie dla tętniących życiem społeczności.</p>
-          <span class="footer__holding">Część grupy Holding 1 — 35+ lat doświadczenia</span>
-        </div>
-        <div class="footer__links">
-          <div class="footer__col">
-            <h4>Inwestycje</h4>
-            <ul>
-              <li><a href='/inwestycja'>Osiedle OZON</a></li>
-              <li><a href="#">CLOU Lindego</a></li>
-              <li><a href="#">Nowe Osiedle Fi</a></li>
-              <li><a href="#">LINK BUNSCHA</a></li>
-            </ul>
-          </div>
-          <div class="footer__col">
-            <h4>Firma</h4>
-            <ul>
-              <li><a href='/o-nas'>O nas</a></li>
-              <li><a href='/realizacje'>Nasze realizacje</a></li>
-              <li><a href='/generalny-wykonawca'>Generalny wykonawca</a></li>
-              <li><a href='/kariera'>Kariera</a></li>
-              <li><a href='/kontakt'>Kontakt</a></li>
-            </ul>
-          </div>
-          <div class="footer__col">
-            <h4>Kontakt</h4>
-            <ul>
-              <li><a href="tel:+48123000077">12 300 00 77</a></li>
-              <li><a href="mailto:biuro@megapolis.pl">biuro@megapolis.pl</a></li>
-              <li>ul. Rzemieślnicza 26</li>
-              <li>30-403 Kraków</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="footer__bottom">
-        <p>&copy; 2026 Megapolis Sp. z o.o. Wszelkie prawa zastrzeżone.</p>
-        <div class="footer__bottom-links">
-          <a href="#">Polityka prywatności</a>
-          <a href="#">Regulamin</a>
-        </div>
+      <div class="footer__bottom" style="padding:32px 0;">
+        <p style="font-size:12px;color:var(--white-40);">&copy; 2026 Megapolis Sp. z&nbsp;o.o. &nbsp;·&nbsp; <a href="/polityka-prywatnosci" style="color:var(--white-60);">Polityka prywatności</a></p>
       </div>
     </div>
   </footer>
 
-  <!-- Chatbot Widget -->
-  <button class="chatbot-fab" id="chatbotFab" aria-label="Otwórz czat">
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-  </button>
-  <div class="chatbot-window" id="chatbotWindow">
-    <div class="chatbot-window__header">
-      <div class="chatbot-window__avatar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--bg)" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
-      <div><div class="chatbot-window__title">Asystent Megapolis</div><div class="chatbot-window__status">Online</div></div>
-    </div>
-    <div class="chatbot-window__body">
-      <div class="chatbot-msg chatbot-msg--bot">Cześć! Jestem asystentem Megapolis. Jak mogę Ci pomóc?</div>
-      <div class="chatbot-msg chatbot-msg--quick">
-        <button>Szukam mieszkania</button>
-        <button>Chcę umówić wizytę</button>
-        <button>Mam pytanie o cenę</button>
-      </div>
-    </div>
-    <div class="chatbot-window__input">
-      <input type="text" placeholder="Napisz wiadomość...">
-      <button aria-label="Wyślij"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
-    </div>
-  </div>
-
-  <!-- Back to top -->
-  <button class="back-to-top" id="backToTop" aria-label="Przewiń do góry">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
-  </button>
-
-  <!-- Sticky Mobile Contact Bar -->
-  <div class="sticky-contact">
-    <a href="tel:+48123000077" class="sticky-contact__call">Zadzwoń</a>
-    <a class='sticky-contact__search' href='/wyszukiwarka'>Szukaj mieszkania</a>
-  </div>
-
   <script src="/js/main.js"></script>
+  <script src="/js/cms.js"></script>
+
+  <!-- Scroll-reveal -->
+  <script>
+    (function () {
+      const els = document.querySelectorAll('[data-rev]');
+      if (!('IntersectionObserver' in window)) {
+        els.forEach(e => e.classList.add('is-revealed'));
+        return;
+      }
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) { e.target.classList.add('is-revealed'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      els.forEach(e => io.observe(e));
+    })();
+  </script>
+
+  <!-- Loader ofert pracy (eRecruiter) -->
+  <script>
+  (function () {
+    'use strict';
+    const urlParams = new URLSearchParams(location.search);
+    const slugParam = urlParams.get('slug');
+    async function fetchJSON(p) { const r = await fetch('/api' + p); return r.ok ? r.json() : null; }
+    function esc(s) { return String(s || '').replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+    async function loadJobs() {
+      const res = await fetchJSON('/erecruiter/jobs');
+      const jobs = (res && res.items) || [];
+      const list = document.getElementById('jobList');
+      const filtersEl = document.getElementById('jobFilters');
+      if (!jobs.length) {
+        list.innerHTML = '<p class="kar-empty">Obecnie brak aktualnych ofert. Zajrzyj wkrótce lub wyślij CV spontaniczne.</p>';
+        return;
+      }
+      const depts = Array.from(new Set(jobs.map(j => j.department).filter(Boolean))).sort();
+      depts.forEach(d => {
+        const btn = document.createElement('button');
+        btn.className = 'kar-jobs-filter';
+        btn.dataset.f = d;
+        btn.textContent = d;
+        filtersEl.appendChild(btn);
+      });
+      function renderList(filter) {
+        const items = filter === 'all' ? jobs : jobs.filter(j => j.department === filter);
+        if (!items.length) { list.innerHTML = '<p class="kar-empty">Brak ofert spełniających kryteria.</p>'; return; }
+        list.innerHTML = items.map(j => `
+          <a class="kar-job" href="/praca/${encodeURIComponent(j.slug)}">
+            <div>
+              <div class="kar-job__title">${esc(j.title)}</div>
+              <div class="kar-job__meta">
+                <span>${esc(j.city)}</span>
+                <span>${esc(j.department)}</span>
+                <span>${esc(j.type)}</span>
+                ${j.salary ? `<span>${esc(j.salary)}</span>` : ''}
+              </div>
+            </div>
+            <div class="kar-job__arrow" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </div>
+          </a>`).join('');
+      }
+      renderList('all');
+      filtersEl.querySelectorAll('.kar-jobs-filter').forEach(b => {
+        b.addEventListener('click', () => {
+          filtersEl.querySelectorAll('.kar-jobs-filter').forEach(x => x.classList.remove('is-active'));
+          b.classList.add('is-active');
+          renderList(b.dataset.f);
+        });
+      });
+    }
+    if (slugParam) { location.replace('/praca/' + encodeURIComponent(slugParam)); }
+    else loadJobs();
+  })();
+  </script>
 </body>
 </html>

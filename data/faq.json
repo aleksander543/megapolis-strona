@@ -1,0 +1,37 @@
+[
+  {
+    "id": "f1",
+    "q": "Jakie sa terminy realizacji inwestycji Megapolis?",
+    "a": "Kazda inwestycja ma indywidualny harmonogram. Szczegoly znajda Panstwo w zakladce Nasze realizacje."
+  },
+  {
+    "id": "f2",
+    "q": "Czy mozna obejrzec apartament pokazowy?",
+    "a": "Tak. Umawiamy indywidualne wizyty po wczesniejszej rezerwacji przez Calendly lub telefonicznie."
+  },
+  {
+    "id": "f3",
+    "q": "Czy oferujecie finansowanie?",
+    "a": "Wspolpracujemy z wiodacymi bankami i doradcami kredytowymi. Chetnie polecimy sprawdzonych partnerow."
+  },
+  {
+    "id": "f4",
+    "q": "Jakie standardy wykonczenia oferujecie?",
+    "a": "Standard deweloperski plus trzy pakiety wykonczenia: Classic, Signature oraz Bespoke."
+  },
+  {
+    "id": "f5",
+    "q": "Czy mozna spersonalizowac uklad mieszkania?",
+    "a": "Tak, do momentu zakonczenia etapu stanu surowego oferujemy pelna adaptacje ukladu scian wewnetrznych."
+  },
+  {
+    "id": "f6",
+    "q": "Jakie sa formy platnosci?",
+    "a": "Standardowe transze bankowe, platnosci gotowkowe oraz indywidualne harmonogramy dla klientow VIP."
+  },
+  {
+    "id": "f7",
+    "q": "Czy inwestycje posiadaja miejsca parkingowe?",
+    "a": "Wszystkie nasze inwestycje oferuja podziemny parking z mozliwoscia zakupu lub dlugoterminowego najmu miejsca."
+  }
+]

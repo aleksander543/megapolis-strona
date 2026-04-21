@@ -1,0 +1,29 @@
+[
+  {
+    "id": "n1",
+    "slug": "nowa-inwestycja-ozon",
+    "title": "Rusza sprzedaz w Osiedlu Ozon",
+    "date": "2026-04-10",
+    "excerpt": "Rozpoczelismy sprzedaz 142 apartamentow w Gdansku Wrzeszczu.",
+    "cover": "",
+    "body": "<p>Osiedle Ozon to nasza najnowsza inwestycja premium w sercu Wrzeszcza. Oddajemy do dyspozycji 142 apartamenty z pelnym zapleczem wellness, prywatnym ogrodem i podziemnym parkingiem.</p><p>Pierwsi klienci juz rezerwuja mieszkania z widokiem na park.</p>"
+  },
+  {
+    "id": "n2",
+    "slug": "nagroda-property-design-awards",
+    "title": "Nagroda Property Design Awards 2026",
+    "date": "2026-03-22",
+    "excerpt": "Nasza realizacja Linden Bunscha zdobyla nagrode w kategorii Residential.",
+    "cover": "",
+    "body": "<p>Mamy zaszczyt ogolsic, ze projekt <strong>Linden Bunscha</strong> zostal wyrozniony w prestizowym konkursie Property Design Awards 2026.</p>"
+  },
+  {
+    "id": "n3",
+    "slug": "dzien-otwarty-cloud-lindego",
+    "title": "Dzien otwarty — Cloud Lindego",
+    "date": "2026-03-05",
+    "excerpt": "Zapraszamy na dzien otwarty w apartamencie pokazowym.",
+    "cover": "",
+    "body": "<p>W sobote 15 marca otwieramy dla Panstwa apartament pokazowy w inwestycji Cloud Lindego.</p>"
+  }
+]

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="260" height="340" viewBox="0 0 260 340" fill="none">
+  <!-- Wertykalne łuki (inspiracja "columns/arches") — miejskie wertykały -->
+  <g stroke="#003C71" stroke-width="1.2" fill="none" opacity="0.22">
+    <path d="M20 340 L20 60 Q 20 30 50 30 Q 80 30 80 60 L80 340"/>
+    <path d="M60 340 L60 90 Q 60 60 90 60 Q 120 60 120 90 L120 340"/>
+    <path d="M100 340 L100 40 Q 100 10 130 10 Q 160 10 160 40 L160 340"/>
+    <path d="M140 340 L140 80 Q 140 50 170 50 Q 200 50 200 80 L200 340"/>
+    <path d="M180 340 L180 110 Q 180 80 210 80 Q 240 80 240 110 L240 340"/>
+  </g>
+</svg>

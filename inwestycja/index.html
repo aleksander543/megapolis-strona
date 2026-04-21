@@ -1,443 +1,286 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="pl" data-site="megapolis">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Osiedle OZON — Megapolis</title>
-  <meta name="description" content="Osiedle OZON - nowoczesne mieszkania 1-4 pokojowe w Krakowie. Balkony, tarasy, podziemny parking. Deweloper Megapolis.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inwestycja — Megapolis</title>
+<!-- Fonty lokalne Ubuntu (z /fonts/) — @font-face w /css/style.css -->
+<link rel="preload" href="/fonts/Ubuntu-Regular.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="/fonts/Ubuntu-Medium.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="/fonts/Ubuntu-Bold.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="stylesheet" href="/css/style.css">
+<style>
+  :root { --accent: #c9a96e; --bg: #06080e; }
+  body { background: var(--bg); color: #e9ecf3; margin: 0; }
+  .inw-hero {
+    min-height: 72vh; display: grid; place-items: center; text-align: center;
+    padding: 140px 20px 80px;
+    background: linear-gradient(180deg, rgba(6,8,14,0.4) 0%, rgba(6,8,14,0.92) 100%), #0a0c15 center/cover no-repeat;
+    position: relative;
+  }
+  .inw-hero__breadcrumbs { font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color: rgba(255,255,255,0.5); margin-bottom: 24px; }
+  .inw-hero__breadcrumbs a { color: rgba(255,255,255,0.7); text-decoration:none; }
+  .inw-hero__breadcrumbs a:hover { color: var(--accent); }
+  .inw-hero__kicker { font-size:11px; letter-spacing:0.3em; text-transform:uppercase; color: var(--accent); margin-bottom: 22px; }
+  .inw-hero__title { font-family:'Ubuntu', serif; font-size: clamp(42px, 7vw, 96px); font-weight: 500; line-height: 1.02; margin-bottom: 16px; }
+  .inw-hero__subtitle { font-family:'Ubuntu', serif; font-size: clamp(18px, 2vw, 26px); color: rgba(255,255,255,0.7); max-width: 640px; margin: 0 auto 40px; }
+  .inw-hero__badges { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 14px; }
+  .inw-hero__badge { display: inline-flex; align-items: center; padding: 6px 14px; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.8); }
+  .inw-hero__badge--gold { border-color: var(--accent); color: var(--accent); }
+  .inw-section { max-width: 1200px; margin: 0 auto; padding: 100px 20px; }
+  .inw-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 60px; align-items: start; }
+  @media (max-width: 900px) { .inw-grid { grid-template-columns: 1fr; } }
+  .inw-kicker { color: var(--accent); font-size:11px; letter-spacing:0.28em; text-transform:uppercase; margin-bottom: 12px; }
+  .inw-title { font-family:'Ubuntu', serif; font-size: clamp(30px, 4vw, 46px); margin-bottom: 22px; color: #fff; }
+  .inw-prose { font-size: 17px; line-height: 1.7; color: rgba(255,255,255,0.78); }
+  .inw-prose p { margin-bottom: 14px; }
+  .inw-prose strong { color: #fff; }
+  .inw-side-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 30px; }
+  .inw-side-card__title { font-family:'Ubuntu', serif; font-size: 18px; margin-bottom: 20px; color: var(--accent); }
+  .inw-side-card__row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 13px; }
+  .inw-side-card__row:last-child { border: 0; }
+  .inw-side-card__row-label { color: rgba(255,255,255,0.55); }
+  .inw-side-card__row-value { color: #fff; font-weight: 500; }
+  .inw-apts-wrap { margin-top: 40px; overflow-x: auto; }
+  .inw-apts-filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+  .inw-apt-filter { padding: 8px 16px; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; background: transparent; border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.65); cursor: pointer; transition: all 0.2s; }
+  .inw-apt-filter:hover { color: #fff; border-color: rgba(255,255,255,0.3); }
+  .inw-apt-filter.is-active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  .inw-apt-table { width: 100%; border-collapse: collapse; border: 1px solid rgba(255,255,255,0.06); font-size: 13px; min-width: 800px; }
+  .inw-apt-table th { text-align: left; padding: 12px 16px; background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.6); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .inw-apt-table td { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .inw-apt-table tr:hover td { background: rgba(255,255,255,0.03); }
+  .inw-apt-table__price { font-family:'Ubuntu', serif; color: var(--accent); font-size: 16px; }
+  .inw-apt-table__price--old { color: rgba(255,255,255,0.4); text-decoration: line-through; font-size: 12px; font-family: inherit; margin-right: 8px; }
+  .inw-apt-badge { display:inline-flex; padding: 2px 8px; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; }
+  .inw-apt-badge--avail { background: rgba(74,222,128,0.12); color: #4ade80; }
+  .inw-apt-badge--res { background: rgba(201,169,110,0.14); color: var(--accent); }
+  .inw-apt-badge--sold { background: rgba(248,113,113,0.12); color: #f87171; }
+  .inw-map { margin: 40px 0; background: #0a0c15; border: 1px solid rgba(255,255,255,0.08); height: 360px; display: grid; place-items: center; color: rgba(255,255,255,0.45); font-size: 13px; position: relative; overflow: hidden; }
+  .inw-map__pin { position: absolute; width: 22px; height: 22px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 0 4px rgba(201,169,110,0.3), 0 0 0 12px rgba(201,169,110,0.12); animation: pin-pulse 2s ease-in-out infinite; }
+  @keyframes pin-pulse { 0%,100%{ box-shadow: 0 0 0 4px rgba(201,169,110,0.3), 0 0 0 12px rgba(201,169,110,0.12); } 50%{ box-shadow: 0 0 0 4px rgba(201,169,110,0.45), 0 0 0 22px rgba(201,169,110,0.05); } }
+  .inw-cta { background: linear-gradient(135deg, rgba(201,169,110,0.08), rgba(201,169,110,0.02)); border-top: 1px solid rgba(201,169,110,0.15); border-bottom: 1px solid rgba(201,169,110,0.15); padding: 90px 20px; text-align: center; }
+  .inw-back { display: inline-flex; gap: 8px; color: var(--accent); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; padding: 8px 14px; border: 1px solid rgba(201,169,110,0.3); margin-bottom: 30px; text-decoration: none; }
+  .inw-err { text-align:center; padding: 120px 20px; }
+  .inw-err__title { font-family:'Ubuntu', serif; font-size: 40px; margin-bottom: 14px; }
+</style>
 </head>
 <body>
 
-  <a href="#main-content" class="skip-nav">Przejdź do treści</a>
+<div class="top-bar" data-cms="topbar">
+  <div class="container top-bar__inner">
+    <span class="top-bar__text"><span class="top-bar__dot"></span><span data-cms-field="text"></span></span>
+    <a href="#kontakt" class="top-bar__cta" data-cms-field="ctaLink"></a>
+  </div>
+</div>
 
-  <!-- Cookie Consent -->
-  <div class="cookie-banner" id="cookieBanner">
-    <div class="container cookie-banner__inner">
-      <p class="cookie-banner__text">Używamy plików cookies, aby zapewnić najlepsze doświadczenia na naszej stronie. <a href="#">Polityka prywatności</a></p>
-      <div class="cookie-banner__actions">
-        <button class="cookie-banner__btn cookie-banner__btn--accept" data-cookie="accepted">Akceptuję</button>
-        <button class="cookie-banner__btn cookie-banner__btn--reject" data-cookie="rejected">Odrzuć</button>
-      </div>
+<header class="header" style="position:sticky;top:0;z-index:50;background:rgba(6,8,14,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06)">
+  <div class="container header__inner">
+    <a class="header__logo" href="/"><div class="header__logo-mark">
+      <svg class="header__logo-icon" viewBox="-1 8 57 34" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M54.46 39.33h-3.53v-3.47h-3.64l-4.46-2.31v5.78h-2.31l-.01-16.2h-1.15v-5.78h-6.94v21.98H30.1V26.6h-2.31V9.25h-9.25v30.08h-2.32v-16.2H11.6v16.2H9.28v-5.78L3.5 35.78v3.55H-.05v1.16h4.71v-3.91l3.47-1.43v5.34h4.62v-16.2h2.32v16.2h4.62V10.41h6.94v17.35h2.32v12.73h4.62V18.51h4.63v5.78h1.16v16.2h4.63v-5.04L47 37.03l2.76-.03v3.49h4.7v-1.16z" fill="#fff"/></svg>
+      <span class="header__logo-text">Megapolis</span>
+    </div></a>
+    <nav class="header__nav">
+      <ul class="nav__list">
+        <li class="nav__item"><a class='nav__link' href='/' data-i18n="nav.home">Megapolis</a></li>
+        <li class="nav__item"><a class='nav__link' href='/realizacje' data-i18n="nav.realizacje">Nasze realizacje</a></li>
+        <li class="nav__item"><a class='nav__link' href='/kontakt' data-i18n="nav.contact">Kontakt</a></li>
+      </ul>
+    </nav>
+    <div class="header__actions">
+      <div class="lang-switch" data-lang-switcher></div>
     </div>
   </div>
+</header>
 
-  <!-- Header -->
-  <header class="header" id="header">
-    <div class="container header__inner">
-      <a class='header__logo' href='/'><img src="https://megapolis.pl/wp-content/uploads/2024/06/megapolis-logo-opt.svg" alt="Megapolis" width="160"></a>
-      <nav class="header__nav" id="mainNav"><ul class="nav__list">
-        <li class="nav__item nav__item--has-sub"><a href="#" class="nav__link">Inwestycje</a><ul class="nav__sub"><li><a href='/inwestycja'>OZON</a></li><li><a href="#">CLOU Lindego</a></li><li><a href="#">Nowe Osiedle Fi</a></li><li><a href="#">LINK BUNSCHA</a></li></ul></li>
-        <li class="nav__item"><a class='nav__link' href='/o-nas'>O nas</a></li>
-        <li class="nav__item"><a class='nav__link' href='/realizacje'>Nasze realizacje</a></li>
-        <li class="nav__item"><a class='nav__link' href='/generalny-wykonawca'>Generalny wykonawca</a></li>
-        <li class="nav__item"><a class='nav__link' href='/kariera'>Kariera</a></li>
-        <li class="nav__item"><a class='nav__link' href='/kontakt'>Kontakt</a></li>
-      </ul></nav>
-      <div class="header__actions">
-        <div class="lang-switch"><button class="lang-switch__btn lang-switch__btn--active">PL</button><span class="lang-switch__sep">|</span><button class="lang-switch__btn">EN</button></div>
-        <a class='header__cta-btn' href='/wyszukiwarka'>Szukaj mieszkania</a>
-        <button class="header__burger" id="burgerBtn" aria-label="Otw&#xF3;rz menu"><span></span><span></span><span></span></button>
-      </div>
-    </div>
-  </header>
-  <div class="mobile-menu" id="mobileMenu"><div class="mobile-menu__inner"><ul class="mobile-menu__list"><li><a href='/inwestycja'>Inwestycje</a></li><li><a href='/o-nas'>O nas</a></li><li><a href='/realizacje'>Nasze realizacje</a></li><li><a href='/generalny-wykonawca'>Generalny wykonawca</a></li><li><a href='/kariera'>Kariera</a></li><li><a href='/kontakt'>Kontakt</a></li></ul><div class="mobile-menu__footer"><a href="tel:+48123000077" class="mobile-menu__phone">12 300 00 77</a></div></div></div>
+<main id="inwRoot">
+  <p style="text-align:center;padding:140px 20px;color:rgba(255,255,255,0.5)">Ladowanie...</p>
+</main>
 
-  <main id="main-content">
-
-    <!-- ===== PAGE HERO ===== -->
-    <section class="page-hero" style="padding-bottom:120px;">
-      <div class="page-hero__bg" style="background-image: url('https://megapolis.pl/wp-content/uploads/2024/07/osiedle-ozon-megapolis-7-1024x683.webp')"></div>
-      <div class="container page-hero__content">
-        <nav class="breadcrumbs"><a href='/'>Strona g&#x142;&#xF3;wna</a><span class="sep">/</span><a href="#">Inwestycje</a><span class="sep">/</span><span>Osiedle OZON</span></nav>
-        <h1 class="page-hero__title">Osiedle OZON</h1>
-        <p class="page-hero__subtitle">Nowoczesne osiedle w&nbsp;Krakowie. Mieszkania 1-4 pokojowe z&nbsp;balkonami i&nbsp;tarasami.</p>
-        <div style="margin-top:32px; display:flex; gap:12px; flex-wrap:wrap;">
-          <a class='btn btn--pill' href='/wyszukiwarka'>Szukaj mieszkania</a>
-          <a href="#kontakt-inwestycja" class="btn btn--pill btn--outline">Um&#xF3;w wizyt&#x119;</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== KEY INFO CARDS ===== -->
-    <section class="section" style="margin-top:-60px; position:relative; z-index:5; padding-top:0;">
-      <div class="container">
-        <div data-reveal style="display:grid; grid-template-columns:repeat(4,1fr); gap:24px;">
-          <div style="background:var(--bg-card); border:1px solid var(--white-10); border-radius:12px; padding:28px; text-align:center;">
-            <span style="display:block; font-size:12px; letter-spacing:1px; text-transform:uppercase; color:var(--white-40); margin-bottom:8px;">Lokalizacja</span>
-            <strong style="font-size:20px; font-weight:700; color:var(--white);">Krak&#xF3;w, Banacha</strong>
-          </div>
-          <div style="background:var(--bg-card); border:1px solid var(--white-10); border-radius:12px; padding:28px; text-align:center;">
-            <span style="display:block; font-size:12px; letter-spacing:1px; text-transform:uppercase; color:var(--white-40); margin-bottom:8px;">Powierzchnia</span>
-            <strong style="font-size:20px; font-weight:700; color:var(--white);">od 25 do 90 m&#xB2;</strong>
-          </div>
-          <div style="background:var(--bg-card); border:1px solid var(--white-10); border-radius:12px; padding:28px; text-align:center;">
-            <span style="display:block; font-size:12px; letter-spacing:1px; text-transform:uppercase; color:var(--white-40); margin-bottom:8px;">Status</span>
-            <strong style="font-size:20px; font-weight:700; color:var(--white);">W trakcie budowy</strong>
-          </div>
-          <div style="background:var(--bg-card); border:1px solid var(--white-10); border-radius:12px; padding:28px; text-align:center;">
-            <span style="display:block; font-size:12px; letter-spacing:1px; text-transform:uppercase; color:var(--white-40); margin-bottom:8px;">Oddanie</span>
-            <strong style="font-size:20px; font-weight:700; color:var(--white);">2026</strong>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== ABOUT INVESTMENT ===== -->
-    <section class="section">
-      <div class="container">
-        <div class="intro__grid" data-reveal>
-          <div class="intro__text">
-            <h2 class="section__title">Twoja nowa <em>przestrze&#x144;</em> do &#x17C;ycia</h2>
-            <p style="font-size:16px; color:var(--white-60); line-height:1.8; margin-bottom:16px;">Osiedle OZON to nowoczesna inwestycja mieszkaniowa w&nbsp;doskona&#x142;e skomunikowanej cz&#x119;&#x15B;ci Krakowa. Przemy&#x15B;lane rozk&#x142;ady mieszka&#x144;, du&#x17C;e przeszklenia i&nbsp;funkcjonalne balkony gwarantuj&#x105; codzienny komfort na najwy&#x17C;szym poziomie.</p>
-            <p style="font-size:16px; color:var(--white-60); line-height:1.8; margin-bottom:28px;">Ka&#x17C;de mieszkanie zaprojektowano z&nbsp;my&#x15B;l&#x105; o&nbsp;naturalnym &#x15B;wietle i&nbsp;maksymalnym wykorzystaniu przestrzeni. Tereny zielone, plac zabaw i&nbsp;strefa rekreacyjna tworz&#x105; przyjazne otoczenie dla ca&#x142;ej rodziny.</p>
-            <ul style="list-style:none; padding:0; margin:0 0 32px; display:flex; flex-direction:column; gap:14px;">
-              <li style="display:flex; align-items:center; gap:12px; font-size:15px; color:var(--white-80);">
-                <span style="width:24px; height:24px; border-radius:50%; background:rgba(197,165,90,0.15); border:1px solid rgba(197,165,90,0.3); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                </span>
-                Mieszkania 1-4 pokojowe
-              </li>
-              <li style="display:flex; align-items:center; gap:12px; font-size:15px; color:var(--white-80);">
-                <span style="width:24px; height:24px; border-radius:50%; background:rgba(197,165,90,0.15); border:1px solid rgba(197,165,90,0.3); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                </span>
-                Balkony, tarasy i&nbsp;ogr&#xF3;dki
-              </li>
-              <li style="display:flex; align-items:center; gap:12px; font-size:15px; color:var(--white-80);">
-                <span style="width:24px; height:24px; border-radius:50%; background:rgba(197,165,90,0.15); border:1px solid rgba(197,165,90,0.3); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                </span>
-                Podziemny parking i&nbsp;kom&#xF3;rki lokatorskie
-              </li>
-              <li style="display:flex; align-items:center; gap:12px; font-size:15px; color:var(--white-80);">
-                <span style="width:24px; height:24px; border-radius:50%; background:rgba(197,165,90,0.15); border:1px solid rgba(197,165,90,0.3); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                </span>
-                Plac zabaw i&nbsp;tereny zielone
-              </li>
-            </ul>
-            <a href="#kontakt-inwestycja" class="btn btn--pill">Zapytaj o&nbsp;mieszkanie</a>
-          </div>
-          <div class="intro__desc">
-            <div class="intro__image-wrapper" style="border-radius:var(--radius); overflow:hidden;">
-              <img src="https://megapolis.pl/wp-content/uploads/2024/07/osiedle-ozon-megapolis-7-1024x683.webp" alt="Osiedle OZON - wizualizacja" class="intro__image" loading="lazy">
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== GALLERY ===== -->
-    <section class="section" style="border-top:1px solid var(--white-05);">
-      <div class="container">
-        <div class="section__header section__header--center" data-reveal>
-          <h2 class="section__title">Galeria <em>inwestycji</em></h2>
-          <p class="section__subtitle">Wizualizacje i&nbsp;zdj&#x119;cia z&nbsp;realizacji Osiedla OZON</p>
-        </div>
-        <div class="gallery-grid" data-reveal>
-          <div class="gallery-grid__item"><img src="https://megapolis.pl/wp-content/uploads/2024/07/osiedle-ozon-megapolis-7-1024x683.webp" alt="Osiedle OZON - widok 1" loading="lazy"></div>
-          <div class="gallery-grid__item"><img src="https://megapolis.pl/wp-content/uploads/2024/07/linkbunscha-megapolis-galeria-3.webp" alt="Osiedle OZON - widok 2" loading="lazy"></div>
-          <div class="gallery-grid__item"><img src="https://megapolis.pl/wp-content/uploads/2024/07/osiedle-fi-megapolis-galeria-3.webp" alt="Osiedle OZON - widok 3" loading="lazy"></div>
-          <div class="gallery-grid__item"><img src="https://megapolis.pl/wp-content/uploads/2024/07/deer-realizacje-5.webp" alt="Osiedle OZON - widok 4" loading="lazy"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== 3D WIDGET PLACEHOLDER ===== -->
-    <section class="section" style="background:var(--bg-surface); border-top:1px solid var(--white-05); border-bottom:1px solid var(--white-05);">
-      <div class="container">
-        <div class="section__header section__header--center" data-reveal>
-          <h2 class="section__title">Znajd&#x17A; mieszkanie w&nbsp;widoku <em>3D</em></h2>
-          <p class="section__subtitle">Skorzystaj z&nbsp;interaktywnej wyszukiwarki, by zobaczy&#x107; dost&#x119;pne mieszkania z&nbsp;lotu ptaka.</p>
-        </div>
-        <div data-reveal style="background:var(--bg-card); border:1px solid var(--white-10); border-radius:var(--radius); height:500px; display:flex; align-items:center; justify-content:center;">
-          <div style="text-align:center; color:var(--white-40);">
-            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin:0 auto 16px;"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-            <p style="font-size:16px; font-weight:500; color:var(--white-60);">Widget YSLAB — Wyszukiwarka graficzna 3D</p>
-            <p style="font-size:13px; margin-top:6px; color:var(--white-20);">Iframe z&nbsp;zewn&#x119;trznym widgetem dostawcy</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== TEXT SEARCH CTA ===== -->
-    <section class="search-banner section">
-      <div class="search-banner__stars" style="background-image: url('https://megapolis.pl/wp-content/uploads/2024/06/bg-stars3-webp.webp')"></div>
-      <div class="container">
-        <div class="search-banner__content" data-reveal>
-          <h2>Szukaj po <em>parametrach</em></h2>
-          <p>Nie znalaz&#x142;e&#x15B; w&nbsp;widoku 3D? Skorzystaj z&nbsp;wyszukiwarki tekstowej, by filtrowa&#x107; mieszkania po powierzchni, liczbie pokoi, pi&#x119;trze i&nbsp;cenie.</p>
-          <div class="search-banner__buttons">
-            <a class='btn btn--pill' href='/wyszukiwarka'>Otw&#xF3;rz wyszukiwark&#x119;</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== VIRTUAL TOUR ===== -->
-    <section class="section" style="border-top:1px solid var(--white-05);">
-      <div class="container">
-        <div class="section__header section__header--center" data-reveal>
-          <h2 class="section__title">Wirtualny <em>spacer</em></h2>
-          <p class="section__subtitle">Zwiedź mieszkanie bez wychodzenia z domu</p>
-        </div>
-        <div data-reveal style="background:var(--bg-card); border:1px solid var(--white-10); border-radius:var(--radius); height:450px; display:flex; align-items:center; justify-content:center;">
-          <div style="text-align:center; color:var(--white-40);">
-            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin:0 auto 16px;"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
-            <p style="font-size:16px; font-weight:500; color:var(--white-60);">Wirtualny spacer 360&deg;</p>
-            <p style="font-size:13px; margin-top:6px; color:var(--white-20);">Integracja z Matterport / panoram&#x105; 360</p>
-            <a href="#" class="btn btn--pill" style="margin-top:20px; font-size:13px;">Rozpocznij spacer</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== MORTGAGE CALCULATOR ===== -->
-    <section class="section" style="border-top:1px solid var(--white-05);">
-      <div class="container">
-        <div class="section__header section__header--center" data-reveal>
-          <h2 class="section__title">Kalkulator <em>kredytowy</em></h2>
-          <p class="section__subtitle">Oblicz przybli&#x17C;on&#x105; rat&#x119; miesi&#x119;czn&#x105; kredytu hipotecznego</p>
-        </div>
-        <div class="calc__grid" data-reveal id="mortgageCalc">
-          <div class="calc__form">
-            <div class="calc__field">
-              <label for="calc-price">Cena mieszkania</label>
-              <input type="range" id="calc-price" min="200000" max="1500000" step="10000" value="450000">
-              <div class="calc__field-value"><span>200 000 z&#x142;</span><strong id="calc-price-val">450 000 z&#x142;</strong><span>1 500 000 z&#x142;</span></div>
-            </div>
-            <div class="calc__field">
-              <label for="calc-down">Wk&#x142;ad w&#x142;asny</label>
-              <input type="range" id="calc-down" min="10" max="50" step="5" value="20">
-              <div class="calc__field-value"><span>10%</span><strong id="calc-down-val">20% (90 000 z&#x142;)</strong><span>50%</span></div>
-            </div>
-            <div class="calc__field">
-              <label for="calc-years">Okres kredytowania</label>
-              <input type="range" id="calc-years" min="5" max="35" step="1" value="25">
-              <div class="calc__field-value"><span>5 lat</span><strong id="calc-years-val">25 lat</strong><span>35 lat</span></div>
-            </div>
-            <div class="calc__field">
-              <label for="calc-rate">Oprocentowanie roczne</label>
-              <input type="range" id="calc-rate" min="2" max="12" step="0.1" value="7.5">
-              <div class="calc__field-value"><span>2%</span><strong id="calc-rate-val">7.5%</strong><span>12%</span></div>
-            </div>
-          </div>
-          <div class="calc__result">
-            <div class="calc__monthly" id="calc-monthly">2 516 z&#x142;</div>
-            <div class="calc__monthly-label">szacowana rata miesi&#x119;czna</div>
-            <div class="calc__details">
-              <div class="calc__detail-item"><div class="calc__detail-label">Kwota kredytu</div><div class="calc__detail-value" id="calc-loan">360 000 z&#x142;</div></div>
-              <div class="calc__detail-item"><div class="calc__detail-label">Odsetki &#x142;&#x105;cznie</div><div class="calc__detail-value" id="calc-interest">394 874 z&#x142;</div></div>
-              <div class="calc__detail-item" style="grid-column:1/-1;"><div class="calc__detail-label">Koszt ca&#x142;kowity</div><div class="calc__detail-value" id="calc-total">754 874 z&#x142;</div></div>
-            </div>
-            <p style="font-size:11px; color:var(--white-20); margin-top:20px;">* Kalkulacja ma charakter orientacyjny i&nbsp;nie stanowi oferty kredytowej.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== NEIGHBORHOOD POI ===== -->
-    <section class="section" style="border-top:1px solid var(--white-05);">
-      <div class="container">
-        <div class="section__header section__header--center" data-reveal>
-          <h2 class="section__title">S&#x105;siedztwo i&nbsp;<em>infrastruktura</em></h2>
-          <p class="section__subtitle">Co znajdziesz w&nbsp;pobli&#x17C;u Osiedla OZON</p>
-        </div>
-        <div class="poi__grid" data-reveal>
-          <div class="poi-card"><div class="poi-card__icon">&#x1F3EB;</div><div class="poi-card__name">Szko&#x142;a podstawowa</div><div class="poi-card__dist">450 m</div></div>
-          <div class="poi-card"><div class="poi-card__icon">&#x1F6D2;</div><div class="poi-card__name">Centrum handlowe</div><div class="poi-card__dist">800 m</div></div>
-          <div class="poi-card"><div class="poi-card__icon">&#x1F68C;</div><div class="poi-card__name">Przystanek tramwajowy</div><div class="poi-card__dist">200 m</div></div>
-          <div class="poi-card"><div class="poi-card__icon">&#x1F3E5;</div><div class="poi-card__name">Przychodnia zdrowia</div><div class="poi-card__dist">600 m</div></div>
-          <div class="poi-card"><div class="poi-card__icon">&#x1F333;</div><div class="poi-card__name">Park Lotnik&#xF3;w</div><div class="poi-card__dist">350 m</div></div>
-          <div class="poi-card"><div class="poi-card__icon">&#x1F37D;&#xFE0F;</div><div class="poi-card__name">Restauracje</div><div class="poi-card__dist">300 m</div></div>
-          <div class="poi-card"><div class="poi-card__icon">&#x1F3CB;&#xFE0F;</div><div class="poi-card__name">Si&#x142;ownia / fitness</div><div class="poi-card__dist">500 m</div></div>
-          <div class="poi-card"><div class="poi-card__icon">&#x1F6E3;&#xFE0F;</div><div class="poi-card__name">Zjazd na A4</div><div class="poi-card__dist">1,2 km</div></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== MAP ===== -->
-    <section class="section" style="border-top:1px solid var(--white-05);">
-      <div class="container">
-        <div class="section__header" data-reveal>
-          <h2 class="section__title">Doskona&#x142;a <em>lokalizacja</em></h2>
-          <p class="section__subtitle">Krak&#xF3;w, ul. Banacha — &#x15B;wietna komunikacja i&nbsp;pe&#x142;na infrastruktura w&nbsp;pobli&#x17C;u.</p>
-        </div>
-        <div data-reveal style="background:var(--bg-card); border:1px solid var(--white-10); border-radius:var(--radius); height:400px; display:flex; align-items:center; justify-content:center;">
-          <div style="text-align:center; color:var(--white-40);">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin:0 auto 12px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            <p style="font-size:16px; font-weight:500; color:var(--white-60);">Google Maps API</p>
-            <p style="font-size:13px; margin-top:4px; color:var(--white-20);">Krak&#xF3;w, ul. Banacha</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== FAQ ===== -->
-    <section class="section" style="border-top:1px solid var(--white-05);">
-      <div class="container">
-        <div class="section__header section__header--center" data-reveal>
-          <h2 class="section__title">Najcz&#x119;&#x15B;ciej zadawane <em>pytania</em></h2>
-        </div>
-        <div class="faq-list" data-reveal>
-          <div class="faq-item">
-            <button class="faq-item__question">Jakie s&#x105; dost&#x119;pne metra&#x17C;e mieszka&#x144;?<svg class="faq-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
-            <div class="faq-item__answer"><div class="faq-item__answer-inner">Oferujemy mieszkania od 25 m&#xB2; do 90 m&#xB2; — od kawalerek po przestronne 4-pokojowe apartamenty. Pe&#x142;n&#x105; list&#x119; dost&#x119;pnych lokali znajdziesz w&nbsp;naszej wyszukiwarce.</div></div>
-          </div>
-          <div class="faq-item">
-            <button class="faq-item__question">Kiedy planowane jest oddanie inwestycji?<svg class="faq-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
-            <div class="faq-item__answer"><div class="faq-item__answer-inner">Planowany termin oddania Osiedla OZON to 2026 rok. Budowa przebiega zgodnie z harmonogramem.</div></div>
-          </div>
-          <div class="faq-item">
-            <button class="faq-item__question">Czy jest mo&#x17C;liwo&#x15B;&#x107; finansowania kredytem?<svg class="faq-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
-            <div class="faq-item__answer"><div class="faq-item__answer-inner">Tak! Wsp&#xF3;&#x142;pracujemy z&nbsp;ekspertami finansowymi NOTUS, kt&#xF3;rzy bezp&#x142;atnie pomagaj&#x105; w&nbsp;uzyskaniu kredytu hipotecznego. Skorzystaj z&nbsp;naszego kalkulatora kredytowego powy&#x17C;ej.</div></div>
-          </div>
-          <div class="faq-item">
-            <button class="faq-item__question">Czy mo&#x17C;na obejrze&#x107; mieszkanie przed zakupem?<svg class="faq-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
-            <div class="faq-item__answer"><div class="faq-item__answer-inner">Oczywi&#x15B;cie! Zapraszamy do naszego biura sprzeda&#x17C;y, gdzie mo&#x17C;na zobaczy&#x107; mieszkanie pokazowe. Mo&#x17C;na r&#xF3;wnie&#x17C; skorzysta&#x107; z&nbsp;wirtualnego spaceru 360&#xB0; na naszej stronie.</div></div>
-          </div>
-          <div class="faq-item">
-            <button class="faq-item__question">Jakie s&#x105; koszty dodatkowe?<svg class="faq-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
-            <div class="faq-item__answer"><div class="faq-item__answer-inner">W cen&#x119; mieszkania wliczone s&#x105; miejsce parkingowe podziemne i&nbsp;kom&#xF3;rka lokatorska (w zale&#x17C;no&#x15B;ci od wybranego pakietu). Szczeg&#xF3;&#x142;y koszt&#xF3;w przedstawi nasz doradca.</div></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== CONTACT ===== -->
-    <section class="section" id="kontakt-inwestycja" style="border-top:1px solid var(--white-05);">
-      <div class="container">
-        <div class="contact__grid">
-          <div class="contact__info" data-reveal>
-            <h2 class="section__title">Zainteresowany?<br><em>Porozmawiajmy</em></h2>
-            <p class="contact__text">Um&#xF3;w spotkanie w&nbsp;naszym biurze sprzeda&#x17C;y lub zostaw kontakt — oddzwonimy w&nbsp;ci&#x105;gu 24h.</p>
-            <div class="contact__details">
-              <div class="contact__item">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
-                <a href="tel:+48123000077">12 300 00 77</a>
-              </div>
-              <div class="contact__item">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
-                <a href="mailto:ozon@megapolis.pl">ozon@megapolis.pl</a>
-              </div>
-            </div>
-            <!-- Calendly placeholder -->
-            <div style="margin-top:28px; padding:24px; background:var(--bg-card); border:1px solid var(--white-10); border-radius:var(--radius); text-align:center;">
-              <p style="font-size:14px; color:var(--white-40); margin-bottom:14px;">Um&#xF3;w wizyt&#x119; online</p>
-              <a href="#" class="btn btn--pill" style="font-size:13px;">Calendly — Zarezerwuj termin</a>
-            </div>
-          </div>
-          <div class="contact__form-wrap" data-reveal>
-            <form class="contact-form" id="contactForm" novalidate>
-              <h3>Zapytaj o&nbsp;mieszkanie</h3>
-              <div class="contact-form__row">
-                <div class="contact-form__field"><label for="c-name">Imi&#x119; i&nbsp;nazwisko *</label><input type="text" id="c-name" name="name" required></div>
-              </div>
-              <div class="contact-form__row contact-form__row--half">
-                <div class="contact-form__field"><label for="c-email">E-mail *</label><input type="email" id="c-email" name="email" required></div>
-                <div class="contact-form__field"><label for="c-phone">Telefon *</label><input type="tel" id="c-phone" name="phone" required></div>
-              </div>
-              <div class="contact-form__row">
-                <div class="contact-form__field"><label for="c-msg">Wiadomo&#x15B;&#x107;</label><textarea id="c-msg" name="message" rows="4" placeholder="Interesuje mnie mieszkanie..."></textarea></div>
-              </div>
-              <label class="contact-form__checkbox"><input type="checkbox" name="privacy" required><span>Akceptuj&#x119; <a href="#">polityk&#x119; prywatno&#x15B;ci</a> *</span></label>
-              <button type="submit" class="btn btn--pill btn--full">Wy&#x15B;lij zapytanie</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer__top">
-        <div class="footer__brand">
-          <img src="https://megapolis.pl/wp-content/uploads/2024/06/megapolis-logo-opt.svg" alt="Megapolis" width="140" class="footer__logo">
-          <p>Tworzymy przestrzenie dla t&#x119;tni&#x105;cych &#x17C;yciem spo&#x142;eczno&#x15B;ci.</p>
-          <span class="footer__holding">Cz&#x119;&#x15B;&#x107; grupy Holding 1 — 35+ lat do&#x15B;wiadczenia</span>
-        </div>
-        <div class="footer__links">
-          <div class="footer__col">
-            <h4>Inwestycje</h4>
-            <ul>
-              <li><a href='/inwestycja'>Osiedle OZON</a></li>
-              <li><a href="#">CLOU Lindego</a></li>
-              <li><a href="#">Nowe Osiedle Fi</a></li>
-              <li><a href="#">LINK BUNSCHA</a></li>
-            </ul>
-          </div>
-          <div class="footer__col">
-            <h4>Firma</h4>
-            <ul>
-              <li><a href='/o-nas'>O nas</a></li>
-              <li><a href='/realizacje'>Nasze realizacje</a></li>
-              <li><a href='/generalny-wykonawca'>Generalny wykonawca</a></li>
-              <li><a href='/kariera'>Kariera</a></li>
-              <li><a href='/kontakt'>Kontakt</a></li>
-            </ul>
-          </div>
-          <div class="footer__col">
-            <h4>Kontakt</h4>
-            <ul>
-              <li><a href="tel:+48123000077">12 300 00 77</a></li>
-              <li><a href="mailto:biuro@megapolis.pl">biuro@megapolis.pl</a></li>
-              <li>ul. Rzemie&#x15B;lnicza 26</li>
-              <li>30-403 Krak&#xF3;w</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="footer__bottom">
-        <p>&copy; 2026 Megapolis Sp.&nbsp;z&nbsp;o.o. Wszelkie prawa zastrze&#x17C;one.</p>
-        <div class="footer__bottom-links">
-          <a href="#">Polityka prywatno&#x15B;ci</a>
-          <a href="#">Regulamin</a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Chatbot Widget -->
-  <button class="chatbot-fab" id="chatbotFab" aria-label="Otwórz czat">
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-  </button>
-  <div class="chatbot-window" id="chatbotWindow">
-    <div class="chatbot-window__header">
-      <div class="chatbot-window__avatar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--bg)" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
-      <div><div class="chatbot-window__title">Asystent Megapolis</div><div class="chatbot-window__status">Online</div></div>
-    </div>
-    <div class="chatbot-window__body">
-      <div class="chatbot-msg chatbot-msg--bot">Cześć! Jestem asystentem Megapolis. Jak mogę Ci pomóc?</div>
-      <div class="chatbot-msg chatbot-msg--quick">
-        <button>Szukam mieszkania</button>
-        <button>Chcę umówić wizytę</button>
-        <button>Mam pytanie o cenę</button>
-      </div>
-    </div>
-    <div class="chatbot-window__input">
-      <input type="text" placeholder="Napisz wiadomość...">
-      <button aria-label="Wyślij"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
-    </div>
+<footer class="footer" style="border-top:1px solid rgba(255,255,255,0.06);padding:40px 0;text-align:center">
+  <div class="container">
+    <p style="color:rgba(255,255,255,0.5);font-size:13px">&copy; 2026 Megapolis &middot; <a href="/" style="color:var(--accent)">Strona glowna</a></p>
   </div>
+</footer>
 
-  <!-- Back to top -->
-  <button class="back-to-top" id="backToTop" aria-label="Przewiń do góry">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
-  </button>
+<script src="/js/cms.js"></script>
+<script>
+(function () {
+  'use strict';
+  const pathMatch = location.pathname.match(/^\/(inwestycja|realizacja)\/([^\/]+)/);
+  const urlParams = new URLSearchParams(location.search);
+  const slug = (pathMatch && pathMatch[2]) || urlParams.get('slug');
 
-  <!-- Sticky Mobile Contact Bar -->
-  <div class="sticky-contact">
-    <a href="tel:+48123000077" class="sticky-contact__call">Zadzwoń</a>
-    <a class='sticky-contact__search' href='/wyszukiwarka'>Szukaj mieszkania</a>
-  </div>
+  async function fetchJSON(p) { const r = await fetch('/api' + p); return r.ok ? r.json() : null; }
+  function esc(s) { return String(s || '').replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+  function fmtPrice(p) { return (p || 0).toLocaleString('pl-PL') + ' PLN'; }
+  function fmtStatus(s) { return s === 'available' ? 'Dostepne' : s === 'reserved' ? 'Zarezerwowane' : 'Sprzedane'; }
 
-  <script src="/js/main.js"></script>
+  async function render() {
+    const root = document.getElementById('inwRoot');
+    if (!slug) {
+      root.innerHTML = `<div class="inw-err"><h1 class="inw-err__title">Brak inwestycji</h1><p style="color:rgba(255,255,255,0.65)">Wybierz inwestycje z listy.</p><a class="btn btn--pill btn--outline" href="/realizacje">Zobacz realizacje</a></div>`;
+      return;
+    }
+    const [realizacje, apartments] = await Promise.all([
+      fetchJSON('/content/realizacje'),
+      fetchJSON('/thtg/apartments?investment=' + encodeURIComponent(slug)),
+    ]);
+    const rlz = (realizacje || []).find(r => r.slug === slug);
+    if (!rlz) {
+      root.innerHTML = `<div class="inw-err"><h1 class="inw-err__title">Nie znaleziono</h1><p style="color:rgba(255,255,255,0.65)">Inwestycja <code>${esc(slug)}</code> nie istnieje.</p><a class="btn btn--pill btn--outline" href="/realizacje">Zobacz wszystkie</a></div>`;
+      return;
+    }
+    document.title = rlz.title + ' — Megapolis';
+    const apts = (apartments && apartments.items) || [];
+    const avail = apts.filter(a => a.status === 'available');
+    const fromPrice = avail.length ? avail.reduce((m, a) => a.price < m ? a.price : m, Infinity) : 0;
+    const avgPrice = avail.length ? Math.round(avail.reduce((s, a) => s + a.price / a.area, 0) / avail.length) : 0;
+
+    root.innerHTML = `
+      <section class="inw-hero" ${rlz.cover ? `style="background-image:linear-gradient(180deg, rgba(6,8,14,0.3) 0%, rgba(6,8,14,0.92) 100%), url('${rlz.cover}')"` : ''}>
+        <div style="position:relative;z-index:2">
+          <div class="inw-hero__breadcrumbs"><a href="/">Megapolis</a> / <a href="/realizacje">Realizacje</a> / ${esc(rlz.title)}</div>
+          <div class="inw-hero__kicker">${esc(rlz.city)} &middot; ${rlz.year}</div>
+          <h1 class="inw-hero__title">${esc(rlz.title)}</h1>
+          <p class="inw-hero__subtitle">${esc((rlz.description || '').replace(/<[^>]+>/g,'').slice(0, 180))}</p>
+          <div class="inw-hero__badges">
+            <span class="inw-hero__badge inw-hero__badge--gold">${rlz.status === 'building' ? 'W budowie' : 'Zrealizowane'}</span>
+            <span class="inw-hero__badge">${rlz.units} lokali</span>
+            <span class="inw-hero__badge">${esc(rlz.area || '')}</span>
+            <span class="inw-hero__badge">${esc(rlz.type)}</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="inw-section">
+        <a class="inw-back" href="/realizacje">&larr; Wszystkie inwestycje</a>
+        <div class="inw-grid">
+          <div>
+            <div class="inw-kicker">O inwestycji</div>
+            <h2 class="inw-title">${esc(rlz.title)}</h2>
+            <div class="inw-prose">${rlz.description || '<p>Opis inwestycji jest w trakcie przygotowania.</p>'}</div>
+            <div class="inw-map"><div class="inw-map__pin" style="top:50%;left:50%;transform:translate(-50%,-50%)"></div><span>Mapa Google Maps &middot; ${rlz.lat}, ${rlz.lng}</span></div>
+          </div>
+          <aside>
+            <div class="inw-side-card">
+              <div class="inw-side-card__title">Parametry</div>
+              <div class="inw-side-card__row"><span class="inw-side-card__row-label">Miasto</span><span class="inw-side-card__row-value">${esc(rlz.city)}</span></div>
+              <div class="inw-side-card__row"><span class="inw-side-card__row-label">Liczba lokali</span><span class="inw-side-card__row-value">${rlz.units}</span></div>
+              <div class="inw-side-card__row"><span class="inw-side-card__row-label">Metraz</span><span class="inw-side-card__row-value">${esc(rlz.area || '—')}</span></div>
+              <div class="inw-side-card__row"><span class="inw-side-card__row-label">Typ</span><span class="inw-side-card__row-value">${esc(rlz.type)}</span></div>
+              <div class="inw-side-card__row"><span class="inw-side-card__row-label">Rok</span><span class="inw-side-card__row-value">${rlz.year}</span></div>
+              <div class="inw-side-card__row"><span class="inw-side-card__row-label">Dostepne</span><span class="inw-side-card__row-value" style="color:var(--accent)">${avail.length}</span></div>
+              ${fromPrice ? `<div class="inw-side-card__row"><span class="inw-side-card__row-label">Od</span><span class="inw-side-card__row-value" style="color:var(--accent)">${fmtPrice(fromPrice)}</span></div>` : ''}
+              ${avgPrice ? `<div class="inw-side-card__row"><span class="inw-side-card__row-label">Sr. cena/m&sup2;</span><span class="inw-side-card__row-value">${avgPrice.toLocaleString('pl-PL')} PLN</span></div>` : ''}
+            </div>
+            <div style="margin-top:20px"><a href="#kontakt" class="btn btn--pill btn--full">Umow wizyte</a></div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="inw-section" id="mieszkania">
+        <div class="inw-kicker">Mieszkania &middot; dane THTG</div>
+        <h2 class="inw-title">Dostepne lokale</h2>
+        <div class="inw-apts-filters" id="inwFilters">
+          <button class="inw-apt-filter is-active" data-f="all">Wszystkie (${apts.length})</button>
+          <button class="inw-apt-filter" data-f="available">Dostepne (${apts.filter(a=>a.status==='available').length})</button>
+          <button class="inw-apt-filter" data-f="reserved">Zarezerwowane (${apts.filter(a=>a.status==='reserved').length})</button>
+          <button class="inw-apt-filter" data-f="sold">Sprzedane (${apts.filter(a=>a.status==='sold').length})</button>
+          <button class="inw-apt-filter" data-f="promo">Promocja</button>
+        </div>
+        <div class="inw-apts-wrap">
+          <table class="inw-apt-table">
+            <thead><tr><th>Nr</th><th>Budynek</th><th>Pokoje</th><th>Metraz</th><th>Pietro</th><th>Strona</th><th>Cena</th><th>Status</th><th></th></tr></thead>
+            <tbody id="inwAptBody">
+              ${apts.map(a => {
+                const cls = a.status === 'available' ? 'avail' : a.status === 'reserved' ? 'res' : 'sold';
+                return `<tr data-status="${a.status}" data-promo="${a.priceOld ? '1' : '0'}">
+                  <td>M.${esc(a.building)}.${a.floor}.${a.id.replace(/^a/,'')}</td>
+                  <td>${esc(a.building)}</td>
+                  <td>${a.rooms}</td>
+                  <td>${a.area} m&sup2;</td>
+                  <td>${a.floor}</td>
+                  <td>${esc(a.direction || '')}</td>
+                  <td><span class="inw-apt-table__price">${a.priceOld ? `<span class="inw-apt-table__price--old">${fmtPrice(a.priceOld)}</span>` : ''}${fmtPrice(a.price)}</span></td>
+                  <td><span class="inw-apt-badge inw-apt-badge--${cls}">${fmtStatus(a.status)}</span></td>
+                  <td>${a.status === 'available' ? `<button class="btn btn--ghost btn--sm" data-reserve="${a.id}">Rezerwuj</button>` : ''}</td>
+                </tr>`;
+              }).join('') || '<tr><td colspan="9" style="padding:40px;text-align:center;color:rgba(255,255,255,0.5)">Brak lokali w bazie.</td></tr>'}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="inw-cta" id="kontakt">
+        <div class="inw-kicker">Kontakt</div>
+        <h2 class="inw-title">Zapytaj o oferte</h2>
+        <p style="color:rgba(255,255,255,0.7);max-width:600px;margin:0 auto 40px">Skontaktuj sie z doradca sprzedazy i umow prywatna prezentacje.</p>
+        <form class="contact-form" style="max-width:560px;margin:0 auto;text-align:left" data-cms-form="reservation" novalidate>
+          <input type="hidden" name="subject" id="inwSubject" value="Zapytanie o ${esc(rlz.title)}">
+          <input type="hidden" name="apartmentId" id="inwApt" value="">
+          <div class="contact-form__row contact-form__row--half">
+            <div class="contact-form__field"><label>Imie i nazwisko *</label><input type="text" name="name" required></div>
+            <div class="contact-form__field"><label>Telefon</label><input type="tel" name="phone"></div>
+          </div>
+          <div class="contact-form__row"><div class="contact-form__field"><label>Email *</label><input type="email" name="email" required></div></div>
+          <div class="contact-form__row"><div class="contact-form__field"><label>Wiadomosc</label><textarea name="message" rows="3"></textarea></div></div>
+          <label class="contact-form__checkbox"><input type="checkbox" name="privacy" required><span>Akceptuje polityke prywatnosci.</span></label>
+          <button type="submit" class="btn btn--pill btn--full">Wyslij zapytanie</button>
+        </form>
+      </section>
+    `;
+
+    // Filter handling
+    document.querySelectorAll('#inwFilters .inw-apt-filter').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#inwFilters .inw-apt-filter').forEach(b => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        const f = btn.dataset.f;
+        document.querySelectorAll('#inwAptBody tr').forEach(tr => {
+          if (!tr.dataset.status) return;
+          const match = f === 'all' || (f === 'promo' ? tr.dataset.promo === '1' : tr.dataset.status === f);
+          tr.style.display = match ? '' : 'none';
+        });
+      });
+    });
+    // Reserve buttons
+    document.querySelectorAll('[data-reserve]').forEach(b => {
+      b.addEventListener('click', () => {
+        document.getElementById('inwApt').value = b.dataset.reserve;
+        document.getElementById('inwSubject').value = 'Rezerwacja mieszkania ' + b.dataset.reserve + ' w ' + rlz.title;
+        document.getElementById('kontakt').scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+    // Form submission
+    const form = root.querySelector('form[data-cms-form]');
+    if (form && !form.dataset.cmsWired) {
+      form.dataset.cmsWired = '1';
+      form.addEventListener('submit', async e => {
+        e.preventDefault();
+        const fd = new FormData(form); const body = {};
+        fd.forEach((v,k) => body[k] = v);
+        body.formType = 'reservation'; body.sourcePage = '/inwestycja/' + slug; body.site = 'megapolis';
+        const btn = form.querySelector('[type="submit"]'); if (btn) btn.disabled = true;
+        try {
+          const res = await fetch('/api/forms/submit', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+          if (!res.ok) throw new Error('error');
+          form.reset();
+          let fb = form.querySelector('.cms-form-feedback');
+          if (!fb) { fb = document.createElement('div'); fb.className='cms-form-feedback'; form.appendChild(fb); }
+          fb.className='cms-form-feedback cms-form-feedback--success';
+          fb.textContent='Zapytanie wyslane. Skontaktujemy sie w ciagu 24h.';
+        } catch {
+          let fb = form.querySelector('.cms-form-feedback');
+          if (!fb) { fb = document.createElement('div'); fb.className='cms-form-feedback'; form.appendChild(fb); }
+          fb.className='cms-form-feedback cms-form-feedback--error';
+          fb.textContent='Blad. Sprobuj ponownie.';
+        } finally { if (btn) btn.disabled = false; }
+      });
+    }
+  }
+  render();
+})();
+</script>
 </body>
 </html>

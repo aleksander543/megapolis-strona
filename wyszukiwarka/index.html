@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wyszukiwarka mieszkań — Megapolis</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <!-- Fonty lokalne Ubuntu (z /fonts/) — @font-face w /css/style.css -->
+  <link rel="preload" href="/fonts/Ubuntu-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/fonts/Ubuntu-Medium.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="/css/style.css">
   <style>
     .search-page { padding-top: 120px; }
@@ -30,15 +30,131 @@
     .status-badge--sold { background:var(--white-05); color:var(--white-40); }
     .direction-badge { display:inline-flex; align-items:center; gap:4px; font-size:12px; color:var(--white-40); }
 
+    /* === Layout 2-kolumnowy: filtry po lewej + kompas po prawej === */
+    .search-filters--split {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 40px;
+      align-items: center;              /* kompas wycentrowany pionowo */
+    }
+    .search-filters__split-main { min-width: 0; }
+    .search-filters__split-side {
+      flex-shrink: 0;
+      align-self: center;
+    }
+
+    /* === Strona świata (róża wiatrów 3×3) i Przynależności === */
+    /* Markowa paleta: Mega Night Sky #003C71, Mega Moon #B7C9D3, grafit #333 */
+    .search-filters__features { padding-top:20px; margin-bottom:8px; border-top:1px solid var(--white-10); }
+    .search-filters__compass { padding:0; }           /* kompas jest już w asidzie, bez górnej kreski */
+    .search-filters__grouplabel {
+      display:block; font-size:11px; letter-spacing:3px; text-transform:uppercase;
+      color:#B7C9D3;                    /* Mega Moon — tytuły na dark bg */
+      margin-bottom:14px; text-align:center; font-weight:700;
+    }
+
+    /* Róża wiatrów 3×3 */
+    .compass-rose {
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      grid-template-rows:repeat(3, 1fr);
+      gap:8px;
+      width:280px;
+      aspect-ratio:1 / 1;
+      margin:0 auto;
+    }
+    .rose-btn {
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      gap:4px; padding:8px 4px;
+      background:#eae6dc;
+      border:1.5px solid #c7c0ae;
+      border-radius:10px;
+      color:#333;                       /* grafit */
+      font-family:inherit;
+      cursor:pointer;
+      transition:all 0.2s ease;
+    }
+    .rose-btn:hover {
+      background:#ddd8cb; border-color:#003C71;
+      transform:translateY(-1px);
+    }
+    .rose-btn.is-active {
+      background:#003C71;               /* Mega Night Sky */
+      border-color:#003C71;
+      color:#fff;
+    }
+    .rose-btn__arrow { width:24px; height:24px; color:#333; stroke:#333; }
+    .rose-btn.is-active .rose-btn__arrow { color:#fff; stroke:#fff; }
+    .rose-btn__lbl { font-size:11px; font-weight:700; letter-spacing:0.6px; color:#333; }
+    .rose-btn.is-active .rose-btn__lbl { color:#fff; }
+
+    /* Grid placement — matchowane przez modyfikatory klasy */
+    .rose-btn--nw { grid-area:1 / 1; }
+    .rose-btn--n  { grid-area:1 / 2; }
+    .rose-btn--ne { grid-area:1 / 3; }
+    .rose-btn--w  { grid-area:2 / 1; }
+    .rose-center  { grid-area:2 / 2; }
+    .rose-btn--e  { grid-area:2 / 3; }
+    .rose-btn--sw { grid-area:3 / 1; }
+    .rose-btn--s  { grid-area:3 / 2; }
+    .rose-btn--se { grid-area:3 / 3; }
+
+    .rose-center {
+      display:flex; align-items:center; justify-content:center;
+      color:#003C71;                    /* Mega Night Sky — dekoracyjna róża */
+      pointer-events:none; opacity:0.6;
+    }
+    .rose-center svg { width:52px; height:52px; }
+
+    /* Przynależności — cream + grafit */
+    .feature-grid {
+      display:flex; flex-wrap:wrap; gap:12px;
+      justify-content:center;
+    }
+    .feature-btn {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:11px 20px; border-radius:9999px;
+      background:#eae6dc;
+      border:1.5px solid #c7c0ae;
+      color:#333;                       /* grafit */
+      font-size:14px; font-weight:500;
+      font-family:inherit; cursor:pointer; transition:all 0.2s ease;
+    }
+    .feature-btn svg { flex:0 0 auto; color:#333; stroke:#333; opacity:1; }
+    .feature-btn:hover {
+      background:#ddd8cb; border-color:#003C71;
+      transform:translateY(-1px);
+    }
+    .feature-btn.is-active {
+      background:#003C71;               /* Mega Night Sky */
+      border-color:#003C71;
+      color:#fff;
+    }
+    .feature-btn.is-active svg { color:#fff; stroke:#fff; }
+
+    @media (max-width: 960px) {
+      /* Na mniejszych ekranach kompas schodzi pod filtry */
+      .search-filters--split { grid-template-columns: 1fr; gap: 24px; }
+      .search-filters__split-side { justify-self: center; }
+    }
     @media (max-width: 768px) {
       .search-filters__grid { grid-template-columns: 1fr 1fr; }
       .search-filters__extra { grid-template-columns: 1fr 1fr; }
       .results-table { display: block; overflow-x: auto; }
       .search-filters__actions { flex-direction: column; }
+      .compass-rose { width: 260px; gap: 8px; }
+      .rose-btn__arrow { width: 20px; height: 20px; }
+      .rose-center svg { width: 42px; height: 42px; }
     }
     @media (max-width: 480px) {
       .search-filters__grid { grid-template-columns: 1fr; }
       .search-filters__extra { grid-template-columns: 1fr; }
+      .feature-btn { font-size:13px; padding:9px 16px; }
+      .compass-rose { width: 220px; gap: 6px; }
+      .rose-btn { padding: 6px 2px; }
+      .rose-btn__arrow { width: 16px; height: 16px; }
+      .rose-btn__lbl { font-size: 10px; }
+      .rose-center svg { width: 34px; height: 34px; }
     }
   </style>
 </head>
@@ -87,12 +203,13 @@
           <span class="sep">/</span>
           <span>Wyszukiwarka mieszka&#324;</span>
         </nav>
-        <h1 style="font-size:36px; font-weight:700; color:var(--white); margin-bottom:8px;">Wyszukiwarka mieszka&#324;</h1>
+        <h1 style="font-size:36px; font-weight:700; color:#B7C9D3; margin-bottom:8px;">Wyszukiwarka mieszka&#324;</h1>
         <p style="font-size:16px; color:var(--white-60);">Znajd&#378; idealne mieszkanie filtruj&#261;c po lokalizacji, powierzchni, cenie i wielu innych parametrach.</p>
       </div>
 
       <!-- Filters -->
-      <div class="search-filters">
+      <div class="search-filters search-filters--split">
+       <div class="search-filters__split-main">
         <div class="search-filters__grid">
           <div class="filter-field">
             <label>Miasto</label>
@@ -155,31 +272,39 @@
         <!-- Extra filters -->
         <div class="search-filters__extra">
           <div class="filter-field">
-            <label>Strona &#347;wiata</label>
-            <select>
-              <option value="">Dowolna</option>
-              <option value="N">P&#243;&#322;noc</option>
-              <option value="S">Po&#322;udnie</option>
-              <option value="E">Wsch&#243;d</option>
-              <option value="W">Zach&#243;d</option>
-            </select>
-          </div>
-          <div class="filter-field">
-            <label>Przyleg&#322;o&#347;ci</label>
-            <select>
-              <option value="">Dowolne</option>
-              <option value="balkon">Balkon</option>
-              <option value="taras">Taras</option>
-              <option value="antresola">Antresola</option>
-            </select>
-          </div>
-          <div class="filter-field">
             <label>Status</label>
             <select>
               <option value="">Wszystkie</option>
               <option value="available">Dost&#281;pne</option>
               <option value="reserved">Zarezerwowane</option>
             </select>
+          </div>
+        </div>
+
+        <!-- Przynależności — checkbox pills -->
+        <div class="search-filters__features">
+          <label class="search-filters__grouplabel">Przynale&#380;no&#347;ci</label>
+          <div class="feature-grid" role="group" aria-label="Wybierz przynale&#380;no&#347;ci mieszkania">
+            <button type="button" class="feature-btn" data-feat="balkon">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="10" width="16" height="11" rx="1"/><path d="M4 14h16M9 14v7M15 14v7"/></svg>
+              Balkon
+            </button>
+            <button type="button" class="feature-btn" data-feat="loggia">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h16v16H4z"/><path d="M4 12h10v8"/></svg>
+              Loggia
+            </button>
+            <button type="button" class="feature-btn" data-feat="ogrodek">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22V10m0 0c-4 0-7-3-7-6 3 0 7 1 7 6zm0 0c4 0 7-3 7-6-3 0-7 1-7 6z"/><path d="M3 22h18"/></svg>
+              Ogr&#243;dek
+            </button>
+            <button type="button" class="feature-btn" data-feat="taras">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 20h18M5 20V8h14v12M5 14h14M9 8v12M15 8v12"/></svg>
+              Taras
+            </button>
+            <button type="button" class="feature-btn" data-feat="wykusz">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20V4h16v16"/><path d="M4 20h16M8 8v12M16 8v12M8 8l8 0"/></svg>
+              Wykusz
+            </button>
           </div>
         </div>
 
@@ -190,8 +315,6 @@
             Wszystkie
           </button>
           <button class="filter-tag">Promocje</button>
-          <button class="filter-tag">Z balkonem</button>
-          <button class="filter-tag">Z tarasem</button>
           <button class="filter-tag">Parter</button>
           <button class="filter-tag">Ostatnie pi&#281;tro</button>
         </div>
@@ -200,6 +323,59 @@
           <button class="btn btn--pill" style="background:transparent; color:var(--white-40); border-color:var(--white-10);">Wyczy&#347;&#263; filtry</button>
           <button class="btn btn--pill" style="background:var(--accent); color:var(--bg); border-color:var(--accent);">Szukaj</button>
         </div>
+       </div><!-- /search-filters__split-main -->
+
+       <!-- Aside: kompas po prawej, vertical-center względem panelu -->
+       <aside class="search-filters__split-side" aria-label="Strona &#347;wiata">
+        <div class="search-filters__compass">
+          <label class="search-filters__grouplabel">Strona &#347;wiata</label>
+          <div class="compass-rose" role="group" aria-label="Wybierz strony &#347;wiata">
+            <button type="button" class="rose-btn rose-btn--nw" data-dir="NW" title="P&#243;&#322;nocny zach&#243;d" aria-pressed="false">
+              <svg class="rose-btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="17" y1="17" x2="7" y2="7"/><polyline points="7 14 7 7 14 7"/></svg>
+              <span class="rose-btn__lbl">Pn-Z</span>
+            </button>
+            <button type="button" class="rose-btn rose-btn--n" data-dir="N" title="P&#243;&#322;noc" aria-pressed="false">
+              <svg class="rose-btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="6 11 12 5 18 11"/></svg>
+              <span class="rose-btn__lbl">Pn</span>
+            </button>
+            <button type="button" class="rose-btn rose-btn--ne" data-dir="NE" title="P&#243;&#322;nocny wsch&#243;d" aria-pressed="false">
+              <svg class="rose-btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="10 7 17 7 17 14"/></svg>
+              <span class="rose-btn__lbl">Pn-W</span>
+            </button>
+
+            <button type="button" class="rose-btn rose-btn--w" data-dir="W" title="Zach&#243;d" aria-pressed="false">
+              <svg class="rose-btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="11 6 5 12 11 18"/></svg>
+              <span class="rose-btn__lbl">Z</span>
+            </button>
+            <div class="rose-center" aria-hidden="true">
+              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+                <circle cx="24" cy="24" r="2" fill="currentColor"/>
+                <path d="M24 6 L28 22 L24 20 L20 22 Z" fill="currentColor"/>
+                <path d="M24 42 L28 26 L24 28 L20 26 Z" opacity=".35"/>
+                <path d="M6 24 L22 20 L20 24 L22 28 Z" opacity=".5"/>
+                <path d="M42 24 L26 20 L28 24 L26 28 Z" opacity=".5"/>
+              </svg>
+            </div>
+            <button type="button" class="rose-btn rose-btn--e" data-dir="E" title="Wsch&#243;d" aria-pressed="false">
+              <svg class="rose-btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
+              <span class="rose-btn__lbl">W</span>
+            </button>
+
+            <button type="button" class="rose-btn rose-btn--sw" data-dir="SW" title="Po&#322;udniowy zach&#243;d" aria-pressed="false">
+              <svg class="rose-btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="17" y1="7" x2="7" y2="17"/><polyline points="7 10 7 17 14 17"/></svg>
+              <span class="rose-btn__lbl">Pd-Z</span>
+            </button>
+            <button type="button" class="rose-btn rose-btn--s" data-dir="S" title="Po&#322;udnie" aria-pressed="false">
+              <svg class="rose-btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="6 13 12 19 18 13"/></svg>
+              <span class="rose-btn__lbl">Pd</span>
+            </button>
+            <button type="button" class="rose-btn rose-btn--se" data-dir="SE" title="Po&#322;udniowy wsch&#243;d" aria-pressed="false">
+              <svg class="rose-btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="7" x2="17" y2="17"/><polyline points="17 10 17 17 10 17"/></svg>
+              <span class="rose-btn__lbl">Pd-W</span>
+            </button>
+          </div>
+        </div>
+       </aside><!-- /search-filters__split-side -->
       </div>
 
       <!-- Results Header -->
@@ -503,6 +679,14 @@
       tag.addEventListener('click', () => {
         document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
         tag.classList.add('active');
+      });
+    });
+
+    // Strony świata (róża wiatrów) + Przynależności — multi-toggle
+    document.querySelectorAll('.rose-btn, .feature-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.classList.toggle('is-active');
+        btn.setAttribute('aria-pressed', btn.classList.contains('is-active') ? 'true' : 'false');
       });
     });
   </script>

@@ -1,0 +1,62 @@
+# Node / npm
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# OS
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Claude Code — worktrees + agent workspace
+.claude/worktrees/
+.claude/launch.json
+.claude/settings.local.json
+.claude/hooks/
+.claude/todos/
+.claude/*.jsonl
+
+# Netlify
+.netlify/
+
+# Build output
+dist/
+build/
+.next/
+out/
+
+# Logs
+*.log
+logs/
+
+# Form submissions (wrażliwe dane użytkowników — nie commitować!)
+data/submissions/
+
+# Temporary / scratch files
+extract-docx.ps1
+megapolis-spec-unpacked/
+megapolis-spec.txt
+*.tmp
+*.bak
+
+# Large binary video — 94MB, blisko limitu GitHuba (100MB)
+# Jeśli potrzeba w repo — użyj Git LFS: git lfs track "*.mp4"
+media/hero-intro.mp4
+media/hero.mp4

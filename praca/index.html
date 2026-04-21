@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="pl" data-site="megapolis">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oferta pracy — Megapolis</title>
+  <meta name="description" content="Aplikuj na stanowisko w Megapolis. Dołącz do zespołu deweloperskiego z 35-letnim doświadczeniem.">
+  <link rel="preload" href="/fonts/Ubuntu-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/fonts/Ubuntu-Medium.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/fonts/Ubuntu-Bold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .job-page { background: #f4f2ec; color: var(--graphite); }
+
+    /* HERO oferty */
+    .job-hero {
+      position: relative;
+      padding: 160px 0 60px;
+      background: linear-gradient(180deg, #ffffff 0%, #f4f2ec 100%);
+      overflow: hidden;
+    }
+    .job-hero::before {
+      content: ''; position: absolute; top: -40px; right: -60px;
+      width: 420px; height: 420px;
+      background: url('/media/decor/arcs.svg') no-repeat top right;
+      background-size: contain;
+      opacity: 0.32; pointer-events: none;
+    }
+    .job-hero::after {
+      content: ''; position: absolute; bottom: -40px; left: -40px;
+      width: 320px; height: 240px;
+      background: url('/media/decor/curve.svg') no-repeat bottom left;
+      background-size: contain;
+      opacity: 0.7; pointer-events: none;
+    }
+    .job-hero__inner {
+      position: relative; z-index: 1;
+      max-width: 1080px; margin: 0 auto;
+      padding: 0 24px;
+    }
+    .job-breadcrumbs {
+      font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--graphite); opacity: 0.55;
+      margin-bottom: 28px;
+    }
+    .job-breadcrumbs a { color: var(--brand-night); text-decoration: none; }
+    .job-breadcrumbs a:hover { text-decoration: underline; }
+    .job-breadcrumbs .sep { margin: 0 10px; opacity: 0.5; }
+    .job-hero__kicker {
+      display: inline-flex; align-items: center; gap: 12px;
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-night);
+      margin-bottom: 20px;
+    }
+    .job-hero__kicker::before { content: ''; width: 36px; height: 1px; background: var(--brand-night); }
+    .job-hero__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -1px;
+      color: var(--brand-night);
+      margin: 0 0 28px;
+    }
+    .job-hero__meta { display: flex; flex-wrap: wrap; gap: 10px; }
+    .job-hero__chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 9px 18px;
+      font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700;
+      background: #ffffff;
+      border: 1.5px solid rgba(0, 60, 113, 0.18);
+      color: var(--brand-night);
+      border-radius: 9999px;
+    }
+    .job-hero__chip::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--brand-night); opacity: 0.5;
+    }
+    .job-hero__chip--accent {
+      background: var(--brand-night);
+      color: #fff;
+      border-color: var(--brand-night);
+    }
+    .job-hero__chip--accent::before { background: var(--brand-moon); opacity: 1; }
+
+    /* Layout — jednokolumnowy, wycentrowana treść */
+    .job-layout {
+      max-width: 820px; margin: 0 auto;
+      padding: 50px 24px 40px;
+    }
+    .job-content {
+      color: var(--graphite);
+      font-family: 'Ubuntu', sans-serif;
+      font-size: 16px; line-height: 1.8;
+    }
+    .job-content p { margin: 0 0 16px; }
+    .job-content h2, .job-content h3 {
+      font-family: 'Ubuntu', sans-serif;
+      color: var(--brand-night);
+      margin: 36px 0 16px;
+      letter-spacing: -0.3px;
+    }
+    .job-content h2 {
+      font-size: 24px; font-weight: 800;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .job-content h2::before {
+      content: ''; width: 28px; height: 2px; background: var(--brand-night);
+      flex-shrink: 0;
+    }
+    .job-content h3 { font-size: 19px; font-weight: 700; }
+
+    /* Eleganckie bullety */
+    .job-content ul, .job-content ol {
+      padding: 0; margin: 0 0 24px;
+      list-style: none;
+    }
+    .job-content ul li {
+      position: relative;
+      padding: 10px 0 10px 36px;
+      margin: 0;
+      border-bottom: 1px solid rgba(0, 60, 113, 0.08);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    .job-content ul li:last-child { border-bottom: 0; }
+    .job-content ul li::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 17px;
+      width: 18px; height: 2px;
+      background: var(--brand-night);
+      opacity: 0.4;
+    }
+    .job-content ul li::after {
+      content: '';
+      position: absolute;
+      left: 0; top: 14px;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--brand-night);
+    }
+    .job-content ol { counter-reset: li; padding-left: 0; }
+    .job-content ol li {
+      position: relative;
+      padding: 10px 0 10px 44px;
+      margin: 0;
+      counter-increment: li;
+      border-bottom: 1px solid rgba(0, 60, 113, 0.08);
+      font-size: 15px; line-height: 1.6;
+    }
+    .job-content ol li:last-child { border-bottom: 0; }
+    .job-content ol li::before {
+      content: counter(li, decimal-leading-zero);
+      position: absolute; left: 0; top: 10px;
+      font-size: 12px; font-weight: 700; letter-spacing: 1px;
+      color: var(--brand-night);
+      padding: 3px 8px;
+      background: rgba(183, 201, 211, 0.4);
+      border-radius: 4px;
+    }
+    .job-content strong { color: var(--brand-night); font-weight: 700; }
+    .job-content__summary {
+      font-size: 18px; font-style: italic;
+      color: var(--brand-night);
+      border-left: 3px solid var(--brand-night);
+      padding: 6px 0 6px 20px;
+      margin: 0 0 32px;
+    }
+
+    /* Strefa Aplikuj — duży przycisk w ramce */
+    .job-apply-cta {
+      max-width: 820px; margin: 0 auto;
+      padding: 20px 24px 60px;
+      text-align: center;
+    }
+    .job-apply-cta__btn {
+      display: inline-flex; align-items: center; gap: 12px;
+      padding: 16px 42px;
+      background: var(--brand-night);
+      color: #ffffff;
+      border: 1.5px solid var(--brand-night);
+      border-radius: 9999px;
+      font-family: inherit;
+      font-size: 14px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+    .job-apply-cta__btn:hover {
+      background: #1a5490; border-color: #1a5490;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(0, 60, 113, 0.25);
+    }
+
+    /* Formularz aplikacyjny */
+    .job-form-section {
+      max-width: 780px; margin: 0 auto;
+      padding: 60px 24px 120px;
+    }
+    .job-form-box {
+      background: #ffffff;
+      border: 1px solid rgba(0, 60, 113, 0.1);
+      border-radius: 16px;
+      padding: 48px 40px;
+      box-shadow: 0 14px 40px rgba(0, 60, 113, 0.08);
+    }
+    .job-form-section__eyebrow {
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-night); opacity: 0.7;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .job-form-section h2 {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(28px, 3.5vw, 40px);
+      font-weight: 800;
+      color: var(--brand-night);
+      text-align: center;
+      margin: 0 0 14px;
+      letter-spacing: -0.3px;
+    }
+    .job-form-section h2 em { font-style: italic; font-weight: 300; opacity: 0.7; }
+    .job-form-section__sub {
+      text-align: center;
+      color: var(--graphite); opacity: 0.75;
+      font-size: 15px;
+      margin: 0 0 36px;
+    }
+    .job-form { display: grid; gap: 20px; }
+    .job-form__row {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .job-form label {
+      display: block;
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-night); opacity: 0.85;
+      margin-bottom: 8px;
+    }
+    .job-form input, .job-form textarea, .job-form select {
+      width: 100%;
+      padding: 13px 16px;
+      background: transparent;
+      border: none;
+      border-bottom: 1.5px solid rgba(0, 60, 113, 0.2);
+      color: var(--graphite);
+      font-family: inherit;
+      font-size: 15px;
+      box-sizing: border-box;
+      border-radius: 0;
+    }
+    .job-form input:focus, .job-form textarea:focus, .job-form select:focus {
+      outline: none;
+      border-bottom-color: var(--brand-night);
+    }
+    .job-form input::placeholder, .job-form textarea::placeholder {
+      color: rgba(51, 51, 51, 0.4);
+    }
+    .job-form textarea { min-height: 130px; resize: vertical; }
+    .job-form__consent {
+      display: flex; gap: 12px; align-items: flex-start;
+      font-size: 12px; color: var(--graphite); opacity: 0.85;
+      line-height: 1.6;
+    }
+    .job-form__consent input { width: auto; margin-top: 3px; accent-color: var(--brand-night); }
+    .job-form__submit {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      margin-top: 10px;
+      padding: 14px 34px;
+      background: var(--brand-night);
+      color: #ffffff;
+      border: 1.5px solid var(--brand-night);
+      border-radius: 9999px;
+      font-family: inherit;
+      font-size: 14px; font-weight: 700; letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .job-form__submit:hover {
+      background: #1a5490;
+      border-color: #1a5490;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(0, 60, 113, 0.22);
+    }
+
+    /* Strona 404 / brak oferty */
+    .job-notfound {
+      max-width: 720px; margin: 0 auto;
+      padding: 180px 24px;
+      text-align: center;
+    }
+    .job-notfound h1 {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 800;
+      color: var(--brand-night);
+      margin: 0 0 16px;
+      letter-spacing: -0.5px;
+    }
+    .job-notfound p {
+      color: var(--graphite); opacity: 0.75;
+      font-size: 17px; line-height: 1.6;
+      margin: 0 0 30px;
+    }
+    .job-notfound a {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 13px 28px;
+      background: var(--brand-night);
+      color: #ffffff;
+      border: 1.5px solid var(--brand-night);
+      border-radius: 9999px;
+      text-decoration: none;
+      font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      transition: all 0.25s ease;
+    }
+    .job-notfound a:hover {
+      background: #1a5490; border-color: #1a5490;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(0, 60, 113, 0.22);
+    }
+
+    .job-loading {
+      padding: 180px 20px;
+      text-align: center;
+      color: var(--graphite); opacity: 0.5;
+      font-size: 14px;
+    }
+
+    /* Reveal */
+    [data-rev] {
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    [data-rev].is-revealed { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+      .job-layout { grid-template-columns: 1fr; gap: 40px; }
+      .job-sidebar { position: static; }
+      .job-form__row { grid-template-columns: 1fr; }
+      .job-form-box { padding: 32px 24px; }
+    }
+    @media (max-width: 560px) {
+      .job-hero::before, .job-hero::after { opacity: 0.35; transform: scale(0.7); }
+    }
+  </style>
+</head>
+<body class="job-page">
+
+  <!-- HEADER -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a class="header__logo" href="/">
+        <img src="/media/megapolis-logo-whitetext.svg" alt="Megapolis" class="header__logo-img">
+      </a>
+      <div class="header__actions">
+        <a class="header__cta header__cta--find" href="/wyszukiwarka">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span>Znajdź swoje mieszkanie</span>
+        </a>
+        <a class="header__cta header__cta--special" href="/oferta-specjalna">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>Oferta specjalna</span>
+        </a>
+        <a class="header__phone" href="tel:+48123000077">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span>12 300 00 77</span>
+        </a>
+        <button class="header__burger" id="burgerBtn" aria-label="Otwórz menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- DRAWER -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__inner">
+      <ul class="mobile-menu__list">
+        <li class="mobile-menu__has-sub">
+          <a href="/o-nas" class="mobile-menu__toggle"><span>O nas</span>
+            <svg class="mobile-menu__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </a>
+          <ul class="mobile-menu__sub">
+            <li><a href="/o-nas/historia">Historia firmy</a></li>
+            <li><a href="/o-nas/zespol">Zespół</a></li>
+            <li><a href="/o-nas/misja">Misja i wartości</a></li>
+            <li><a href="/o-nas/holding">Grupa Holding 1</a></li>
+          </ul>
+        </li>
+        <li><a href="/nasze-standardy">Nasze standardy</a></li>
+        <li><a href="/realizacje">Nasze realizacje</a></li>
+        <li><a href="/lokale-uslugowe">Lokale usługowe</a></li>
+        <li><a href="/program-wykonczenia">Program wykończenia mieszkań</a></li>
+        <li><a href="/finansowanie">Finansowanie</a></li>
+        <li><a href="/kariera">Kariera i społecznie odpowiedzialni</a></li>
+        <li><a href="/aktualnosci">Aktualności</a></li>
+        <li><a href="/kontakt">Kontakt</a></li>
+      </ul>
+      <div class="mobile-menu__footer">
+        <a href="tel:+48123000077" class="mobile-menu__phone">12 300 00 77</a>
+        <a href="mailto:biuro@megapolis.pl" class="mobile-menu__email">biuro@megapolis.pl</a>
+      </div>
+    </div>
+  </div>
+
+  <main id="jobMain">
+    <div class="job-loading">Ładowanie oferty…</div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__bottom" style="padding:32px 0;">
+        <p style="font-size:12px;color:var(--white-40);">&copy; 2026 Megapolis Sp. z&nbsp;o.o. &nbsp;·&nbsp; <a href="/kariera" style="color:var(--white-60);">Wszystkie oferty</a> &nbsp;·&nbsp; <a href="/polityka-prywatnosci" style="color:var(--white-60);">Polityka prywatności</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/main.js"></script>
+  <script src="/js/cms.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    function getSlug() {
+      const m = location.pathname.match(/^\/praca\/([^\/]+)\/?$/);
+      if (m) return decodeURIComponent(m[1]);
+      const p = new URLSearchParams(location.search).get('slug');
+      return p ? decodeURIComponent(p) : null;
+    }
+
+    function esc(s) {
+      return String(s == null ? '' : s).replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+    }
+
+    async function fetchJSON(p) {
+      try { const r = await fetch('/api' + p); return r.ok ? await r.json() : null; }
+      catch (e) { return null; }
+    }
+
+    function revealAll(root) {
+      const els = (root || document).querySelectorAll('[data-rev]');
+      if (!('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('is-revealed')); return; }
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-revealed'); io.unobserve(e.target); } });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      els.forEach(e => io.observe(e));
+    }
+
+    function renderNotFound() {
+      document.getElementById('jobMain').innerHTML = `
+        <div class="job-notfound">
+          <h1>Oferta niedostępna</h1>
+          <p>Niestety, ta oferta pracy wygasła lub nie istnieje. Sprawdź aktualne możliwości zatrudnienia w&nbsp;Megapolis.</p>
+          <a href="/kariera">Zobacz wszystkie oferty</a>
+        </div>`;
+      document.title = 'Oferta niedostępna — Megapolis';
+    }
+
+    function renderJob(job) {
+      const main = document.getElementById('jobMain');
+      document.title = `${job.title} — Kariera — Megapolis`;
+
+      const metaMeta = document.querySelector('meta[name="description"]');
+      if (metaMeta && job.summary) metaMeta.setAttribute('content', job.summary.slice(0, 160));
+
+      const desc = job.description || job.body || job.summary || '';
+      const isHTML = /<[a-z][\s\S]*>/i.test(desc);
+      const descHTML = isHTML ? desc : `<p>${esc(desc).replace(/\n\n+/g, '</p><p>').replace(/\n/g, '<br>')}</p>`;
+
+      let responsibilities = '';
+      if (Array.isArray(job.responsibilities) && job.responsibilities.length) {
+        responsibilities = `<h2>Obowiązki</h2><ul>${job.responsibilities.map(r => `<li>${esc(r)}</li>`).join('')}</ul>`;
+      }
+      let requirements = '';
+      if (Array.isArray(job.requirements) && job.requirements.length) {
+        requirements = `<h2>Wymagania</h2><ul>${job.requirements.map(r => `<li>${esc(r)}</li>`).join('')}</ul>`;
+      }
+      let benefits = '';
+      if (Array.isArray(job.benefits) && job.benefits.length) {
+        benefits = `<h2>Oferujemy</h2><ul>${job.benefits.map(r => `<li>${esc(r)}</li>`).join('')}</ul>`;
+      }
+
+      main.innerHTML = `
+        <section class="job-hero">
+          <div class="job-hero__inner">
+            <nav class="job-breadcrumbs" data-rev>
+              <a href="/">Strona główna</a><span class="sep">·</span>
+              <a href="/kariera">Kariera</a><span class="sep">·</span>
+              <span>${esc(job.department || 'Oferta pracy')}</span>
+            </nav>
+            <div class="job-hero__kicker" data-rev>${esc(job.department || 'Oferta pracy')}</div>
+            <h1 class="job-hero__title" data-rev>${esc(job.title)}</h1>
+            <div class="job-hero__meta" data-rev>
+              ${job.city ? `<span class="job-hero__chip">${esc(job.city)}</span>` : ''}
+              ${job.type ? `<span class="job-hero__chip">${esc(job.type)}</span>` : ''}
+              ${job.experience ? `<span class="job-hero__chip">${esc(job.experience)}</span>` : ''}
+              ${job.salary ? `<span class="job-hero__chip job-hero__chip--accent">${esc(job.salary)}</span>` : ''}
+            </div>
+          </div>
+        </section>
+
+        <section class="job-layout">
+          <article class="job-content" data-rev>
+            ${job.summary ? `<p class="job-content__summary">${esc(job.summary)}</p>` : ''}
+            ${descHTML}
+            ${responsibilities}
+            ${requirements}
+            ${benefits}
+          </article>
+        </section>
+
+        <div class="job-apply-cta" data-rev>
+          <a class="job-apply-cta__btn" href="#applicationForm" onclick="document.getElementById('applicationForm').scrollIntoView({behavior:'smooth',block:'start'}); return false;">
+            Aplikuj na to stanowisko
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+
+        <section class="job-form-section" id="applicationForm">
+          <div class="job-form-box" data-rev>
+            <p class="job-form-section__eyebrow">Aplikacja</p>
+            <h2>Aplikuj na <em>to stanowisko</em></h2>
+            <p class="job-form-section__sub">Wypełnij formularz — odezwiemy się w&nbsp;ciągu 5&nbsp;dni roboczych.</p>
+            <form class="job-form" data-cms-form="job-application" autocomplete="on">
+              <input type="hidden" name="jobSlug" value="${esc(job.slug)}">
+              <input type="hidden" name="jobTitle" value="${esc(job.title)}">
+              <input type="hidden" name="jobDepartment" value="${esc(job.department || '')}">
+              <div class="job-form__row">
+                <div>
+                  <label for="apFirstName">Imię *</label>
+                  <input id="apFirstName" type="text" name="firstName" required>
+                </div>
+                <div>
+                  <label for="apLastName">Nazwisko *</label>
+                  <input id="apLastName" type="text" name="lastName" required>
+                </div>
+              </div>
+              <div class="job-form__row">
+                <div>
+                  <label for="apEmail">E-mail *</label>
+                  <input id="apEmail" type="email" name="email" required>
+                </div>
+                <div>
+                  <label for="apPhone">Telefon</label>
+                  <input id="apPhone" type="tel" name="phone">
+                </div>
+              </div>
+              <div>
+                <label for="apLinkedin">LinkedIn / Portfolio</label>
+                <input id="apLinkedin" type="url" name="linkedin" placeholder="https://…">
+              </div>
+              <div>
+                <label for="apMessage">List motywacyjny / Wiadomość</label>
+                <textarea id="apMessage" name="message" placeholder="Opowiedz nam o sobie i swoich osiągnięciach…"></textarea>
+              </div>
+              <div>
+                <label for="apCv">Link do CV (np. Google Drive, Dropbox)</label>
+                <input id="apCv" type="url" name="cvUrl" placeholder="https://…">
+              </div>
+              <label class="job-form__consent">
+                <input type="checkbox" name="consent" required>
+                <span>Wyrażam zgodę na przetwarzanie moich danych osobowych zawartych w&nbsp;aplikacji przez Megapolis Sp. z&nbsp;o.o. dla potrzeb niezbędnych do realizacji procesu rekrutacji, zgodnie z&nbsp;RODO. *</span>
+              </label>
+              <div style="text-align:center">
+                <button type="submit" class="job-form__submit">
+                  Wyślij aplikację
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+      `;
+
+      // CMS + reveal
+      if (window.MegapolisCMS) { try { window.MegapolisCMS.refresh && window.MegapolisCMS.refresh(); } catch {} }
+      revealAll(main);
+
+      // Form submission
+      const form = main.querySelector('form[data-cms-form]');
+      if (form && !form.dataset.cmsWired) {
+        form.dataset.cmsWired = '1';
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const btn = form.querySelector('button[type="submit"]');
+          const origLabel = btn.innerHTML;
+          btn.disabled = true; btn.textContent = 'Wysyłanie…';
+          const body = {};
+          new FormData(form).forEach((v, k) => body[k] = v);
+          body.formType = form.getAttribute('data-cms-form') || 'job-application';
+          body.sourcePage = location.pathname;
+          body.site = document.documentElement.getAttribute('data-site') || 'megapolis';
+          try {
+            const r = await fetch('/api/forms/submit', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(body)
+            });
+            const data = await r.json();
+            if (!r.ok) throw new Error(data.error || 'send failed');
+            form.innerHTML = '<p style="text-align:center;padding:30px;color:var(--brand-night);font-family:Ubuntu,sans-serif;font-size:20px;font-weight:700">Dziękujemy! Twoja aplikacja została wysłana.</p>';
+          } catch (err) {
+            btn.disabled = false; btn.innerHTML = origLabel;
+            alert('Nie udało się wysłać aplikacji: ' + (err.message || 'spróbuj ponownie.'));
+          }
+        });
+      }
+    }
+
+    async function boot() {
+      const slug = getSlug();
+      if (!slug) { renderNotFound(); return; }
+      const job = await fetchJSON('/erecruiter/jobs/' + encodeURIComponent(slug));
+      if (!job || job.error) { renderNotFound(); return; }
+      renderJob(job);
+    }
+
+    if (window.MegapolisCMS) boot();
+    else window.addEventListener('cms:ready', boot, { once: true });
+    setTimeout(() => { if (document.querySelector('.job-loading')) boot(); }, 1500);
+  })();
+  </script>
+</body>
+</html>

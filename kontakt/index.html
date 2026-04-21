@@ -1,16 +1,27 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="pl" data-site="megapolis">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kontakt — Megapolis</title>
   <meta name="description" content="Skontaktuj się z Megapolis. Jesteśmy tu, by pomóc Ci znaleźć wymarzone mieszkanie w Krakowie.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <!-- Fonty lokalne Ubuntu (z /fonts/) — @font-face w /css/style.css -->
+  <link rel="preload" href="/fonts/Ubuntu-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/fonts/Ubuntu-Medium.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/fonts/Ubuntu-Bold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+  <div class="top-bar" data-cms="topbar">
+    <div class="container top-bar__inner">
+      <span class="top-bar__text"><span class="top-bar__dot"></span><span data-cms-field="text"></span></span>
+      <a href="/#kontakt" class="top-bar__cta" data-cms-field="ctaLink"></a>
+    </div>
+  </div>
+  <div class="page-loader" id="pageLoader"><div class="page-loader__inner"><div class="page-loader__logo">MEGAPOLIS</div><div class="page-loader__bar"><div class="page-loader__fill"></div></div></div></div>
+  <div class="scroll-progress" id="scrollProgress"></div>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-follower" id="cursorFollower"></div>
 
   <a href="#main-content" class="skip-nav">Przejdź do treści</a>
 
@@ -38,7 +49,7 @@
         <li class="nav__item"><a class='nav__link' href='/kontakt'>Kontakt</a></li>
       </ul></nav>
       <div class="header__actions">
-        <div class="lang-switch"><button class="lang-switch__btn lang-switch__btn--active">PL</button><span class="lang-switch__sep">|</span><button class="lang-switch__btn">EN</button></div>
+        <div class="lang-switch" data-lang-switcher></div>
         <a class='header__cta-btn' href='/wyszukiwarka'>Szukaj mieszkania</a>
         <button class="header__burger" id="burgerBtn" aria-label="Otwórz menu"><span></span><span></span><span></span></button>
       </div>
@@ -68,15 +79,15 @@
             <div class="contact__details">
               <div class="contact__item">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
-                <a href="tel:+48123000077">12 300 00 77</a>
+                <a href="tel:+48123000077" data-cms="contact.phone">12 300 00 77</a>
               </div>
               <div class="contact__item">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
-                <a href="mailto:biuro@megapolis.pl">biuro@megapolis.pl</a>
+                <a href="mailto:biuro@megapolis.pl" data-cms="contact.email">biuro@megapolis.pl</a>
               </div>
               <div class="contact__item">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                <span>ul. Rzemieślnicza 26, 30-403 Kraków</span>
+                <span data-cms="contact.address">ul. Rzemieślnicza 26, 30-403 Kraków</span>
               </div>
               <div class="contact__item">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -85,7 +96,7 @@
             </div>
           </div>
           <div class="contact__form-wrap" data-reveal>
-            <form class="contact-form" id="contactForm" novalidate>
+            <form class="contact-form" id="contactForm" data-cms-form="contact" novalidate>
               <h3>Formularz kontaktowy</h3>
               <div class="contact-form__row">
                 <div class="contact-form__field"><label for="c-name">Imię i&nbsp;nazwisko *</label><input type="text" id="c-name" name="name" required></div>
@@ -247,6 +258,10 @@
     <a class='sticky-contact__search' href='/wyszukiwarka'>Szukaj mieszkania</a>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
   <script src="/js/main.js"></script>
+  <script src="/js/cms.js"></script>
 </body>
 </html>

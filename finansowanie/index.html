@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finansowanie — Megapolis</title>
+  <meta name="description" content="Porównaj oferty kredytów hipotecznych i sprawdź swoją zdolność kredytową z pomocą ekspertów NOTUS Finanse — bezpłatnie, bez zobowiązań.">
+  <!-- Fonty lokalne Ubuntu -->
+  <link rel="preload" href="/fonts/Ubuntu-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/fonts/Ubuntu-Medium.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/fonts/Ubuntu-Bold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .fin-page { padding: 140px 0 60px; }
+    .fin-intro { text-align: center; max-width: 860px; margin: 0 auto 48px; padding: 0 24px; }
+    .fin-intro__breadcrumbs { font-size: 13px; color: var(--white-40); margin-bottom: 20px; }
+    .fin-intro__breadcrumbs a { color: var(--brand-moon); }
+    .fin-intro__eyebrow { font-size: 11px; letter-spacing: 3px; color: var(--brand-moon); margin-bottom: 16px; text-transform: uppercase; font-weight: 700; }
+    .fin-intro__title { font-size: clamp(36px, 5vw, 56px); font-weight: 500; line-height: 1.1; color: #fff; margin: 0 0 20px; }
+    .fin-intro__title em { color: var(--brand-moon); font-style: normal; }
+    .fin-intro__sub { font-size: 17px; color: var(--white-80); line-height: 1.7; margin-bottom: 28px; }
+    .fin-intro__partners { display: inline-flex; align-items: center; gap: 10px; font-size: 13px; color: var(--white-40); padding: 10px 20px; border: 1px solid var(--white-10); border-radius: 9999px; }
+    .fin-intro__partners strong { color: var(--brand-moon); }
+
+    /* Kontener z embedowaną porównywarką NOTUS */
+    .fin-embed {
+      max-width: 1600px; margin: 0 auto;
+      padding: 0 24px;
+    }
+    .fin-embed__frame-wrap {
+      position: relative;
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--white-10);
+    }
+    .fin-embed__iframe {
+      display: block; width: 100%;
+      height: min(1600px, 85vh);   /* duże okno — 85% wysokości viewportu, max 1600px */
+      min-height: 1400px;
+      border: 0;
+      background: #fff;
+    }
+    .fin-embed__bar {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; padding: 14px 20px;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--white-10);
+      font-size: 13px; color: var(--white-60);
+    }
+    .fin-embed__bar-left { display: inline-flex; align-items: center; gap: 10px; }
+    .fin-embed__bar-dot { width: 8px; height: 8px; border-radius: 50%; background: #4caf50; box-shadow: 0 0 8px #4caf50; }
+    .fin-embed__bar-external {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; color: var(--brand-moon);
+      padding: 6px 14px; border-radius: 9999px;
+      border: 1px solid var(--brand-moon);
+      transition: all 0.2s;
+    }
+    .fin-embed__bar-external:hover { background: var(--brand-moon); color: var(--brand-night); }
+
+    /* Sekcja "jak to działa" */
+    .fin-steps {
+      max-width: 1100px; margin: 80px auto 0;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .fin-step {
+      padding: 28px;
+      background: var(--bg-surface);
+      border: 1px solid var(--white-10);
+      border-radius: 12px;
+    }
+    .fin-step__num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--brand-night); color: #fff;
+      font-weight: 700; margin-bottom: 16px;
+    }
+    .fin-step__title { font-size: 18px; color: #fff; margin-bottom: 8px; font-weight: 600; }
+    .fin-step__desc { font-size: 14px; color: var(--white-60); line-height: 1.7; }
+
+    @media (max-width: 768px) {
+      .fin-embed__iframe { height: auto; min-height: 1800px; }
+      .fin-steps { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .fin-embed__iframe { min-height: 2100px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header scrolled" id="header" style="position:fixed;">
+    <div class="container header__inner">
+      <a class="header__logo" href="/">
+        <img src="/media/megapolis-logo-whitetext.svg" alt="Megapolis" class="header__logo-img">
+      </a>
+      <div class="header__actions">
+        <a class="header__cta header__cta--find" href="/wyszukiwarka" title="Znajdź swoje mieszkanie">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span>Znajdź swoje mieszkanie</span>
+        </a>
+        <a class="header__cta header__cta--special" href="/oferta-specjalna" title="Oferta specjalna">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>Oferta specjalna</span>
+        </a>
+        <a class="header__phone" href="tel:+48123000077">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span>12 300 00 77</span>
+        </a>
+        <button class="header__burger" id="burgerBtn" aria-label="Otwórz menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Drawer -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__inner">
+      <ul class="mobile-menu__list">
+        <li class="mobile-menu__has-sub">
+          <a href="/o-nas" class="mobile-menu__toggle" aria-expanded="false">
+            <span>O nas</span>
+            <svg class="mobile-menu__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </a>
+          <ul class="mobile-menu__sub">
+            <li><a href="/o-nas/historia">Historia firmy</a></li>
+            <li><a href="/o-nas/zespol">Zespół</a></li>
+            <li><a href="/o-nas/misja">Misja i wartości</a></li>
+            <li><a href="/o-nas/holding">Grupa Holding 1</a></li>
+          </ul>
+        </li>
+        <li><a href="/nasze-standardy">Nasze standardy</a></li>
+        <li><a href="/realizacje">Nasze realizacje</a></li>
+        <li><a href="/lokale-uslugowe">Lokale usługowe</a></li>
+        <li><a href="/program-wykonczenia">Program wykończenia mieszkań</a></li>
+        <li><a href="/finansowanie">Finansowanie</a></li>
+        <li><a href="/kariera">Kariera i społecznie odpowiedzialni</a></li>
+        <li><a href="/aktualnosci">Aktualności</a></li>
+        <li><a href="/kontakt">Kontakt</a></li>
+      </ul>
+      <div class="mobile-menu__footer">
+        <a href="tel:+48123000077" class="mobile-menu__phone">12 300 00 77</a>
+        <a href="mailto:biuro@megapolis.pl" class="mobile-menu__email">biuro@megapolis.pl</a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content" class="fin-page">
+
+    <!-- Intro — własna treść Megapolisa -->
+    <section class="fin-intro">
+      <p class="fin-intro__breadcrumbs"><a href="/">Strona główna</a> &nbsp;·&nbsp; Finansowanie</p>
+      <p class="fin-intro__eyebrow">Finansowanie zakupu mieszkania</p>
+      <h1 class="fin-intro__title">Sprawdź swoją <em>zdolność kredytową</em> i porównaj oferty banków</h1>
+      <p class="fin-intro__sub">
+        Poniżej znajdziesz porównywarkę naszego partnera — NOTUS Finanse. Skorzystanie z niej jest bezpłatne i niezobowiązujące. Doradca NOTUS przedstawi oferty z kilkunastu banków, pomoże skompletować dokumenty i poprowadzi Cię przez cały proces kredytowy.
+      </p>
+      <span class="fin-intro__partners">
+        Partner Megapolisa: <strong>NOTUS Finanse S.A.</strong>
+      </span>
+    </section>
+
+    <!-- Embedowana porównywarka NOTUS -->
+    <section class="fin-embed">
+      <div class="fin-embed__frame-wrap">
+        <div class="fin-embed__bar">
+          <span class="fin-embed__bar-left">
+            <span class="fin-embed__bar-dot"></span>
+            Porównywarka ofert · <strong style="color:var(--white);margin-left:4px;">NOTUS Finanse</strong>
+          </span>
+          <a class="fin-embed__bar-external" href="https://notus.pl/porownywarka/partner/ef854141" target="_blank" rel="noopener">
+            Otwórz w nowym oknie
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+        <iframe
+          class="fin-embed__iframe"
+          src="https://notus.pl/porownywarka/partner/ef854141"
+          title="Porównywarka kredytów hipotecznych — NOTUS Finanse"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          sandbox="allow-forms allow-scripts allow-popups allow-same-origin allow-top-navigation-by-user-activation"
+        ></iframe>
+      </div>
+    </section>
+
+    <!-- Jak to działa — własne treści Megapolisa -->
+    <section class="fin-steps">
+      <div class="fin-step">
+        <div class="fin-step__num">1</div>
+        <h3 class="fin-step__title">Wypełnij formularz</h3>
+        <p class="fin-step__desc">Podaj podstawowe dane: kwotę kredytu, dochody, okres spłaty. Porównywarka pokaże orientacyjne oferty z banków.</p>
+      </div>
+      <div class="fin-step">
+        <div class="fin-step__num">2</div>
+        <h3 class="fin-step__title">Kontakt z doradcą</h3>
+        <p class="fin-step__desc">Ekspert NOTUS skontaktuje się z Tobą, zweryfikuje dane i przedstawi szczegółowe oferty dopasowane do Twojej sytuacji.</p>
+      </div>
+      <div class="fin-step">
+        <div class="fin-step__num">3</div>
+        <h3 class="fin-step__title">Finalizacja w Megapolisie</h3>
+        <p class="fin-step__desc">Po uzyskaniu decyzji kredytowej — wracasz do nas i finalizujesz zakup wymarzonego mieszkania z naszej oferty.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer — minimalny -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__bottom" style="padding:32px 0;">
+        <p style="font-size:12px;color:var(--white-40);">&copy; 2026 Megapolis Sp. z o.o. &nbsp;·&nbsp; <a href="/polityka-prywatnosci" style="color:var(--white-60);">Polityka prywatności</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aktualnosci | Megapolis</title>
+  <meta name="description" content="Najnowsze informacje, wydarzenia i aktualnosci od dewelopera Megapolis.">
+  <!-- Fonty lokalne Ubuntu (z /fonts/) — @font-face w /css/style.css -->
+  <link rel="preload" href="/fonts/Ubuntu-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .archive-hero { padding:140px 0 60px; text-align:center; border-bottom:1px solid var(--white-05); }
+    .archive-hero__eyebrow { font-size:12px; letter-spacing:3px; color:var(--accent); margin-bottom:16px; }
+    .archive-hero__title { font-size:clamp(40px,6vw,72px); font-weight:400; line-height:1; margin:0 0 16px; }
+    .archive-hero__sub { color:var(--white-60); max-width:560px; margin:0 auto; font-size:16px; line-height:1.7; }
+    .archive-filters { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; padding:32px 0 16px; }
+    .archive-filter { padding:8px 18px; border:1px solid var(--white-10); border-radius:9999px; font-size:13px; color:var(--white-60); background:transparent; cursor:pointer; transition:all .2s; }
+    .archive-filter:hover, .archive-filter.is-active { border-color:var(--accent); color:var(--accent); background:rgba(201,169,110,.08); }
+    .archive-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:24px; padding:32px 0 80px; }
+    .news-card { background:rgba(255,255,255,.02); border:1px solid var(--white-10); border-radius:var(--radius,16px); overflow:hidden; transition:transform .3s, border-color .3s; display:flex; flex-direction:column; }
+    .news-card:hover { transform:translateY(-4px); border-color:var(--accent); }
+    .news-card__cover { aspect-ratio:16/10; background:linear-gradient(135deg, rgba(201,169,110,.18), rgba(201,169,110,.05)); display:flex; align-items:center; justify-content:center; }
+    .news-card__cover img { width:100%; height:100%; object-fit:cover; }
+    .news-card__cover-icon { width:56px; height:56px; opacity:.4; }
+    .news-card__body { padding:24px; flex:1; display:flex; flex-direction:column; gap:12px; }
+    .news-card__meta { display:flex; align-items:center; gap:10px; font-size:12px; color:var(--white-40); letter-spacing:1px; text-transform:uppercase; }
+    .news-card__meta time { color:var(--accent); }
+    .news-card__title { font-size:22px; font-weight:500; line-height:1.3; margin:0; }
+    .news-card__title a { color:var(--white); text-decoration:none; }
+    .news-card__title a:hover { color:var(--accent); }
+    .news-card__excerpt { font-size:14px; color:var(--white-60); line-height:1.6; flex:1; }
+    .news-card__more { font-size:13px; color:var(--accent); letter-spacing:1.5px; text-transform:uppercase; text-decoration:none; padding-top:8px; border-top:1px solid var(--white-05); margin-top:8px; }
+  </style>
+</head>
+<body>
+  <header class="header scrolled" id="header" style="position:fixed;">
+    <div class="container header__inner">
+      <a class="header__logo" href="/"><img src="https://megapolis.pl/wp-content/uploads/2024/06/megapolis-logo-opt.svg" alt="Megapolis" width="160"></a>
+      <nav class="header__nav"><ul class="nav__list">
+        <li class="nav__item"><a class="nav__link" href="/">Strona glowna</a></li>
+        <li class="nav__item"><a class="nav__link" href="/realizacje">Realizacje</a></li>
+        <li class="nav__item"><a class="nav__link" href="/aktualnosci">Aktualnosci</a></li>
+        <li class="nav__item"><a class="nav__link" href="/kontakt">Kontakt</a></li>
+      </ul></nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="archive-hero">
+      <div class="container">
+        <p class="archive-hero__eyebrow">AKTUALNOSCI</p>
+        <h1 class="archive-hero__title">Co u nas slychac</h1>
+        <p class="archive-hero__sub">Premiery inwestycji, nagrody, dni otwarte i wydarzenia z zycia firmy.</p>
+      </div>
+    </section>
+    <section>
+      <div class="container">
+        <div class="archive-filters">
+          <button class="archive-filter is-active" data-filter="all">Wszystkie</button>
+          <button class="archive-filter" data-filter="inwestycje">Inwestycje</button>
+          <button class="archive-filter" data-filter="wydarzenia">Wydarzenia</button>
+          <button class="archive-filter" data-filter="nagrody">Nagrody</button>
+        </div>
+        <div class="archive-grid" id="newsGrid">
+          <article class="news-card" data-category="inwestycje">
+            <div class="news-card__cover"><svg class="news-card__cover-icon" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 14l5-5 11 11"/></svg></div>
+            <div class="news-card__body">
+              <div class="news-card__meta"><time>10 kwi 2026</time><span>&middot;</span><span>Inwestycje</span></div>
+              <h2 class="news-card__title"><a href="/aktualnosci/nowa-inwestycja-ozon">Rusza sprzedaz w Osiedlu Ozon</a></h2>
+              <p class="news-card__excerpt">Rozpoczelismy sprzedaz 142 apartamentow w Gdansku Wrzeszczu.</p>
+              <a class="news-card__more" href="/aktualnosci/nowa-inwestycja-ozon">Czytaj wiecej &rarr;</a>
+            </div>
+          </article>
+          <article class="news-card" data-category="nagrody">
+            <div class="news-card__cover"><svg class="news-card__cover-icon" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.2"><circle cx="12" cy="8" r="6"/><path d="M9 14l-2 7 5-3 5 3-2-7"/></svg></div>
+            <div class="news-card__body">
+              <div class="news-card__meta"><time>22 mar 2026</time><span>&middot;</span><span>Nagrody</span></div>
+              <h2 class="news-card__title"><a href="/aktualnosci/nagroda-property-design-awards">Nagroda Property Design Awards 2026</a></h2>
+              <p class="news-card__excerpt">Nasza realizacja Linden Bunscha zdobyla nagrode w kategorii Residential.</p>
+              <a class="news-card__more" href="/aktualnosci/nagroda-property-design-awards">Czytaj wiecej &rarr;</a>
+            </div>
+          </article>
+          <article class="news-card" data-category="wydarzenia">
+            <div class="news-card__cover"><svg class="news-card__cover-icon" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+            <div class="news-card__body">
+              <div class="news-card__meta"><time>05 mar 2026</time><span>&middot;</span><span>Wydarzenia</span></div>
+              <h2 class="news-card__title"><a href="/aktualnosci/dzien-otwarty-cloud-lindego">Dzien otwarty &mdash; Cloud Lindego</a></h2>
+              <p class="news-card__excerpt">Zapraszamy na dzien otwarty w apartamencie pokazowym.</p>
+              <a class="news-card__more" href="/aktualnosci/dzien-otwarty-cloud-lindego">Czytaj wiecej &rarr;</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__bottom">
+        <p>&copy; 2026 Megapolis Sp. z o.o. Wszelkie prawa zastrzezone.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.archive-filter').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.archive-filter').forEach(b => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        const cat = btn.dataset.filter;
+        document.querySelectorAll('#newsGrid .news-card').forEach(card => {
+          card.style.display = (cat === 'all' || card.dataset.category === cat) ? '' : 'none';
+        });
+      });
+    });
+  </script>
+</body>
+</html>

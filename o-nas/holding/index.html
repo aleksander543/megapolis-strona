@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="pl" data-site="megapolis">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grupa Holding 1 — Megapolis</title>
+  <meta name="description" content="Holding 1 — grupa kapitałowa skupiająca Megapolis i partnerów z branży deweloperskiej, budowlanej i finansowej. Poznaj strukturę, firmy i synergię grupy.">
+  <link rel="preload" href="/fonts/Ubuntu-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/fonts/Ubuntu-Medium.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/fonts/Ubuntu-Bold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    /* Holding 1 — sub-strona */
+    .hold-page { background: #f4f2ec; color: var(--graphite); }
+
+    /* Hero — na granatowym tle (Mega Night Sky), podniosłe otwarcie */
+    .hold-hero {
+      position: relative;
+      padding: 200px 0 140px;
+      background: linear-gradient(180deg, #003C71 0%, #002952 100%);
+      color: #fff;
+      overflow: hidden;
+    }
+    .hold-hero::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -80px;
+      width: 560px; height: 560px;
+      background: url('/media/decor/arcs.svg') no-repeat top right;
+      background-size: contain;
+      opacity: 0.25;
+      filter: invert(1);
+      pointer-events: none;
+    }
+    .hold-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -40px; left: -40px;
+      width: 420px; height: 380px;
+      background: url('/media/decor/waves.svg') no-repeat bottom left;
+      background-size: contain;
+      opacity: 0.45;
+      pointer-events: none;
+    }
+    .hold-hero__inner {
+      position: relative; z-index: 1;
+      max-width: 1100px; margin: 0 auto;
+      padding: 0 24px;
+      text-align: center;
+    }
+    .hold-hero__crumbs {
+      font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.55);
+      margin-bottom: 28px;
+    }
+    .hold-hero__crumbs a { color: var(--brand-moon); text-decoration: none; }
+    .hold-hero__crumbs .sep { margin: 0 10px; opacity: 0.5; }
+    .hold-hero__eyebrow {
+      display: inline-flex; align-items: center; gap: 12px;
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-moon);
+      margin-bottom: 24px;
+    }
+    .hold-hero__eyebrow::before,
+    .hold-hero__eyebrow::after {
+      content: ''; width: 40px; height: 1px; background: var(--brand-moon);
+    }
+    .hold-hero__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(48px, 7vw, 96px);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -2px;
+      color: #fff;
+      margin: 0 0 8px;
+    }
+    .hold-hero__title em {
+      font-style: italic; font-weight: 300;
+      color: var(--brand-moon);
+    }
+    .hold-hero__num {
+      display: inline-block;
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(72px, 10vw, 140px);
+      font-weight: 900;
+      line-height: 0.9;
+      color: var(--brand-moon);
+      letter-spacing: -3px;
+      margin-right: 12px;
+      vertical-align: baseline;
+    }
+    .hold-hero__lead {
+      font-size: clamp(17px, 1.5vw, 20px);
+      line-height: 1.75;
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 760px; margin: 24px auto 0;
+    }
+
+    /* Metryki */
+    .hold-metrics {
+      padding: 80px 24px 60px;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .hold-metrics__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: rgba(0, 60, 113, 0.12);
+      border: 1px solid rgba(0, 60, 113, 0.12);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .hold-metric {
+      padding: 36px 28px;
+      background: #ffffff;
+      text-align: center;
+    }
+    .hold-metric__num {
+      font-size: clamp(36px, 4vw, 52px);
+      font-weight: 800;
+      color: var(--brand-night);
+      line-height: 1;
+      letter-spacing: -1px;
+      margin-bottom: 10px;
+    }
+    .hold-metric__lbl {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--graphite); opacity: 0.65;
+      font-weight: 600;
+    }
+
+    /* Co to Holding 1 */
+    .hold-about {
+      padding: 80px 24px 100px;
+      max-width: 960px; margin: 0 auto;
+      text-align: center;
+    }
+    .hold-about__eyebrow {
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-night);
+      margin-bottom: 16px;
+    }
+    .hold-about__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700;
+      line-height: 1.08;
+      color: var(--brand-night);
+      margin: 0 0 28px;
+      letter-spacing: -0.6px;
+    }
+    .hold-about__title em { font-style: italic; font-weight: 300; opacity: 0.75; }
+    .hold-about__text {
+      font-size: clamp(16px, 1.4vw, 18px);
+      line-height: 1.8;
+      color: var(--graphite);
+      margin: 0 0 22px;
+    }
+    .hold-about__text:last-of-type { margin-bottom: 0; }
+    .hold-about__text strong { color: var(--brand-night); font-weight: 700; }
+
+    /* Firmy w grupie */
+    .hold-companies {
+      padding: 80px 24px 100px;
+      background: #ffffff;
+      position: relative;
+      overflow: hidden;
+    }
+    .hold-companies::before {
+      content: '';
+      position: absolute;
+      top: 40px; right: 0;
+      width: 300px; height: 300px;
+      background: url('/media/decor/grid.svg') no-repeat top right;
+      background-size: contain;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    .hold-companies::after {
+      content: '';
+      position: absolute;
+      bottom: 20px; left: 20px;
+      width: 220px; height: 220px;
+      background: url('/media/decor/dots.svg') no-repeat bottom left;
+      background-size: contain;
+      opacity: 0.55;
+      pointer-events: none;
+    }
+    .hold-companies__inner {
+      max-width: 1200px; margin: 0 auto;
+      position: relative; z-index: 1;
+    }
+    .hold-companies__head {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+    .hold-companies__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(30px, 3.5vw, 44px);
+      font-weight: 700;
+      color: var(--brand-night);
+      margin: 0 0 16px;
+      letter-spacing: -0.4px;
+    }
+    .hold-companies__sub {
+      font-size: 16px; line-height: 1.7;
+      color: var(--graphite); opacity: 0.75;
+      max-width: 640px; margin: 0 auto;
+    }
+    .hold-companies__grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    .hold-company {
+      padding: 36px 32px;
+      background: #f4f2ec;
+      border: 1px solid rgba(0, 60, 113, 0.1);
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .hold-company::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--brand-night);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .hold-company:hover {
+      background: #ffffff;
+      border-color: var(--brand-night);
+      box-shadow: 0 14px 40px rgba(0, 60, 113, 0.1);
+      transform: translateY(-3px);
+    }
+    .hold-company:hover::before { opacity: 1; }
+    .hold-company__tag {
+      display: inline-block;
+      padding: 4px 12px;
+      background: rgba(0, 60, 113, 0.08);
+      color: var(--brand-night);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 700;
+      border-radius: 9999px;
+      margin-bottom: 14px;
+    }
+    .hold-company--megapolis .hold-company__tag { background: var(--brand-night); color: #fff; }
+    .hold-company__name {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--brand-night);
+      margin: 0 0 12px;
+      letter-spacing: -0.3px;
+    }
+    .hold-company__role {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--brand-night);
+      opacity: 0.7;
+      margin: 0 0 12px;
+      letter-spacing: 0.3px;
+    }
+    .hold-company__desc {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--graphite);
+      opacity: 0.85;
+      margin: 0;
+    }
+
+    /* Jak działa synergia */
+    .hold-synergy {
+      padding: 100px 24px;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .hold-synergy__head {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .hold-synergy__eyebrow {
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-night);
+      margin-bottom: 14px;
+    }
+    .hold-synergy__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(28px, 3vw, 40px);
+      font-weight: 700;
+      color: var(--brand-night);
+      margin: 0;
+      letter-spacing: -0.4px;
+    }
+    .hold-synergy__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .hold-syn-card {
+      padding: 28px;
+      background: #ffffff;
+      border: 1px solid rgba(0, 60, 113, 0.1);
+      border-radius: 12px;
+      position: relative;
+    }
+    .hold-syn-card__step {
+      position: absolute;
+      top: -16px; left: 24px;
+      width: 32px; height: 32px;
+      background: var(--brand-night);
+      color: #fff;
+      border-radius: 50%;
+      font-size: 13px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center; justify-content: center;
+      box-shadow: 0 4px 12px rgba(0, 60, 113, 0.25);
+    }
+    .hold-syn-card__name {
+      font-size: 18px; font-weight: 700;
+      color: var(--brand-night);
+      margin: 10px 0 10px;
+    }
+    .hold-syn-card__desc {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--graphite);
+      opacity: 0.85;
+      margin: 0;
+    }
+
+    /* Wartości grupy — ciemny akcent */
+    .hold-values {
+      padding: 90px 24px;
+      background: linear-gradient(135deg, #003C71 0%, #002952 100%);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .hold-values::before {
+      content: '';
+      position: absolute;
+      bottom: -20px; right: -20px;
+      width: 340px; height: 340px;
+      background: url('/media/decor/arcs.svg') no-repeat bottom right;
+      background-size: contain;
+      opacity: 0.18;
+      filter: invert(1);
+      transform: scaleX(-1);
+      pointer-events: none;
+    }
+    .hold-values__inner {
+      max-width: 1100px; margin: 0 auto;
+      position: relative; z-index: 1;
+    }
+    .hold-values__head {
+      text-align: center; margin-bottom: 48px;
+    }
+    .hold-values__eyebrow {
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-moon);
+      margin-bottom: 14px;
+    }
+    .hold-values__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(30px, 3.5vw, 44px);
+      font-weight: 700;
+      color: #fff;
+      margin: 0;
+      letter-spacing: -0.4px;
+    }
+    .hold-values__title em { font-style: italic; color: var(--brand-moon); font-weight: 300; }
+    .hold-values__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: rgba(183, 201, 211, 0.18);
+      border: 1px solid rgba(183, 201, 211, 0.22);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .hold-val {
+      padding: 32px 24px;
+      background: #003C71;
+      text-align: center;
+    }
+    .hold-val__ico {
+      display: inline-flex;
+      width: 48px; height: 48px;
+      align-items: center; justify-content: center;
+      border-radius: 50%;
+      background: rgba(183, 201, 211, 0.2);
+      color: var(--brand-moon);
+      margin-bottom: 16px;
+    }
+    .hold-val__name {
+      font-size: 15px; font-weight: 700;
+      color: #fff;
+      margin: 0 0 8px;
+      letter-spacing: 0.3px;
+    }
+    .hold-val__desc {
+      font-size: 13px; line-height: 1.65;
+      color: rgba(255, 255, 255, 0.75);
+      margin: 0;
+    }
+
+    /* CTA */
+    .hold-cta {
+      padding: 90px 24px 110px;
+      max-width: 940px; margin: 0 auto;
+      text-align: center;
+    }
+    .hold-cta__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(28px, 3vw, 40px);
+      font-weight: 700;
+      color: var(--brand-night);
+      margin: 0 0 16px;
+      letter-spacing: -0.3px;
+    }
+    .hold-cta__text {
+      font-size: 16px; line-height: 1.7;
+      color: var(--graphite);
+      margin: 0 0 32px;
+      max-width: 620px;
+      margin-left: auto; margin-right: auto;
+    }
+    .hold-cta__buttons {
+      display: inline-flex; gap: 14px; flex-wrap: wrap;
+      justify-content: center;
+    }
+    .hold-cta__btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 32px;
+      border-radius: 9999px;
+      font-size: 14px; font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+    .hold-cta__btn--primary {
+      background: var(--brand-night);
+      color: #fff;
+      border: 1.5px solid var(--brand-night);
+    }
+    .hold-cta__btn--primary:hover {
+      background: #1a5490;
+      border-color: #1a5490;
+      box-shadow: 0 8px 24px rgba(0, 60, 113, 0.25);
+    }
+    .hold-cta__btn--ghost {
+      background: transparent;
+      color: var(--brand-night);
+      border: 1.5px solid var(--brand-night);
+    }
+    .hold-cta__btn--ghost:hover {
+      background: var(--brand-night);
+      color: #fff;
+    }
+
+    /* Scroll-reveal */
+    [data-rev] {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    [data-rev].is-revealed { opacity: 1; transform: translateY(0); }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hold-hero { padding: 140px 0 100px; }
+      .hold-metrics__grid { grid-template-columns: repeat(2, 1fr); }
+      .hold-companies__grid { grid-template-columns: 1fr; }
+      .hold-synergy__grid { grid-template-columns: 1fr; }
+      .hold-values__grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .hold-hero::before, .hold-hero::after { opacity: 0.18; }
+      .hold-metrics__grid { grid-template-columns: 1fr; }
+      .hold-values__grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body class="hold-page">
+
+  <!-- Header -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a class="header__logo" href="/">
+        <img src="/media/megapolis-logo-whitetext.svg" alt="Megapolis" class="header__logo-img">
+      </a>
+      <div class="header__actions">
+        <a class="header__cta header__cta--find" href="/wyszukiwarka" title="Znajdź swoje mieszkanie">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span>Znajdź swoje mieszkanie</span>
+        </a>
+        <a class="header__cta header__cta--special" href="/oferta-specjalna" title="Oferta specjalna">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>Oferta specjalna</span>
+        </a>
+        <a class="header__phone" href="tel:+48123000077"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>12 300 00 77</span></a>
+        <button class="header__burger" id="burgerBtn" aria-label="Otwórz menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Drawer -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__inner">
+      <ul class="mobile-menu__list">
+        <li class="mobile-menu__has-sub active">
+          <a href="/o-nas" class="mobile-menu__toggle" aria-expanded="true"><span>O nas</span>
+            <svg class="mobile-menu__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </a>
+          <ul class="mobile-menu__sub">
+            <li><a href="/o-nas/historia">Historia firmy</a></li>
+            <li><a href="/o-nas/zespol">Zespół</a></li>
+            <li><a href="/o-nas/misja">Misja i wartości</a></li>
+            <li><a href="/o-nas/holding">Grupa Holding 1</a></li>
+          </ul>
+        </li>
+        <li><a href="/nasze-standardy">Nasze standardy</a></li>
+        <li><a href="/realizacje">Nasze realizacje</a></li>
+        <li><a href="/lokale-uslugowe">Lokale usługowe</a></li>
+        <li><a href="/program-wykonczenia">Program wykończenia mieszkań</a></li>
+        <li><a href="/finansowanie">Finansowanie</a></li>
+        <li><a href="/kariera">Kariera i społecznie odpowiedzialni</a></li>
+        <li><a href="/aktualnosci">Aktualności</a></li>
+        <li><a href="/kontakt">Kontakt</a></li>
+      </ul>
+      <div class="mobile-menu__footer">
+        <a href="tel:+48123000077" class="mobile-menu__phone">12 300 00 77</a>
+        <a href="mailto:biuro@megapolis.pl" class="mobile-menu__email">biuro@megapolis.pl</a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content">
+
+    <!-- HERO -->
+    <section class="hold-hero">
+      <div class="hold-hero__inner">
+        <nav class="hold-hero__crumbs" data-rev>
+          <a href="/">Strona główna</a>
+          <span class="sep">·</span>
+          <a href="/o-nas">O nas</a>
+          <span class="sep">·</span>
+          <span>Grupa Holding 1</span>
+        </nav>
+        <p class="hold-hero__eyebrow" data-rev>Grupa kapitałowa</p>
+        <h1 class="hold-hero__title" data-rev>
+          <span class="hold-hero__num">1</span>grupa,<br>
+          <em>wiele specjalności</em>
+        </h1>
+        <p class="hold-hero__lead" data-rev>
+          Holding&nbsp;1 to grupa firm działających w&nbsp;branży deweloperskiej, budowlanej i&nbsp;finansowej. Megapolis jest jej&nbsp;filarem mieszkaniowym — ale&nbsp;za&nbsp;każdym projektem stoi zespół specjalistów z&nbsp;całej grupy.
+        </p>
+      </div>
+    </section>
+
+    <!-- METRYKI -->
+    <section class="hold-metrics" data-rev>
+      <div class="hold-metrics__grid">
+        <div class="hold-metric">
+          <div class="hold-metric__num">35+</div>
+          <div class="hold-metric__lbl">lat grupy</div>
+        </div>
+        <div class="hold-metric">
+          <div class="hold-metric__num">5</div>
+          <div class="hold-metric__lbl">spółek w grupie</div>
+        </div>
+        <div class="hold-metric">
+          <div class="hold-metric__num">400+</div>
+          <div class="hold-metric__lbl">pracowników</div>
+        </div>
+        <div class="hold-metric">
+          <div class="hold-metric__num">3&nbsp;500+</div>
+          <div class="hold-metric__lbl">oddanych mieszkań</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- O HOLDINGU -->
+    <section class="hold-about">
+      <p class="hold-about__eyebrow" data-rev>Kim jesteśmy</p>
+      <h2 class="hold-about__title" data-rev>Nie jedna firma,<br><em>cała ekosystem</em></h2>
+      <p class="hold-about__text" data-rev>
+        Holding&nbsp;1 powstał z&nbsp;prostej potrzeby: <strong>mieć wszystkie kompetencje pod&nbsp;jednym dachem</strong>. Kiedy projektujemy, budujemy, sprzedajemy i&nbsp;pomagamy sfinansować mieszkanie — każdy z&nbsp;tych etapów prowadzi partner z&nbsp;naszej grupy. To&nbsp;oznacza krótszą drogę decyzyjną, spójniejszy standard i&nbsp;mniej niespodzianek dla klienta.
+      </p>
+      <p class="hold-about__text" data-rev>
+        Grupa działa w&nbsp;Krakowie, Wrocławiu i&nbsp;okolicach. W&nbsp;jej&nbsp;skład wchodzą: deweloper mieszkaniowy (Megapolis), generalny wykonawca, biuro projektowe, partnerzy finansowi oraz spółka zarządzająca najmem. Razem tworzymy kompletny cykl — od&nbsp;gruntu po&nbsp;klucze w&nbsp;ręce mieszkańca.
+      </p>
+    </section>
+
+    <!-- FIRMY W GRUPIE -->
+    <section class="hold-companies">
+      <div class="hold-companies__inner">
+        <div class="hold-companies__head" data-rev>
+          <h2 class="hold-companies__title">Firmy w&nbsp;grupie</h2>
+          <p class="hold-companies__sub">Każda spółka odpowiada za&nbsp;inny etap cyklu inwestycyjnego. Wspólnie tworzą kompletny ekosystem mieszkaniowy.</p>
+        </div>
+
+        <div class="hold-companies__grid">
+
+          <div class="hold-company hold-company--megapolis" data-rev>
+            <span class="hold-company__tag">Deweloper</span>
+            <h3 class="hold-company__name">Megapolis</h3>
+            <p class="hold-company__role">Deweloper mieszkaniowy</p>
+            <p class="hold-company__desc">Serce grupy — marka odpowiedzialna za&nbsp;projektowanie, realizację i&nbsp;sprzedaż osiedli mieszkaniowych. 10&nbsp;inwestycji w&nbsp;Krakowie i&nbsp;Wrocławiu.</p>
+          </div>
+
+          <div class="hold-company" data-rev>
+            <span class="hold-company__tag">Budownictwo</span>
+            <h3 class="hold-company__name">Generalny Wykonawca</h3>
+            <p class="hold-company__role">Realizacja inwestycji</p>
+            <p class="hold-company__desc">Spółka budowlana grupy — generalny wykonawca osiedli Megapolis oraz projektów zewnętrznych. Własne ekipy, sprawdzone technologie, terminowość.</p>
+          </div>
+
+          <div class="hold-company" data-rev>
+            <span class="hold-company__tag">Projekt</span>
+            <h3 class="hold-company__name">Pracownia Architektoniczna</h3>
+            <p class="hold-company__role">Projektowanie &amp; koncepcja</p>
+            <p class="hold-company__desc">Zespół architektów i&nbsp;urbanistów tworzący koncepcje naszych osiedli. Myślą o&nbsp;projektach całościowo — od&nbsp;bryły budynku po&nbsp;zagospodarowanie zieleni.</p>
+          </div>
+
+          <div class="hold-company" data-rev>
+            <span class="hold-company__tag">Finanse</span>
+            <h3 class="hold-company__name">Partner Finansowy</h3>
+            <p class="hold-company__role">Doradztwo &amp; finansowanie</p>
+            <p class="hold-company__desc">Współpracujemy z&nbsp;NOTUS Finanse — ekspertami doradzającymi klientom na&nbsp;każdym etapie procesu kredytowego. Bezpłatnie, bez&nbsp;presji sprzedaży.</p>
+          </div>
+
+          <div class="hold-company" data-rev>
+            <span class="hold-company__tag">Zarządzanie</span>
+            <h3 class="hold-company__name">Spółka Zarządzająca</h3>
+            <p class="hold-company__role">Administrowanie osiedlami</p>
+            <p class="hold-company__desc">Po&nbsp;oddaniu mieszkań zostajemy z&nbsp;mieszkańcami. Nasza spółka zarządzająca obsługuje wspólnoty, dba o&nbsp;tereny wspólne i&nbsp;organizuje życie sąsiedzkie.</p>
+          </div>
+
+          <div class="hold-company" data-rev>
+            <span class="hold-company__tag">Wnętrza</span>
+            <h3 class="hold-company__name">Deer Design</h3>
+            <p class="hold-company__role">Wykończenie wnętrz</p>
+            <p class="hold-company__desc">Partner odpowiedzialny za&nbsp;Program Wykończenia Wnętrz Megapolis. Trzy standardy — Smart Life, Modern Life i&nbsp;High Life — pod&nbsp;klucz.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SYNERGY -->
+    <section class="hold-synergy">
+      <div class="hold-synergy__head">
+        <p class="hold-synergy__eyebrow" data-rev>Jak to działa</p>
+        <h2 class="hold-synergy__title" data-rev>Pełny cykl inwestycyjny <em>pod&nbsp;jednym dachem</em></h2>
+      </div>
+      <div class="hold-synergy__grid">
+
+        <div class="hold-syn-card" data-rev>
+          <span class="hold-syn-card__step">1</span>
+          <h3 class="hold-syn-card__name">Projekt</h3>
+          <p class="hold-syn-card__desc">Pracownia architektoniczna i&nbsp;zespół deweloperski wspólnie opracowują koncepcję osiedla. Planujemy z&nbsp;perspektywy przyszłych mieszkańców, nie&nbsp;tylko inwestora.</p>
+        </div>
+
+        <div class="hold-syn-card" data-rev>
+          <span class="hold-syn-card__step">2</span>
+          <h3 class="hold-syn-card__name">Budowa</h3>
+          <p class="hold-syn-card__desc">Generalny wykonawca grupy realizuje inwestycję — wg&nbsp;harmonogramu, z&nbsp;kontrolą jakości na&nbsp;każdym etapie. Własne ekipy to&nbsp;mniejsze ryzyko opóźnień.</p>
+        </div>
+
+        <div class="hold-syn-card" data-rev>
+          <span class="hold-syn-card__step">3</span>
+          <h3 class="hold-syn-card__name">Sprzedaż &amp; finansowanie</h3>
+          <p class="hold-syn-card__desc">Doradcy Megapolis prezentują mieszkania, a&nbsp;eksperci finansowi pomagają znaleźć najlepszy kredyt. Wszystko w&nbsp;jednym biurze sprzedaży.</p>
+        </div>
+
+        <div class="hold-syn-card" data-rev>
+          <span class="hold-syn-card__step">4</span>
+          <h3 class="hold-syn-card__name">Wykończenie</h3>
+          <p class="hold-syn-card__desc">Deer Design realizuje Program Wykończenia Wnętrz — trzy standardy do&nbsp;wyboru, kompleksowa obsługa, wejście do&nbsp;gotowego mieszkania.</p>
+        </div>
+
+        <div class="hold-syn-card" data-rev>
+          <span class="hold-syn-card__step">5</span>
+          <h3 class="hold-syn-card__name">Zamieszkanie</h3>
+          <p class="hold-syn-card__desc">Po&nbsp;oddaniu kluczy spółka zarządzająca przejmuje administrowanie wspólnotami. Jesteśmy z&nbsp;mieszkańcami długo po&nbsp;zakończeniu inwestycji.</p>
+        </div>
+
+        <div class="hold-syn-card" data-rev>
+          <span class="hold-syn-card__step">6</span>
+          <h3 class="hold-syn-card__name">Społeczność</h3>
+          <p class="hold-syn-card__desc">Eventy sąsiedzkie, wsparcie po&nbsp;zakupie, program rekomendacji — osiedla Megapolis żyją dzięki&nbsp;relacjom, które&nbsp;świadomie budujemy.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- WARTOŚCI GRUPY -->
+    <section class="hold-values">
+      <div class="hold-values__inner">
+        <div class="hold-values__head" data-rev>
+          <p class="hold-values__eyebrow">Wartości grupy</p>
+          <h2 class="hold-values__title">Co łączy firmy <em>Holdingu&nbsp;1</em></h2>
+        </div>
+        <div class="hold-values__grid">
+          <div class="hold-val" data-rev>
+            <div class="hold-val__ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <h3 class="hold-val__name">Słowo</h3>
+            <p class="hold-val__desc">Obietnice przekraczające 35&nbsp;lat działalności — niełatwo się wycofać z&nbsp;reputacji.</p>
+          </div>
+          <div class="hold-val" data-rev>
+            <div class="hold-val__ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <h3 class="hold-val__name">Terminowość</h3>
+            <p class="hold-val__desc">Harmonogram inwestycji to&nbsp;zobowiązanie, nie&nbsp;szacunek. Rzadko się pomylimy.</p>
+          </div>
+          <div class="hold-val" data-rev>
+            <div class="hold-val__ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l2-2 4 4 10-10 2 2L9 18z"/></svg></div>
+            <h3 class="hold-val__name">Jakość</h3>
+            <p class="hold-val__desc">Jedna standardowa lista wymagań jakościowych dla wszystkich spółek grupy.</p>
+          </div>
+          <div class="hold-val" data-rev>
+            <div class="hold-val__ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+            <h3 class="hold-val__name">Lokalność</h3>
+            <p class="hold-val__desc">Kraków i&nbsp;Wrocław to&nbsp;nasze miasta. Budujemy tu&nbsp;domy, bo&nbsp;też tu&nbsp;mieszkamy.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="hold-cta">
+      <h2 class="hold-cta__title" data-rev>Zainteresowany współpracą?</h2>
+      <p class="hold-cta__text" data-rev>
+        Holding&nbsp;1 otwiera się na&nbsp;partnerów inwestycyjnych, generalnych wykonawców i&nbsp;dostawców. Jeśli Twoja firma szuka stabilnego partnera z&nbsp;Małopolski — napisz do&nbsp;nas.
+      </p>
+      <div class="hold-cta__buttons" data-rev>
+        <a href="/kontakt" class="hold-cta__btn hold-cta__btn--primary">
+          Kontakt biznesowy
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="/o-nas/historia" class="hold-cta__btn hold-cta__btn--ghost">Historia grupy</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__bottom" style="padding:32px 0;">
+        <p style="font-size:12px;color:var(--white-40);">&copy; 2026 Megapolis Sp. z&nbsp;o.o. — część grupy Holding&nbsp;1 &nbsp;·&nbsp; <a href="/polityka-prywatnosci" style="color:var(--white-60);">Polityka prywatności</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/main.js"></script>
+  <script>
+    (function () {
+      const els = document.querySelectorAll('[data-rev]');
+      if (!('IntersectionObserver' in window)) {
+        els.forEach(e => e.classList.add('is-revealed'));
+        return;
+      }
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-revealed');
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      els.forEach(e => io.observe(e));
+    })();
+  </script>
+</body>
+</html>

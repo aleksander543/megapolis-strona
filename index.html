@@ -29,12 +29,30 @@
     "openingHours": "Mo-Fr 09:00-17:00, Sa 10:00-14:00"
   }
   </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <!-- Fonty lokalne Ubuntu (z /fonts/) — @font-face w css/style.css -->
+  <link rel="preload" href="/fonts/Ubuntu-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/fonts/Ubuntu-Medium.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/fonts/Ubuntu-Bold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <!-- Page Loader -->
+  <div class="page-loader" id="pageLoader">
+    <div class="page-loader__inner">
+      <div class="page-loader__logo">
+        <img src="/media/megapolis-logo-whitetext.svg" alt="Megapolis" class="page-loader__img">
+      </div>
+      <div class="page-loader__bar"><div class="page-loader__fill"></div></div>
+    </div>
+  </div>
+
+  <!-- Scroll Progress Bar -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <!-- Custom Cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-follower" id="cursorFollower"></div>
 
   <a href="#main-content" class="skip-nav">Przejdź do treści</a>
 
@@ -49,23 +67,92 @@
     </div>
   </div>
 
-  <!-- Header -->
+  <!-- Header — uproszczony: logo + 3 CTA + hamburger (cała nawigacja pod hamburgerem) -->
   <header class="header" id="header">
     <div class="container header__inner">
-      <a class='header__logo' href='/'>
-        <img src="https://megapolis.pl/wp-content/uploads/2024/06/megapolis-logo-opt.svg" alt="Megapolis" width="160">
+      <a class="header__logo" href="/">
+        <img src="/media/megapolis-logo-whitetext.svg" alt="Megapolis" class="header__logo-img">
       </a>
-      <nav class="header__nav" id="mainNav">
+
+      <div class="header__actions">
+        <a class="header__cta header__cta--find" href="/wyszukiwarka" title="Znajdź swoje mieszkanie">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span>Znajdź swoje mieszkanie</span>
+        </a>
+        <a class="header__cta header__cta--special" href="/oferta-specjalna" title="Oferta specjalna">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>Oferta specjalna</span>
+        </a>
+        <a class="header__phone" href="tel:+48123000077" title="Zadzwoń">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span>12 300 00 77</span>
+        </a>
+        <button class="header__burger" id="burgerBtn" aria-label="Otwórz menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+
+      <!-- Stary desktop nav ukryty (cała nawigacja pod hamburgerem) -->
+      <nav class="header__nav header__nav--hidden" id="mainNav" hidden>
         <ul class="nav__list">
-          <li class="nav__item nav__item--has-sub">
+          <li class="nav__item nav__item--has-mega">
             <a href="#inwestycje" class="nav__link">Inwestycje</a>
-            <ul class="nav__sub">
-              <li><a href='/inwestycja'>OZON</a></li>
-              <li><a href="#">CLOU Lindego</a></li>
-              <li><a href="#">Nowe Osiedle Fi</a></li>
-              <li><a href="#">LINK BUNSCHA</a></li>
-              <li><a href="#">Michalczyka 15</a></li>
-            </ul>
+            <div class="mega-menu" id="megaMenu">
+              <div class="mega-menu__list">
+                <a href="/inwestycja" class="mega-menu__item" data-img="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&q=85&auto=format&fit=crop">Osiedle OZON</a>
+                <a href="/osiedle-fi/" class="mega-menu__item" data-img="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200&q=85&auto=format&fit=crop">Nowe Osiedle Fi</a>
+                <a href="#" class="mega-menu__item" data-img="https://images.unsplash.com/photo-1464146072230-91cabc968266?w=1200&q=85&auto=format&fit=crop">Michalczyka 15</a>
+                <a href="#" class="mega-menu__item" data-img="https://images.unsplash.com/photo-1460317442991-0ec209397118?w=1200&q=85&auto=format&fit=crop">LINK BUNSCHA</a>
+                <a href="#" class="mega-menu__item" data-img="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&q=85&auto=format&fit=crop">CLOU Lindego</a>
+              </div>
+              <div class="mega-menu__preview">
+                <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&q=85&auto=format&fit=crop" alt="" class="mega-menu__preview-img" id="megaPreviewImg">
+              </div>
+            </div>
+          </li>
+          <li class="nav__item nav__item--has-mega2">
+            <a href="#oferty" class="nav__link">Oferty</a>
+            <div class="mega2" id="megaOferty">
+              <div class="mega2__cats">
+                <a href="/oferty/kupno" class="mega2__cat mega2__cat--active" data-cat2="kupno">Kupno mieszkań</a>
+                <a href="/oferty/najem" class="mega2__cat" data-cat2="najem">Najem mieszkań</a>
+              </div>
+              <div class="mega2__listings">
+                <div class="mega2__group" data-cat2-target="kupno">
+                  <a href="/oferty/kupno/ozon-a12" class="mega2__offer" data-img="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&q=85&auto=format&fit=crop">
+                    <span class="mega2__name">Osiedle OZON — A12</span>
+                    <span class="mega2__meta">3 pokoje · 64 m² · 620 000 zł</span>
+                  </a>
+                  <a href="/oferty/kupno/ozon-b5" class="mega2__offer" data-img="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&q=85&auto=format&fit=crop">
+                    <span class="mega2__name">Osiedle OZON — B5</span>
+                    <span class="mega2__meta">2 pokoje · 48 m² · 485 000 zł</span>
+                  </a>
+                  <a href="/oferty/kupno/fi-c3" class="mega2__offer" data-img="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200&q=85&auto=format&fit=crop">
+                    <span class="mega2__name">Nowe Osiedle Fi — C3</span>
+                    <span class="mega2__meta">4 pokoje · 82 m² · 890 000 zł</span>
+                  </a>
+                  <a href="/oferty/kupno" class="mega2__see-all">Zobacz wszystkie oferty →</a>
+                </div>
+                <div class="mega2__group" data-cat2-target="najem" style="display:none">
+                  <a href="/oferty/najem/bunscha-11" class="mega2__offer" data-img="https://images.unsplash.com/photo-1460317442991-0ec209397118?w=1200&q=85&auto=format&fit=crop">
+                    <span class="mega2__name">LINK BUNSCHA — lok. 11</span>
+                    <span class="mega2__meta">2 pokoje · 45 m² · 3 200 zł/mies.</span>
+                  </a>
+                  <a href="/oferty/najem/bunscha-24" class="mega2__offer" data-img="https://images.unsplash.com/photo-1464146072230-91cabc968266?w=1200&q=85&auto=format&fit=crop">
+                    <span class="mega2__name">LINK BUNSCHA — lok. 24</span>
+                    <span class="mega2__meta">3 pokoje · 68 m² · 4 500 zł/mies.</span>
+                  </a>
+                  <a href="/oferty/najem/clou-8" class="mega2__offer" data-img="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&q=85&auto=format&fit=crop">
+                    <span class="mega2__name">CLOU Lindego — lok. 8</span>
+                    <span class="mega2__meta">2 pokoje · 52 m² · 3 800 zł/mies.</span>
+                  </a>
+                  <a href="/oferty/najem" class="mega2__see-all">Zobacz wszystkie oferty →</a>
+                </div>
+              </div>
+              <div class="mega2__preview">
+                <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&q=85&auto=format&fit=crop" alt="" class="mega2__img" id="mega2Img">
+              </div>
+            </div>
           </li>
           <li class="nav__item"><a class='nav__link' href='/o-nas'>O nas</a></li>
           <li class="nav__item"><a class='nav__link' href='/realizacje'>Nasze realizacje</a></li>
@@ -74,175 +161,715 @@
           <li class="nav__item"><a class='nav__link' href='/kontakt'>Kontakt</a></li>
         </ul>
       </nav>
-      <div class="header__actions">
-        <div class="lang-switch">
-          <button class="lang-switch__btn lang-switch__btn--active">PL</button>
-          <span class="lang-switch__sep">|</span>
-          <button class="lang-switch__btn">EN</button>
-        </div>
-        <a class='header__cta-btn' href='/wyszukiwarka'>Szukaj mieszkania</a>
-        <button class="header__burger" id="burgerBtn" aria-label="Otwórz menu">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
     </div>
   </header>
 
-  <!-- Mobile Menu -->
+  <!-- Menu drawer (zawsze dostępne po hamburgerze — desktop + mobile) -->
   <div class="mobile-menu" id="mobileMenu">
     <div class="mobile-menu__inner">
       <ul class="mobile-menu__list">
-        <li><a href="#inwestycje">Inwestycje</a></li>
-        <li><a href='/o-nas'>O nas</a></li>
-        <li><a href='/realizacje'>Nasze realizacje</a></li>
-        <li><a href='/generalny-wykonawca'>Generalny wykonawca</a></li>
-        <li><a href='/kariera'>Kariera</a></li>
-        <li><a href='/kontakt'>Kontakt</a></li>
+        <!-- O nas — z podstronami -->
+        <li class="mobile-menu__has-sub">
+          <a href="/o-nas" class="mobile-menu__toggle" aria-expanded="false">
+            <span>O nas</span>
+            <svg class="mobile-menu__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </a>
+          <ul class="mobile-menu__sub">
+            <li><a href="/o-nas/historia">Historia firmy</a></li>
+            <li><a href="/o-nas/zespol">Zespół</a></li>
+            <li><a href="/o-nas/misja">Misja i wartości</a></li>
+            <li><a href="/o-nas/holding">Grupa Holding 1</a></li>
+          </ul>
+        </li>
+        <li><a href="/nasze-standardy">Nasze standardy</a></li>
+        <li><a href="/realizacje">Nasze realizacje</a></li>
+        <li><a href="/lokale-uslugowe">Lokale usługowe</a></li>
+        <li><a href="/program-wykonczenia">Program wykończenia mieszkań</a></li>
+        <li><a href="/finansowanie">Finansowanie</a></li>
+        <li><a href="/kariera">Kariera i społecznie odpowiedzialni</a></li>
+        <li><a href="/aktualnosci">Aktualności</a></li>
+        <li><a href="/kontakt">Kontakt</a></li>
       </ul>
       <div class="mobile-menu__footer">
         <a href="tel:+48123000077" class="mobile-menu__phone">12 300 00 77</a>
+        <a href="mailto:biuro@megapolis.pl" class="mobile-menu__email">biuro@megapolis.pl</a>
       </div>
     </div>
   </div>
 
   <main id="main-content">
 
-    <!-- ===== HERO — Stars + Moon ===== -->
+    <!-- ===== HERO — Video Background (fixed) ===== -->
     <section class="hero" id="hero">
-      <div class="hero__stars" style="background-image: url('https://megapolis.pl/wp-content/uploads/2024/06/bg-stars3-webp.webp')"></div>
-      <div class="hero__moon">
-        <img src="https://megapolis.pl/wp-content/uploads/2024/06/moon-big-opt-992x1024.webp" alt="" class="hero__moon-img" loading="eager">
+      <!-- Natywny <video> background (lokalny plik, bez YouTube API) -->
+      <div class="hero__video-wrap">
+        <video
+          id="heroVideo"
+          src="/media/hero-intro.mp4"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="auto"
+          poster="https://megapolis.pl/wp-content/uploads/2024/07/ozon-III-noc-max-res-1-1024x576.webp"
+          aria-label="Intro Megapolis"
+        ></video>
       </div>
-      <div class="hero__building">
-        <img src="https://megapolis.pl/wp-content/uploads/2024/06/bud-front-95.webp" alt="Budynek Megapolis" class="hero__building-img" loading="eager">
-      </div>
+      <!-- Top fade overlay — blends header into video (Visit Red Sea style) -->
+      <div class="hero__fade-top"></div>
+      <!-- Bottom fade overlay — blends video into content below -->
+      <div class="hero__fade-bottom"></div>
+      <!-- Dark cinematic overlay -->
+      <div class="hero__overlay"></div>
+      <!-- Gold decorative corner frame -->
+      <div class="hero__frame"><span></span></div>
+
       <div class="hero__content container">
-        <p class="hero__tagline" data-animate>PRZYCIĄGAMY</p>
+        <p class="hero__tagline" data-animate>KRAKÓW &nbsp;·&nbsp; EST. 1989</p>
         <h1 class="hero__title" data-animate>
           <span>PRZYCIĄGAMY</span>
           <span>PRZYCIĄGAMY</span>
         </h1>
         <p class="hero__subtitle" data-animate>Kształtujemy przyszłość, z&nbsp;której możemy być dumni.</p>
+        <!-- AI search bar — hero edition (zamiast "Szukaj mieszkania") -->
+        <form class="hero__search" role="search" action="/wyszukiwarka" method="get" data-animate>
+          <svg class="hero__search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" name="q" class="hero__search-input" id="heroSearchInput"
+                 placeholder="Opisz swoje wymarzone mieszkanie"
+                 autocomplete="off" aria-label="Opisz wymarzone mieszkanie — wyszukiwarka AI">
+          <span class="hero__search-badge" aria-hidden="true">AI</span>
+          <button type="submit" class="hero__search-submit" aria-label="Szukaj">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+        </form>
+
         <div class="hero__buttons" data-animate>
           <a href="#inwestycje" class="btn btn--pill">Poznaj inwestycje</a>
-          <a class='btn btn--pill btn--outline' href='/wyszukiwarka'>Szukaj mieszkania</a>
         </div>
       </div>
       <div class="hero__scroll-indicator">
+        <span class="hero__scroll-text">SCROLL</span>
         <div class="hero__scroll-line"></div>
       </div>
     </section>
+    <!-- Spacer: pushes content below the fixed hero -->
+    <div class="hero-spacer"></div>
 
-    <!-- ===== INTRO ===== -->
-    <section class="intro section" id="intro">
-      <div class="intro__glow"></div>
+    <!-- ===== INTRO — dome reveal wrapper ===== -->
+    <section class="intro-reveal" id="introReveal">
+    <div class="intro-dome" id="introDome">
+
+    <!-- ===== PORTFOLIO HUB — zunifikowana sekcja: mapa + pełna lista ===== -->
+    <div class="portfolio-hub" id="portfolio">
+
+      <!-- Wspólny nagłówek dla mapy i listy -->
+      <div class="container portfolio-hub__intro">
+        <div class="portfolio-hub__header" data-reveal>
+          <p class="portfolio-hub__eyebrow">PORTFOLIO · GDZIE NAS ZNAJDZIESZ</p>
+          <h2 class="portfolio-hub__title">Wszystkie <em>inwestycje</em> Megapolis</h2>
+          <p class="portfolio-hub__sub">Od&nbsp;Ruczaju przez Krowodrzę po&nbsp;Podgórze Duchackie — dziesięć projektów zrealizowanych, w&nbsp;budowie i&nbsp;w&nbsp;przygotowaniu. Obejrzyj je&nbsp;na&nbsp;mapie albo przejdź od&nbsp;razu do&nbsp;pełnej listy.</p>
+        </div>
+
+        <!-- Toggle: MAPA ↔ LISTA (smooth scroll) -->
+        <div class="portfolio-hub__tabs" role="tablist" aria-label="Tryb przeglądania portfolio">
+          <a class="portfolio-hub__tab is-active" href="#mapa" data-view="map" role="tab" aria-selected="true">
+            <svg class="portfolio-hub__tab-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 22s-7-7.5-7-13a7 7 0 1114 0c0 5.5-7 13-7 13z"/><circle cx="12" cy="9" r="2.4"/></svg>
+            <span class="portfolio-hub__tab-lbl">Mapa</span>
+          </a>
+          <a class="portfolio-hub__tab" href="#lista" data-view="grid" role="tab" aria-selected="false">
+            <svg class="portfolio-hub__tab-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            <span class="portfolio-hub__tab-lbl">Lista</span>
+            <span class="portfolio-hub__tab-count">10</span>
+          </a>
+        </div>
+      </div>
+
+    <!-- ===== MAPA INWESTYCJI (część portfolio hub) ===== -->
+    <section class="invmap portfolio-hub__block portfolio-hub__block--map" id="mapa">
       <div class="container">
-        <div class="intro__grid" data-reveal>
-          <div class="intro__text">
-            <h2 class="intro__heading">Tworzymy przestrzenie dla tętniących życiem społeczności, w&nbsp;których każdy mieszkaniec pisze swoją własną historię.</h2>
-          </div>
-          <div class="intro__desc">
-            <p>Dotrzymujemy obietnic, budując osiedla, na których dobrze się mieszka — dziś i&nbsp;jutro. Megapolis to innowacyjna firma, której zaufano na rynku nieruchomości. Jesteśmy częścią Grupy Holding 1 z&nbsp;ponad 35-letnim doświadczeniem.</p>
-            <div class="intro__links">
-              <a class='btn btn--pill' href='/o-nas'>O nas</a>
-              <a class='btn btn--pill btn--ghost' href='/realizacje'>Nasze realizacje</a>
+        <div class="invmap__wrap" data-reveal>
+          <!-- Left: lista inwestycji -->
+          <aside class="invmap__list">
+            <button type="button" class="invmap__item is-active" data-inv="ozon">
+              <span class="invmap__item-num">01</span>
+              <span class="invmap__item-body">
+                <span class="invmap__item-name">Osiedle OZON</span>
+                <span class="invmap__item-loc">Kraków, ul. Banacha</span>
+              </span>
+              <span class="invmap__item-pin" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="invmap__item" data-inv="bunscha">
+              <span class="invmap__item-num">02</span>
+              <span class="invmap__item-body">
+                <span class="invmap__item-name">LINK BUNSCHA</span>
+                <span class="invmap__item-loc">Kraków, Ruczaj</span>
+              </span>
+              <span class="invmap__item-pin" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="invmap__item" data-inv="fi">
+              <span class="invmap__item-num">03</span>
+              <span class="invmap__item-body">
+                <span class="invmap__item-name">Nowe Osiedle Fi</span>
+                <span class="invmap__item-loc">Kraków, Podgórze Duchackie</span>
+              </span>
+              <span class="invmap__item-pin" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="invmap__item" data-inv="clou">
+              <span class="invmap__item-num">04</span>
+              <span class="invmap__item-body">
+                <span class="invmap__item-name">CLOU Lindego</span>
+                <span class="invmap__item-loc">Kraków, Bronowice</span>
+              </span>
+              <span class="invmap__item-pin" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="invmap__item" data-inv="michalczyka">
+              <span class="invmap__item-num">05</span>
+              <span class="invmap__item-body">
+                <span class="invmap__item-name">Michalczyka 15</span>
+                <span class="invmap__item-loc">Kraków, Krowodrza</span>
+              </span>
+              <span class="invmap__item-pin" aria-hidden="true"></span>
+            </button>
+          </aside>
+
+          <!-- Right: mapa -->
+          <div class="invmap__map-wrap">
+            <div class="invmap__map" id="invMap" aria-label="Mapa inwestycji Megapolis w Krakowie"></div>
+            <div class="invmap__legend">
+              <span class="invmap__legend-dot"></span>
+              <span>Inwestycje Megapolis</span>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ===== STATS ===== -->
-    <section class="stats section">
+    <!-- ===== PEŁNA LISTA INWESTYCJI MEGAPOLIS (część portfolio hub) ===== -->
+    <section class="allinv portfolio-hub__block portfolio-hub__block--grid" id="lista">
       <div class="container">
-        <div class="stats__grid" data-reveal>
-          <div class="stats__item">
-            <span class="stats__number" data-count="2425">0</span>
-            <span class="stats__label">oddanych mieszkań</span>
-          </div>
-          <div class="stats__item">
-            <span class="stats__number" data-count="120965">0</span>
-            <span class="stats__unit">m²</span>
-            <span class="stats__label">powierzchni użytkowej</span>
-          </div>
-          <div class="stats__item">
-            <span class="stats__number" data-count="69">0</span>
-            <span class="stats__label">pięter we wszystkich inwestycjach</span>
-          </div>
-          <div class="stats__item">
-            <span class="stats__number" data-count="6014">0</span>
-            <span class="stats__label">posadzonych drzew i&nbsp;krzewów</span>
-          </div>
+        <!-- Filtry statusu -->
+        <div class="allinv__filters" data-reveal role="tablist" aria-label="Filtr inwestycji">
+          <button type="button" class="allinv__filter is-active" data-filter="all" role="tab" aria-selected="true">
+            <span class="allinv__filter-lbl">Wszystkie</span>
+            <span class="allinv__filter-count">10</span>
+          </button>
+          <button type="button" class="allinv__filter" data-filter="building" role="tab" aria-selected="false">
+            <span class="allinv__filter-dot allinv__filter-dot--building"></span>
+            <span class="allinv__filter-lbl">W&nbsp;sprzedaży</span>
+            <span class="allinv__filter-count">2</span>
+          </button>
+          <button type="button" class="allinv__filter" data-filter="done" role="tab" aria-selected="false">
+            <span class="allinv__filter-dot allinv__filter-dot--done"></span>
+            <span class="allinv__filter-lbl">Zrealizowane</span>
+            <span class="allinv__filter-count">7</span>
+          </button>
+          <button type="button" class="allinv__filter" data-filter="planned" role="tab" aria-selected="false">
+            <span class="allinv__filter-dot allinv__filter-dot--planned"></span>
+            <span class="allinv__filter-lbl">Wkrótce</span>
+            <span class="allinv__filter-count">1</span>
+          </button>
         </div>
+
+        <!-- Siatka wszystkich inwestycji (realne dane z megapolis.pl) -->
+        <div class="allinv__grid" data-reveal id="allinvGrid">
+
+          <!-- 1. Nowe Osiedle Fi - W BUDOWIE -->
+          <a href="/osiedle-fi/" class="allinv__card" data-status="building" data-inv="fi" id="card-fi">
+            <div class="allinv__card-media">
+              <img src="https://megapolis.pl/wp-content/uploads/2025/04/08_noc_a-1024x576.jpg" alt="Nowe Osiedle Fi - wizualizacja nocna" loading="lazy">
+              <span class="allinv__card-status allinv__card-status--building">W&nbsp;sprzedaży</span>
+              <span class="allinv__card-hint">Zobacz inwestycję <span aria-hidden="true">→</span></span>
+            </div>
+            <div class="allinv__card-body">
+              <h3 class="allinv__card-name">Nowe Osiedle Fi</h3>
+              <ul class="allinv__card-meta">
+                <li class="allinv__card-meta-status allinv__card-meta-status--building">W budowie</li>
+                <li>Kraków</li>
+                <li>II etap</li>
+              </ul>
+              <p class="allinv__card-desc">Druga edycja popularnego osiedla Fi przy ul. <strong>Dobrego Pasterza</strong> — dynamicznie rozwijającej się części Krakowa. Komfortowe mieszkania od 1 do 5 pokoi w nowoczesnej zabudowie.</p>
+              <span class="allinv__card-more">
+                Dowiedz się więcej
+                <span class="allinv__card-more-arrow" aria-hidden="true">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                </span>
+              </span>
+            </div>
+          </a>
+
+          <!-- 2. Osiedle OZON - rozdział III - W BUDOWIE -->
+          <a href="/osiedle-ozon/" class="allinv__card" data-status="building" data-inv="ozon" id="card-ozon">
+            <div class="allinv__card-media">
+              <img src="https://megapolis.pl/wp-content/uploads/2024/07/ozon-III-noc-max-res-1-1024x576.webp" alt="Osiedle OZON - rozdział III" loading="lazy">
+              <span class="allinv__card-status allinv__card-status--building">W&nbsp;sprzedaży</span>
+              <span class="allinv__card-hint">Zobacz inwestycję <span aria-hidden="true">→</span></span>
+            </div>
+            <div class="allinv__card-body">
+              <h3 class="allinv__card-name">Osiedle OZON <em>— III</em></h3>
+              <ul class="allinv__card-meta">
+                <li class="allinv__card-meta-status allinv__card-meta-status--building">W budowie</li>
+                <li>Kraków, Ruczaj</li>
+                <li>Rozdział III</li>
+              </ul>
+              <p class="allinv__card-desc">Trzeci rozdział flagowego projektu Megapolis na <strong>Ruczaju</strong>. Nowoczesna architektura, przestronne mieszkania 1–4 pokoje oraz zielone dziedzińce w sercu dynamicznej dzielnicy.</p>
+              <span class="allinv__card-more">
+                Dowiedz się więcej
+                <span class="allinv__card-more-arrow" aria-hidden="true">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                </span>
+              </span>
+            </div>
+          </a>
+
+          <!-- 3. Michalczyka 15 - PLANOWANA - Wrocław -->
+          <a href="https://megapolis.pl/inwestycje/michalczyka-15/" target="_blank" rel="noopener" class="allinv__card" data-status="planned" data-inv="michalczyka" id="card-michalczyka">
+            <div class="allinv__card-media">
+              <img src="https://megapolis.pl/wp-content/uploads/2025/10/WIDOK_5-1-1024x576.jpg" alt="Michalczyka 15 Wrocław - wizualizacja" loading="lazy">
+              <span class="allinv__card-status allinv__card-status--planned">Wkrótce</span>
+              <span class="allinv__card-hint">Dołącz do VIP-listy <span aria-hidden="true">→</span></span>
+            </div>
+            <div class="allinv__card-body">
+              <h3 class="allinv__card-name">Michalczyka&nbsp;15</h3>
+              <ul class="allinv__card-meta">
+                <li class="allinv__card-meta-status allinv__card-meta-status--planned">Wkrótce</li>
+                <li>Wrocław, Szczepin</li>
+                <li>Planowanie</li>
+              </ul>
+              <p class="allinv__card-desc">Pierwsza inwestycja Megapolis we <strong>Wrocławiu</strong>. Butikowy projekt w Szczepinie — zapraszamy do wczesnych zapisów i konsultacji VIP.</p>
+              <span class="allinv__card-more">
+                Dołącz do VIP-listy
+                <span class="allinv__card-more-arrow" aria-hidden="true">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                </span>
+              </span>
+            </div>
+          </a>
+
+          <!-- 4. CLOU Lindego - ZREALIZOWANA -->
+          <a href="/clou-lindego/" class="allinv__card" data-status="done" data-inv="clou" id="card-clou">
+            <div class="allinv__card-media">
+              <img src="https://cloulindego.pl/wp-content/uploads/251113_CLOU_wizualizacje_02_korektaludzie-min-1024x576.png" alt="CLOU Lindego - wizualizacja" loading="lazy">
+              <span class="allinv__card-status allinv__card-status--done">Zrealizowana</span>
+              <span class="allinv__card-hint">Zobacz inwestycję <span aria-hidden="true">→</span></span>
+            </div>
+            <div class="allinv__card-body">
+              <h3 class="allinv__card-name">CLOU Lindego</h3>
+              <ul class="allinv__card-meta">
+                <li class="allinv__card-meta-status allinv__card-meta-status--done">Zrealizowane</li>
+                <li>Kraków</li>
+                <li>2024</li>
+              </ul>
+              <p class="allinv__card-desc">Inwestycja premium powstała w malowniczej okolicy Bronowic, w bezpośrednim sąsiedztwie terenów rekreacyjnych — <strong>Młynówki Królewskiej</strong> oraz <strong>Parku Tetmajera</strong>. Idealne miejsce dla osób ceniących ciszę i spokój w mieście.</p>
+              <span class="allinv__card-more">
+                Dowiedz się więcej
+                <span class="allinv__card-more-arrow" aria-hidden="true">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                </span>
+              </span>
+            </div>
+          </a>
+
+          <!-- 5. LINK Bunscha - ZREALIZOWANA -->
+          <a href="/link-bunscha/" class="allinv__card" data-status="done" data-inv="bunscha" id="card-bunscha">
+            <div class="allinv__card-media">
+              <img src="https://megapolis.pl/wp-content/uploads/2024/07/link-noc-max-res-1-1024x576.webp" alt="LINK Bunscha - elewacja nocna" loading="lazy">
+              <span class="allinv__card-status allinv__card-status--done">Zrealizowana</span>
+              <span class="allinv__card-hint">Zobacz inwestycję <span aria-hidden="true">→</span></span>
+            </div>
+            <div class="allinv__card-body">
+              <h3 class="allinv__card-name">LINK Bunscha</h3>
+              <ul class="allinv__card-meta">
+                <li class="allinv__card-meta-status allinv__card-meta-status--done">Zrealizowane</li>
+                <li>Kraków, Ruczaj</li>
+                <li>2022</li>
+              </ul>
+              <p class="allinv__card-desc">Komfortowa inwestycja przy ul. <strong>Bunscha 14a</strong> — w popularnej, dobrze skomunikowanej dzielnicy Ruczaj. Nowoczesna architektura i przemyślane układy mieszkań.</p>
+              <span class="allinv__card-more">
+                Dowiedz się więcej
+                <span class="allinv__card-more-arrow" aria-hidden="true">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                </span>
+              </span>
+            </div>
+          </a>
+
+          <!-- 6. Osiedle OZON - rozdział II - ZREALIZOWANA -->
+          <a href="/inwestycja" class="allinv__card" data-status="done">
+            <div class="allinv__card-media">
+              <img src="https://megapolis.pl/wp-content/uploads/2024/07/ozon-noc-max-res-1024x576.webp" alt="Osiedle OZON - rozdział II" loading="lazy">
+              <span class="allinv__card-status allinv__card-status--done">Zrealizowana</span>
+              <span class="allinv__card-hint">Zobacz inwestycję <span aria-hidden="true">→</span></span>
+            </div>
+            <div class="allinv__card-body">
+              <h3 class="allinv__card-name">Osiedle OZON <em>— II</em></h3>
+              <ul class="allinv__card-meta">
+                <li class="allinv__card-meta-status allinv__card-meta-status--done">Zrealizowane</li>
+                <li>Kraków, Ruczaj</li>
+                <li>2023</li>
+              </ul>
+              <p class="allinv__card-desc">Drugi rozdział <strong>Osiedla OZON</strong> — kontynuacja sprawdzonej koncepcji. Mieszkania oddane w 2023 r. z pełną infrastrukturą i zagospodarowaną zielenią.</p>
+              <span class="allinv__card-more">
+                Dowiedz się więcej
+                <span class="allinv__card-more-arrow" aria-hidden="true">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                </span>
+              </span>
+            </div>
+          </a>
+
+          <!-- 7. Osiedle OZON - rozdział I - ZREALIZOWANA -->
+          <a href="/inwestycja" class="allinv__card" data-status="done">
+            <div class="allinv__card-media">
+              <img src="https://megapolis.pl/wp-content/uploads/2024/07/ozon-I-noc-max-res-1024x576.webp" alt="Osiedle OZON - rozdział I" loading="lazy">
+              <span class="allinv__card-status allinv__card-status--done">Zrealizowana</span>
+              <span class="allinv__card-hint">Zobacz inwestycję <span aria-hidden="true">→</span></span>
+            </div>
+            <div class="allinv__card-body">
+              <h3 class="allinv__card-name">Osiedle OZON <em>— I</em></h3>
+              <ul class="allinv__card-meta">
+                <li class="allinv__card-meta-status allinv__card-meta-status--done">Zrealizowane</li>
+                <li>Kraków, Ruczaj</li>
+                <li>2021</li>
+              </ul>
+              <p class="allinv__card-desc">Pierwszy rozdział flagowego osiedla <strong>OZON</strong>. Sprawdzona jakość, dopracowane przestrzenie wspólne i zżyta społeczność sąsiedzka.</p>
+              <span class="allinv__card-more">
+                Dowiedz się więcej
+                <span class="allinv__card-more-arrow" aria-hidden="true">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                </span>
+              </span>
+            </div>
+          </a>
+
+          <!-- 8. Osiedle Fi (stary etap) - ZREALIZOWANA -->
+          <a href="/osiedle-fi/" class="allinv__card" data-status="done">
+            <div class="allinv__card-media">
+              <img src="https://megapolis.pl/wp-content/uploads/2024/07/fi-noc-max-res-1-1024x576.webp" alt="Osiedle Fi - etap I" loading="lazy">
+              <span class="allinv__card-status allinv__card-status--done">Zrealizowana</span>
+              <span class="allinv__card-hint">Zobacz inwestycję <span aria-hidden="true">→</span></span>
+            </div>
+            <div class="allinv__card-body">
+              <h3 class="allinv__card-name">Osiedle Fi <em>— I</em></h3>
+              <ul class="allinv__card-meta">
+                <li class="allinv__card-meta-status allinv__card-meta-status--done">Zrealizowane</li>
+                <li>Kraków</li>
+                <li>2022</li>
+              </ul>
+              <p class="allinv__card-desc">Pierwszy etap <strong>Osiedla Fi</strong> oddany w 2022 r. przy ul. Dobrego Pasterza. Nowoczesna zabudowa w rozwijającej się części Krakowa — dziś dojrzała, tętniąca życiem społeczność.</p>
+              <span class="allinv__card-more">
+                Dowiedz się więcej
+                <span class="allinv__card-more-arrow" aria-hidden="true">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                </span>
+              </span>
+            </div>
+          </a>
+
+          <!-- 9. Filtry - ZREALIZOWANA -->
+          <a href="#" class="allinv__card" data-status="done">
+            <div class="allinv__card-media">
+              <img src="https://megapolis.pl/wp-content/uploads/2024/07/filtry-noc-max-res-3-1024x576.webp" alt="Osiedle Filtry - elewacja" loading="lazy">
+              <span class="allinv__card-status allinv__card-status--done">Zrealizowana</span>
+              <span class="allinv__card-hint">Zobacz inwestycję <span aria-hidden="true">→</span></span>
+            </div>
+            <div class="allinv__card-body">
+              <h3 class="allinv__card-name">Filtry</h3>
+              <ul class="allinv__card-meta">
+                <li class="allinv__card-meta-status allinv__card-meta-status--done">Zrealizowane</li>
+                <li>Kraków, Stare Podgórze</li>
+                <li>2020</li>
+              </ul>
+              <p class="allinv__card-desc">Kameralna inwestycja w historycznej części <strong>Podgórza</strong>. Eleganckie mieszkania w otoczeniu klimatu starego Krakowa.</p>
+              <span class="allinv__card-more">
+                Dowiedz się więcej
+                <span class="allinv__card-more-arrow" aria-hidden="true">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                </span>
+              </span>
+            </div>
+          </a>
+
+          <!-- 10. Kapelanka 6a - ZREALIZOWANA -->
+          <a href="#" class="allinv__card" data-status="done">
+            <div class="allinv__card-media">
+              <img src="https://megapolis.pl/wp-content/uploads/2024/07/kapelanka2-dzien-max-res.webp" alt="Kapelanka 6a - elewacja" loading="lazy">
+              <span class="allinv__card-status allinv__card-status--done">Zrealizowana</span>
+              <span class="allinv__card-hint">Zobacz inwestycję <span aria-hidden="true">→</span></span>
+            </div>
+            <div class="allinv__card-body">
+              <h3 class="allinv__card-name">Kapelanka&nbsp;6a</h3>
+              <ul class="allinv__card-meta">
+                <li class="allinv__card-meta-status allinv__card-meta-status--done">Zrealizowane</li>
+                <li>Kraków, Dębniki</li>
+                <li>2018</li>
+              </ul>
+              <p class="allinv__card-desc">Komfortowe mieszkania w spokojnej części <strong>Dębnik</strong>. Zrealizowane w 2018 r. — dziś dojrzała lokalizacja z pełną infrastrukturą.</p>
+              <span class="allinv__card-more">
+                Dowiedz się więcej
+                <span class="allinv__card-more-arrow" aria-hidden="true">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                </span>
+              </span>
+            </div>
+          </a>
+
+        </div>
+
+        <!-- Pusty stan (pokazywany gdy filtr nic nie znajdzie) -->
+        <p class="allinv__empty" id="allinvEmpty" hidden>Brak inwestycji w&nbsp;tej kategorii.</p>
       </div>
     </section>
 
-    <!-- ===== INVESTMENTS ===== -->
-    <section class="investments section" id="inwestycje">
-      <div class="investments__moon">
-        <img src="https://megapolis.pl/wp-content/uploads/2024/07/moon-small.webp" alt="" loading="lazy">
-      </div>
-      <div class="container">
-        <div class="section__header" data-reveal>
-          <h2 class="section__title">Nasze <em>inwestycje</em></h2>
-          <p class="section__subtitle">Znajdź wymarzone mieszkanie w&nbsp;jednej z&nbsp;naszych realizacji</p>
+    </div>
+    <!-- /portfolio-hub -->
+
+    <!-- Złoty divider — sygnał przejścia do nowej sekcji -->
+    <div class="section-ornament section-ornament--finder">
+      <div class="section-ornament__line"></div>
+      <span class="section-ornament__gem">&#10022;</span>
+      <div class="section-ornament__line"></div>
+    </div>
+
+    <!-- ===== WYSZUKIWARKA MIESZKAŃ ===== -->
+    <section class="finder section" id="wyszukaj">
+      <div class="container finder__container">
+
+        <!-- Tytuł sekcji (zamiast bocznego napisu) -->
+        <div class="finder__header" data-reveal>
+          <p class="finder__eyebrow">Megapolis</p>
+          <h2 class="finder__title">Wyszukiwarka <em>mieszkań</em></h2>
         </div>
-        <div class="investments__grid" data-reveal>
 
-          <a class='inv-card' href='/inwestycja'>
-            <div class="inv-card__img">
-              <img src="https://megapolis.pl/wp-content/uploads/2024/07/osiedle-ozon-megapolis-7-1024x683.webp" alt="Osiedle OZON" loading="lazy">
-              <div class="inv-card__overlay"></div>
-            </div>
-            <div class="inv-card__body">
-              <span class="inv-card__status inv-card__status--building">W trakcie budowy</span>
-              <h3 class="inv-card__name">Osiedle OZON</h3>
-              <p class="inv-card__location">Kraków, Banacha</p>
-            </div>
-          </a>
-
-          <a href="#" class="inv-card">
-            <div class="inv-card__img">
-              <img src="https://megapolis.pl/wp-content/uploads/2024/07/linkbunscha-megapolis-galeria-3.webp" alt="LINK BUNSCHA" loading="lazy">
-              <div class="inv-card__overlay"></div>
-            </div>
-            <div class="inv-card__body">
-              <span class="inv-card__status inv-card__status--done">Zrealizowane</span>
-              <h3 class="inv-card__name">LINK BUNSCHA</h3>
-              <p class="inv-card__location">Kraków, Bunscha 14a</p>
-            </div>
-          </a>
-
-          <a href="#" class="inv-card">
-            <div class="inv-card__img">
-              <img src="https://megapolis.pl/wp-content/uploads/2024/07/osiedle-fi-megapolis-galeria-3.webp" alt="Osiedle Fi" loading="lazy">
-              <div class="inv-card__overlay"></div>
-            </div>
-            <div class="inv-card__body">
-              <span class="inv-card__status inv-card__status--building">W trakcie budowy</span>
-              <h3 class="inv-card__name">Nowe Osiedle Fi</h3>
-              <p class="inv-card__location">Kraków, Szafrana</p>
-            </div>
-          </a>
-
-          <a href="#" class="inv-card">
-            <div class="inv-card__img">
-              <img src="https://megapolis.pl/wp-content/uploads/2024/07/deer-realizacje-5.webp" alt="CLOU Lindego" loading="lazy">
-              <div class="inv-card__overlay"></div>
-            </div>
-            <div class="inv-card__body">
-              <span class="inv-card__status inv-card__status--done">Zrealizowane</span>
-              <h3 class="inv-card__name">CLOU Lindego</h3>
-              <p class="inv-card__location">Kraków, Lindego</p>
-            </div>
-          </a>
-
+        <!-- Typ inwestycji -->
+        <div class="finder__group finder__group--type" data-reveal>
+          <p class="finder__caption">Typ inwestycji</p>
+          <div class="finder__tabs" role="tablist">
+            <button type="button" class="finder__tab is-active" data-type="apartamenty" role="tab" aria-selected="true">APARTAMENTY</button>
+            <button type="button" class="finder__tab" data-type="lokale" role="tab" aria-selected="false">LOKALE USŁUGOWE</button>
+          </div>
         </div>
-        <div class="section__cta" data-reveal>
-          <a class='btn btn--pill' href='/realizacje'>Zobacz wszystkie realizacje</a>
+
+        <!-- Wybór miasta -->
+        <div class="finder__cities" data-reveal>
+          <button type="button" class="finder__city-pill is-active" data-city="krakow">Kraków</button>
+          <button type="button" class="finder__city-pill" data-city="wroclaw">Wrocław</button>
+          <button type="button" class="finder__city-pill" data-city="gdansk">Gdańsk</button>
         </div>
+
+        <!-- Filtry -->
+        <div class="finder__filters finder__filters--split" data-reveal>
+         <div class="finder__filters-main">
+          <!-- Row 1: Inwestycje + Liczba pokoi -->
+          <div class="finder__row">
+            <div class="finder__field finder__field--select">
+              <label class="finder__flabel" for="fndInvestment">INWESTYCJE</label>
+              <div class="finder__select-wrap">
+                <select id="fndInvestment" class="finder__select">
+                  <option value="all">Wszystkie</option>
+                  <option value="ozon">Osiedle OZON</option>
+                  <option value="bunscha">LINK BUNSCHA</option>
+                  <option value="fi">Nowe Osiedle Fi</option>
+                  <option value="clou">CLOU Lindego</option>
+                  <option value="michalczyka">Michalczyka 15</option>
+                  <option value="ozon2">Osiedle OZON II</option>
+                  <option value="ruczaj">Ruczaj Park</option>
+                  <option value="panorama">Panorama Wawel</option>
+                </select>
+                <svg class="finder__select-icon" width="12" height="8" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l5 5 5-5"/></svg>
+              </div>
+            </div>
+
+            <div class="finder__field finder__field--range">
+              <label class="finder__flabel">LICZBA POKOI</label>
+              <div class="finder__range">
+                <input type="number" class="finder__num" value="1" min="1" max="5" data-range="rooms" data-bound="min">
+                <div class="finder__slider" data-slider="rooms" data-min="1" data-max="5" data-val-min="1" data-val-max="5">
+                  <div class="finder__slider-track"></div>
+                  <div class="finder__slider-fill"></div>
+                  <div class="finder__slider-handle" data-handle="min" role="slider" tabindex="0" aria-valuemin="1" aria-valuemax="5" aria-valuenow="1"></div>
+                  <div class="finder__slider-handle" data-handle="max" role="slider" tabindex="0" aria-valuemin="1" aria-valuemax="5" aria-valuenow="5"></div>
+                </div>
+                <input type="number" class="finder__num" value="5" min="1" max="5" data-range="rooms" data-bound="max">
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 2: Piętro + Powierzchnia -->
+          <div class="finder__row">
+            <div class="finder__field finder__field--range">
+              <label class="finder__flabel">PIĘTRO</label>
+              <div class="finder__range">
+                <input type="number" class="finder__num" value="0" min="0" max="15" data-range="floor" data-bound="min">
+                <div class="finder__slider" data-slider="floor" data-min="0" data-max="15" data-val-min="0" data-val-max="15">
+                  <div class="finder__slider-track"></div>
+                  <div class="finder__slider-fill"></div>
+                  <div class="finder__slider-handle" data-handle="min" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="15" aria-valuenow="0"></div>
+                  <div class="finder__slider-handle" data-handle="max" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="15" aria-valuenow="15"></div>
+                </div>
+                <input type="number" class="finder__num" value="15" min="0" max="15" data-range="floor" data-bound="max">
+              </div>
+            </div>
+
+            <div class="finder__field finder__field--range">
+              <label class="finder__flabel">POWIERZCHNIA</label>
+              <div class="finder__range">
+                <input type="number" class="finder__num" value="25" min="25" max="143" data-range="area" data-bound="min">
+                <div class="finder__slider" data-slider="area" data-min="25" data-max="143" data-val-min="25" data-val-max="143">
+                  <div class="finder__slider-track"></div>
+                  <div class="finder__slider-fill"></div>
+                  <div class="finder__slider-handle" data-handle="min" role="slider" tabindex="0" aria-valuemin="25" aria-valuemax="143" aria-valuenow="25"></div>
+                  <div class="finder__slider-handle" data-handle="max" role="slider" tabindex="0" aria-valuemin="25" aria-valuemax="143" aria-valuenow="143"></div>
+                </div>
+                <input type="number" class="finder__num" value="143" min="25" max="143" data-range="area" data-bound="max">
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 3: Cena (pełna szerokość) -->
+          <div class="finder__row">
+            <div class="finder__field finder__field--range finder__field--full">
+              <label class="finder__flabel">CENA</label>
+              <div class="finder__range">
+                <input type="text" class="finder__num finder__num--wide" value="740 591 zł" data-range="price" data-bound="min">
+                <div class="finder__slider" data-slider="price" data-min="740591" data-max="4828015" data-val-min="740591" data-val-max="4828015">
+                  <div class="finder__slider-track"></div>
+                  <div class="finder__slider-fill"></div>
+                  <div class="finder__slider-handle" data-handle="min" role="slider" tabindex="0" aria-valuemin="740591" aria-valuemax="4828015" aria-valuenow="740591"></div>
+                  <div class="finder__slider-handle" data-handle="max" role="slider" tabindex="0" aria-valuemin="740591" aria-valuemax="4828015" aria-valuenow="4828015"></div>
+                </div>
+                <input type="text" class="finder__num finder__num--wide" value="4 828 015 zł" data-range="price" data-bound="max">
+              </div>
+              <p class="finder__note">Ceny brutto z&nbsp;miejscem postojowym i&nbsp;pomieszczeniem gospodarczym</p>
+            </div>
+          </div>
+
+          <!-- Row 5 przeniesione niżej; Row 4 (kompas) jest w aside -->
+          <div class="finder__row finder__row--block">
+            <div class="finder__field finder__field--full">
+              <label class="finder__flabel">PRZYNALEŻNOŚCI</label>
+              <div class="finder__features" role="group" aria-label="Wybierz przynależności mieszkania">
+                <button type="button" class="finder__feat-btn" data-feat="balkon">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="10" width="16" height="11" rx="1"/><path d="M4 14h16M9 14v7M15 14v7"/></svg>
+                  Balkon
+                </button>
+                <button type="button" class="finder__feat-btn" data-feat="loggia">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h16v16H4z"/><path d="M4 12h10v8"/></svg>
+                  Loggia
+                </button>
+                <button type="button" class="finder__feat-btn" data-feat="ogrodek">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22V10m0 0c-4 0-7-3-7-6 3 0 7 1 7 6zm0 0c4 0 7-3 7-6-3 0-7 1-7 6z"/><path d="M3 22h18"/></svg>
+                  Ogródek
+                </button>
+                <button type="button" class="finder__feat-btn" data-feat="taras">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 20h18M5 20V8h14v12M5 14h14M9 8v12M15 8v12"/></svg>
+                  Taras
+                </button>
+                <button type="button" class="finder__feat-btn" data-feat="wykusz">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20V4h16v16"/><path d="M4 20h16M8 8v12M16 8v12M8 8l8 0"/></svg>
+                  Wykusz
+                </button>
+              </div>
+            </div>
+          </div>
+         </div><!-- /finder__filters-main -->
+
+         <!-- Aside: kompas (strony świata) — prawy bok, vertical-center -->
+         <aside class="finder__filters-side" aria-label="Strona świata">
+            <div class="finder__field finder__field--full">
+              <label class="finder__flabel">STRONA ŚWIATA</label>
+              <div class="finder__rose" role="group" aria-label="Wybierz strony świata">
+                <button type="button" class="finder__rose-btn finder__rose-btn--nw" data-dir="NW" title="Północny zachód" aria-pressed="false">
+                  <svg class="finder__rose-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="17" y1="17" x2="7" y2="7"/><polyline points="7 14 7 7 14 7"/></svg>
+                  <span class="finder__rose-lbl">Pn-Z</span>
+                </button>
+                <button type="button" class="finder__rose-btn finder__rose-btn--n" data-dir="N" title="Północ" aria-pressed="false">
+                  <svg class="finder__rose-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="6 11 12 5 18 11"/></svg>
+                  <span class="finder__rose-lbl">Pn</span>
+                </button>
+                <button type="button" class="finder__rose-btn finder__rose-btn--ne" data-dir="NE" title="Północny wschód" aria-pressed="false">
+                  <svg class="finder__rose-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="10 7 17 7 17 14"/></svg>
+                  <span class="finder__rose-lbl">Pn-W</span>
+                </button>
+
+                <button type="button" class="finder__rose-btn finder__rose-btn--w" data-dir="W" title="Zachód" aria-pressed="false">
+                  <svg class="finder__rose-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="11 6 5 12 11 18"/></svg>
+                  <span class="finder__rose-lbl">Z</span>
+                </button>
+                <div class="finder__rose-center" aria-hidden="true">
+                  <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+                    <circle cx="24" cy="24" r="2" fill="currentColor"/>
+                    <path d="M24 6 L28 22 L24 20 L20 22 Z" fill="currentColor"/>
+                    <path d="M24 42 L28 26 L24 28 L20 26 Z" opacity=".35"/>
+                    <path d="M6 24 L22 20 L20 24 L22 28 Z" opacity=".5"/>
+                    <path d="M42 24 L26 20 L28 24 L26 28 Z" opacity=".5"/>
+                  </svg>
+                </div>
+                <button type="button" class="finder__rose-btn finder__rose-btn--e" data-dir="E" title="Wschód" aria-pressed="false">
+                  <svg class="finder__rose-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
+                  <span class="finder__rose-lbl">W</span>
+                </button>
+
+                <button type="button" class="finder__rose-btn finder__rose-btn--sw" data-dir="SW" title="Południowy zachód" aria-pressed="false">
+                  <svg class="finder__rose-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="17" y1="7" x2="7" y2="17"/><polyline points="7 10 7 17 14 17"/></svg>
+                  <span class="finder__rose-lbl">Pd-Z</span>
+                </button>
+                <button type="button" class="finder__rose-btn finder__rose-btn--s" data-dir="S" title="Południe" aria-pressed="false">
+                  <svg class="finder__rose-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="6 13 12 19 18 13"/></svg>
+                  <span class="finder__rose-lbl">Pd</span>
+                </button>
+                <button type="button" class="finder__rose-btn finder__rose-btn--se" data-dir="SE" title="Południowy wschód" aria-pressed="false">
+                  <svg class="finder__rose-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="7" x2="17" y2="17"/><polyline points="17 10 17 17 10 17"/></svg>
+                  <span class="finder__rose-lbl">Pd-W</span>
+                </button>
+              </div>
+            </div>
+         </aside><!-- /finder__filters-side -->
+        </div>
+
+        <!-- Akcje -->
+        <div class="finder__actions" data-reveal>
+          <button type="button" class="finder__btn finder__btn--edit" id="fndReset">EDYTUJ FILTRY</button>
+          <button type="button" class="finder__btn finder__btn--find" id="fndSubmit">ZNAJDŹ</button>
+        </div>
+
       </div>
     </section>
+    <!-- All remaining content lives inside the dome so it covers the fixed hero -->
+
+    <!-- ===== MARQUEE ===== -->
+    <div class="marquee">
+      <div class="marquee__track">
+        <span>PRZYCIĄGAMY</span>
+        <span>&mdash;</span>
+        <span>KRAKÓW</span>
+        <span>&mdash;</span>
+        <span>NOWOCZESNE MIESZKANIA</span>
+        <span>&mdash;</span>
+        <span>JAKOŚĆ &amp; INNOWACJA</span>
+        <span>&mdash;</span>
+        <span>ZRÓWNOWAŻONY ROZWÓJ</span>
+        <span>&mdash;</span>
+        <span>PRZYCIĄGAMY</span>
+        <span>&mdash;</span>
+        <span>KRAKÓW</span>
+        <span>&mdash;</span>
+        <span>NOWOCZESNE MIESZKANIA</span>
+        <span>&mdash;</span>
+        <span>JAKOŚĆ &amp; INNOWACJA</span>
+        <span>&mdash;</span>
+        <span>ZRÓWNOWAŻONY ROZWÓJ</span>
+        <span>&mdash;</span>
+      </div>
+    </div>
+
+    <!-- Luxury ornament divider -->
+    <div class="section-ornament">
+      <div class="section-ornament__line"></div>
+      <span class="section-ornament__gem">&#10022;</span>
+      <div class="section-ornament__line"></div>
+    </div>
+
+    <!-- Sekcja "Nasze realizacje" usunięta — inwestycje są pokazywane w sekcji #wszystkie-inwestycje (allinv) oraz na mapie -->
 
     <!-- ===== WHY US ===== -->
     <section class="why section">
@@ -251,28 +878,28 @@
           <h2 class="section__title">Dlaczego nam ufają?<br><em>Wysoka jakość i&nbsp;innowacyjność!</em></h2>
         </div>
         <div class="why__grid" data-reveal>
-          <div class="why__card">
+          <div class="why__card" data-num="01">
             <div class="why__icon">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             </div>
             <h3>Jakość i&nbsp;niezawodność</h3>
             <p>Dotrzymujemy obietnic. Terminowe oddanie inwestycji i&nbsp;najwyższe standardy wykonania to nasze priorytety.</p>
           </div>
-          <div class="why__card">
+          <div class="why__card" data-num="02">
             <div class="why__icon">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
             </div>
             <h3>Funkcjonalność</h3>
             <p>Projektujemy mieszkania z&nbsp;myślą o&nbsp;codziennym komforcie. Przemyślane rozkłady i&nbsp;nowoczesne rozwiązania.</p>
           </div>
-          <div class="why__card">
+          <div class="why__card" data-num="03">
             <div class="why__icon">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
             </div>
             <h3>Zrównoważony rozwój</h3>
             <p>Dbamy o&nbsp;środowisko naturalne. Tereny zielone, place zabaw i&nbsp;ekologiczne rozwiązania na każdym osiedlu.</p>
           </div>
-          <div class="why__card">
+          <div class="why__card" data-num="04">
             <div class="why__icon">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
             </div>
@@ -287,17 +914,6 @@
     <section class="programs section">
       <div class="container">
         <div class="programs__grid" data-reveal>
-          <div class="programs__card">
-            <div class="programs__img">
-              <img src="https://megapolis.pl/wp-content/uploads/2024/07/programy-deer.jpg" alt="Program wykończenia wnętrz Deer Design" loading="lazy">
-            </div>
-            <div class="programs__content">
-              <span class="programs__tag">Program wykończenia wnętrz</span>
-              <h3>Wykończ mieszkanie<br>z&nbsp;<em>Deer Design</em></h3>
-              <p>Współpracujemy z&nbsp;biurem projektowym Deer Design, oferując trzy standardy wykończenia: Smart Life, Modern Life i&nbsp;High Life.</p>
-              <a href="#" class="btn btn--pill">Dowiedz się więcej</a>
-            </div>
-          </div>
           <div class="programs__card programs__card--reverse">
             <div class="programs__img">
               <img src="https://megapolis.pl/wp-content/uploads/2024/07/finansowanie-opt.webp" alt="Finansowanie z NOTUS" loading="lazy">
@@ -318,7 +934,7 @@
       <div class="container">
         <div class="section__header section__header--center" data-reveal>
           <h2 class="section__title">Co mówią nasi <em>mieszkańcy</em></h2>
-          <p class="section__subtitle">Opinie osób, które zaufały Megapolis</p>
+          <p class="section__subtitle" style="color:var(--graphite);opacity:0.55;">Opinie osób, które zaufały Megapolis</p>
         </div>
         <div class="reviews__grid" data-reveal>
           <div class="review-card">
@@ -329,6 +945,7 @@
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
             </div>
+            <div class="review-card__bq">&ldquo;</div>
             <p class="review-card__text">&bdquo;Proces zakupu był bezproblemowy, a&nbsp;doradcy zawsze dostępni. Mieszkanie oddane terminowo, zgodnie z&nbsp;projektem. Polecam każdemu!&rdquo;</p>
             <div class="review-card__author">
               <div class="review-card__avatar">AK</div>
@@ -343,6 +960,7 @@
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
             </div>
+            <div class="review-card__bq">&ldquo;</div>
             <p class="review-card__text">&bdquo;Świetna lokalizacja i&nbsp;wysoka jakość wykończenia części wspólnych. Tereny zielone wokół osiedla to ogromny plus dla naszej rodziny.&rdquo;</p>
             <div class="review-card__author">
               <div class="review-card__avatar">MN</div>
@@ -357,6 +975,7 @@
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
             </div>
+            <div class="review-card__bq">&ldquo;</div>
             <p class="review-card__text">&bdquo;Jako inwestor cenię sobie profesjonalizm Megapolis. Transparentna komunikacja na każdym etapie budowy i&nbsp;terminowość to ich znak rozpoznawczy.&rdquo;</p>
             <div class="review-card__author">
               <div class="review-card__avatar">KW</div>
@@ -367,61 +986,43 @@
       </div>
     </section>
 
-    <!-- ===== SEARCH CTA ===== -->
-    <section class="search-banner section">
-      <div class="search-banner__stars" style="background-image: url('https://megapolis.pl/wp-content/uploads/2024/06/bg-stars3-webp.webp')"></div>
+    <!-- ===== COMBINED: Newsletter + Kontakt (obok siebie, minimalistycznie) ===== -->
+    <section class="final-cta section" id="kontakt">
       <div class="container">
-        <div class="search-banner__content" data-reveal>
-          <h2>Szukasz <em>mieszkania</em>?</h2>
-          <p>Skorzystaj z&nbsp;naszej wyszukiwarki i&nbsp;znajdź idealne mieszkanie dopasowane do Twoich potrzeb.</p>
-          <div class="search-banner__buttons">
-            <a class='btn btn--pill' href='/wyszukiwarka'>Wyszukiwarka tekstowa</a>
-            <a href="#" class="btn btn--pill btn--outline">Wyszukiwarka 3D</a>
-          </div>
-        </div>
-      </div>
-    </section>
+        <div class="final-cta__grid">
 
-    <!-- ===== NEWSLETTER ===== -->
-    <section class="section" style="border-top:1px solid var(--white-05);">
-      <div class="container">
-        <div class="newsletter" data-reveal>
-          <h2 class="section__title">Bądź na <em>bieżąco</em></h2>
-          <p class="section__subtitle" style="margin-bottom:32px;">Zapisz się do newslettera i&nbsp;otrzymuj informacje o&nbsp;nowych inwestycjach i&nbsp;promocjach.</p>
-          <form class="newsletter__form" id="newsletterForm">
-            <input type="email" class="newsletter__input" placeholder="Twój adres e-mail" required>
-            <button type="submit" class="newsletter__btn">Zapisz się</button>
-          </form>
-          <p style="font-size:12px; color:var(--white-20); margin-top:12px;">Żadnego spamu. Możesz zrezygnować w&nbsp;każdej chwili.</p>
-        </div>
-      </div>
-    </section>
+          <!-- Lewa kolumna: Newsletter -->
+          <div class="final-cta__news" data-reveal>
+            <h2 class="section__title">Bądź na <em>bieżąco</em></h2>
+            <p class="section__subtitle">Zapisz się do newslettera i&nbsp;otrzymuj informacje o&nbsp;nowych inwestycjach i&nbsp;promocjach.</p>
+            <form class="newsletter__form" id="newsletterForm">
+              <input type="email" class="newsletter__input" placeholder="Twój adres e-mail" required>
+              <button type="submit" class="newsletter__btn">Zapisz się</button>
+            </form>
+            <p class="final-cta__disclaimer">Żadnego spamu. Możesz zrezygnować w&nbsp;każdej chwili.</p>
 
-    <!-- ===== CONTACT ===== -->
-    <section class="contact section" id="kontakt">
-      <div class="container">
-        <div class="contact__grid">
-          <div class="contact__info" data-reveal>
-            <h2 class="section__title">Skontaktuj się<br>z&nbsp;<em>nami</em></h2>
-            <p class="contact__text">Nasi doradcy chętnie odpowiedzą na wszystkie pytania i&nbsp;pomogą w&nbsp;wyborze idealnego mieszkania.</p>
-            <div class="contact__details">
+            <!-- Dane kontaktowe pod newsletterem -->
+            <div class="final-cta__details">
               <div class="contact__item">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
                 <a href="tel:+48123000077">12 300 00 77</a>
               </div>
               <div class="contact__item">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
                 <a href="mailto:biuro@megapolis.pl">biuro@megapolis.pl</a>
               </div>
               <div class="contact__item">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
                 <span>ul. Rzemieślnicza 26, 30-403 Kraków</span>
               </div>
             </div>
           </div>
-          <div class="contact__form-wrap" data-reveal>
+
+          <!-- Prawa kolumna: Formularz kontaktowy -->
+          <div class="final-cta__contact contact__form-wrap" data-reveal>
             <form class="contact-form" id="contactForm" novalidate>
-              <h3>Napisz do nas</h3>
+              <h3>Skontaktuj się z&nbsp;<em>nami</em></h3>
+              <p class="final-cta__form-sub">Nasi doradcy odpowiedzą na wszystkie pytania.</p>
               <div class="contact-form__row contact-form__row--half">
                 <div class="contact-form__field"><label for="c-name">Imię i&nbsp;nazwisko *</label><input type="text" id="c-name" name="name" required></div>
                 <div class="contact-form__field"><label for="c-phone">Telefon</label><input type="tel" id="c-phone" name="phone"></div>
@@ -430,16 +1031,19 @@
                 <div class="contact-form__field"><label for="c-email">E-mail *</label><input type="email" id="c-email" name="email" required></div>
               </div>
               <div class="contact-form__row">
-                <div class="contact-form__field"><label for="c-msg">Wiadomość</label><textarea id="c-msg" name="message" rows="4"></textarea></div>
+                <div class="contact-form__field"><label for="c-msg">Wiadomość</label><textarea id="c-msg" name="message" rows="3"></textarea></div>
               </div>
               <label class="contact-form__checkbox"><input type="checkbox" name="privacy" required><span>Wyrażam zgodę na przetwarzanie moich danych osobowych zgodnie z&nbsp;<a href="#">polityką prywatności</a>.</span></label>
               <button type="submit" class="btn btn--pill btn--full">Wyślij wiadomość</button>
             </form>
           </div>
+
         </div>
       </div>
     </section>
 
+  </div><!-- .intro-dome -->
+  </section><!-- .intro-reveal -->
   </main>
 
   <!-- Footer -->
@@ -447,7 +1051,12 @@
     <div class="container">
       <div class="footer__top">
         <div class="footer__brand">
-          <img src="https://megapolis.pl/wp-content/uploads/2024/06/megapolis-logo-opt.svg" alt="Megapolis" width="140" class="footer__logo">
+          <div class="footer__logo">
+            <svg class="footer__logo-icon" viewBox="-1 8 57 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M54.46 39.33h-3.53v-3.47h-3.64l-4.46-2.31v5.78h-2.31l-.01-16.2h-1.15v-5.78h-6.94v21.98H30.1V26.6h-2.31V9.25h-9.25v30.08h-2.32v-16.2H11.6v16.2H9.28v-5.78L3.5 35.78v3.55H-.05v1.16h4.71v-3.91l3.47-1.43v5.34h4.62v-16.2h2.32v16.2h4.62V10.41h6.94v17.35h2.32v12.73h4.62V18.51h4.63v5.78h1.16v16.2h4.63v-5.04L47 37.03l2.76-.03v3.49h4.7v-1.16z" fill="white"/>
+            </svg>
+            <span class="footer__logo-text">Megapolis</span>
+          </div>
           <p>Tworzymy przestrzenie dla tętniących życiem społeczności.</p>
           <span class="footer__holding">Część grupy Holding 1 — 35+ lat doświadczenia</span>
         </div>
@@ -457,7 +1066,7 @@
             <ul>
               <li><a href='/inwestycja'>Osiedle OZON</a></li>
               <li><a href="#">CLOU Lindego</a></li>
-              <li><a href="#">Nowe Osiedle Fi</a></li>
+              <li><a href="/osiedle-fi/">Nowe Osiedle Fi</a></li>
               <li><a href="#">LINK BUNSCHA</a></li>
               <li><a href="#">Michalczyka 15</a></li>
             </ul>
@@ -493,29 +1102,6 @@
     </div>
   </footer>
 
-  <!-- Chatbot Widget -->
-  <button class="chatbot-fab" id="chatbotFab" aria-label="Otwórz czat">
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-  </button>
-  <div class="chatbot-window" id="chatbotWindow">
-    <div class="chatbot-window__header">
-      <div class="chatbot-window__avatar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--bg)" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
-      <div><div class="chatbot-window__title">Asystent Megapolis</div><div class="chatbot-window__status">Online</div></div>
-    </div>
-    <div class="chatbot-window__body">
-      <div class="chatbot-msg chatbot-msg--bot">Cześć! Jestem asystentem Megapolis. Jak mogę Ci pomóc?</div>
-      <div class="chatbot-msg chatbot-msg--quick">
-        <button>Szukam mieszkania</button>
-        <button>Chcę umówić wizytę</button>
-        <button>Mam pytanie o cenę</button>
-      </div>
-    </div>
-    <div class="chatbot-window__input">
-      <input type="text" placeholder="Napisz wiadomość...">
-      <button aria-label="Wyślij"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
-    </div>
-  </div>
-
   <!-- Back to top -->
   <button class="back-to-top" id="backToTop" aria-label="Przewiń do góry">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
@@ -527,6 +1113,481 @@
     <a class='sticky-contact__search' href='/wyszukiwarka'>Szukaj mieszkania</a>
   </div>
 
+  <!-- GSAP + ScrollTrigger + Lenis -->
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
   <script src="js/main.js"></script>
+
+  <!-- AI Search widget -->
+  <script>
+  (function(){
+    const root = document.getElementById('aiSearch');
+    if (!root) return;
+    const input = document.getElementById('aiSearchInput');
+    const pill = root.querySelector('.ai-search__pill');
+    const panel = document.getElementById('aiSearchPanel');
+    let timer = null;
+    let lastQ = '';
+
+    const suggestions = [
+      '3 pokoje w Krakowie do 600 000 zl',
+      'Kiedy odbior mieszkania w OZON?',
+      'Mieszkania z balkonem',
+      'Promocje w Cloud Lindego',
+      'Kariera w Megapolis'
+    ];
+
+    function renderEmpty() {
+      panel.innerHTML = `
+        <div class="ai-search__answer">
+          <div class="ai-search__answer-head"><span class="ai-search__ai-dot"></span>Zapytaj asystenta AI</div>
+          <p class="ai-search__answer-text">Zadaj pytanie w naturalnym jezyku lub wpisz slowa kluczowe. AI przeszuka wszystkie inwestycje, realizacje, aktualnosci, FAQ i oferty pracy.</p>
+        </div>
+        <div class="ai-search__hint">
+          <strong>Sproboj:</strong>
+          ${suggestions.map(s => `<button data-suggest="${s}">${s}</button>`).join('')}
+        </div>
+        <div class="ai-search__footer">
+          <span>Szukaj inteligentnie</span>
+          <span><kbd>Ctrl</kbd>+<kbd>K</kbd> aby otworzyc</span>
+        </div>`;
+      panel.querySelectorAll('[data-suggest]').forEach(b => {
+        b.addEventListener('click', () => {
+          input.value = b.dataset.suggest;
+          input.focus();
+          doSearch();
+        });
+      });
+    }
+
+    function renderLoading() {
+      panel.innerHTML = `<div class="ai-search__loading">AI analizuje zapytanie...</div>`;
+    }
+
+    function renderResults(data) {
+      const ans = data.answer ? `
+        <div class="ai-search__answer">
+          <div class="ai-search__answer-head"><span class="ai-search__ai-dot"></span>Odpowiedz AI</div>
+          <p class="ai-search__answer-text">${data.answer}</p>
+        </div>` : '';
+      const srcs = (data.sources || []).length ? `
+        <div class="ai-search__sources">
+          ${data.sources.map(s => `
+            <a class="ai-search__source" href="${s.url}">
+              <span class="ai-search__kind ai-search__kind--${s.kind}">${s.kind}</span>
+              <div class="ai-search__src-body">
+                <p class="ai-search__src-title">${s.title}</p>
+                <p class="ai-search__src-snippet">${s.snippet || ''}</p>
+              </div>
+              <span class="ai-search__src-arrow">&rarr;</span>
+            </a>
+          `).join('')}
+        </div>` : `<div class="ai-search__empty">Nic nie znaleziono. Sproboj innego pytania.</div>`;
+      panel.innerHTML = ans + srcs + `
+        <div class="ai-search__footer">
+          <span>${data.sources?.length || 0} wynikow &middot; ${data.took_ms || 0} ms</span>
+          <span><kbd>Enter</kbd> pierwszy wynik</span>
+        </div>`;
+    }
+
+    async function doSearch() {
+      const q = input.value.trim();
+      if (!q) { renderEmpty(); return; }
+      if (q === lastQ) return;
+      lastQ = q;
+      renderLoading();
+      try {
+        const res = await fetch('/api/search?q=' + encodeURIComponent(q));
+        if (!res.ok) throw new Error('http ' + res.status);
+        const data = await res.json();
+        renderResults(data);
+      } catch (e) {
+        panel.innerHTML = `<div class="ai-search__empty">Blad wyszukiwania. Sprobuj ponownie.</div>`;
+      }
+    }
+
+    function openPanel() { panel.style.display = 'block'; pill.classList.add('is-focused'); if (!input.value) renderEmpty(); }
+    function closePanel() { panel.style.display = 'none'; pill.classList.remove('is-focused'); }
+
+    input.addEventListener('focus', openPanel);
+    input.addEventListener('input', () => {
+      clearTimeout(timer);
+      timer = setTimeout(doSearch, 280);
+    });
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const first = panel.querySelector('.ai-search__source');
+        if (first) window.location.href = first.getAttribute('href');
+      } else if (e.key === 'Escape') {
+        input.blur();
+        closePanel();
+      }
+    });
+    document.addEventListener('click', (e) => {
+      if (!root.contains(e.target)) closePanel();
+    });
+    // Ctrl+K / Cmd+K shortcut
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        input.focus();
+        input.select();
+      }
+    });
+  })();
+  </script>
+
+  <!-- ===== MAPA INWESTYCJI — Leaflet.js ===== -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script>
+  (function() {
+    if (typeof L === 'undefined') return;
+    var mapEl = document.getElementById('invMap');
+    if (!mapEl) return;
+
+    // Inwestycje z koordynatami (Kraków)
+    var investments = {
+      ozon:        { lat: 50.0248, lng: 19.8840, name: 'Osiedle OZON',    loc: 'Kraków, ul. Banacha',      img: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=85&auto=format&fit=crop', url: '/osiedle-ozon/' },
+      bunscha:     { lat: 50.0200, lng: 19.8920, name: 'LINK BUNSCHA',    loc: 'Kraków, ul. Bunscha 14a',   img: 'https://images.unsplash.com/photo-1460317442991-0ec209397118?w=600&q=85&auto=format&fit=crop', url: '/link-bunscha/' },
+      fi:          { lat: 50.0195, lng: 19.9665, name: 'Nowe Osiedle Fi', loc: 'Kraków, ul. Szafrana',      img: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&q=85&auto=format&fit=crop', url: '/osiedle-fi/' },
+      clou:        { lat: 50.0878, lng: 19.8877, name: 'CLOU Lindego',    loc: 'Kraków, ul. Lindego',       img: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=85&auto=format&fit=crop', url: '/clou-lindego/' },
+      michalczyka: { lat: 50.0811, lng: 19.9156, name: 'Michalczyka 15',  loc: 'Kraków, Krowodrza',         img: 'https://images.unsplash.com/photo-1464146072230-91cabc968266?w=600&q=85&auto=format&fit=crop', url: '#' }
+    };
+
+    // Inicjalizacja mapy — widok Krakowa
+    var map = L.map('invMap', {
+      center: [50.0614, 19.9372],
+      zoom: 12,
+      scrollWheelZoom: false,
+      zoomControl: true
+    });
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    // Własna ikona pin (gold)
+    function makePin(isActive) {
+      return L.divIcon({
+        className: 'invmap-pin-wrap',
+        html: '<div class="invmap-pin' + (isActive ? ' is-active' : '') + '"></div>',
+        iconSize: [34, 34],
+        iconAnchor: [17, 34],
+        popupAnchor: [0, -30]
+      });
+    }
+
+    // Markery + popupy
+    var markers = {};
+    Object.keys(investments).forEach(function(key) {
+      var inv = investments[key];
+      var m = L.marker([inv.lat, inv.lng], { icon: makePin(key === 'ozon') }).addTo(map);
+      var popupHtml =
+        '<div class="invmap-popup">' +
+          '<img class="invmap-popup__img" src="' + inv.img + '" alt="' + inv.name + '">' +
+          '<div class="invmap-popup__body">' +
+            '<h3 class="invmap-popup__name">' + inv.name + '</h3>' +
+            '<p class="invmap-popup__loc">' + inv.loc + '</p>' +
+            '<a class="invmap-popup__cta" href="#card-' + key + '" data-scroll-card="' + key + '">Zobacz w&nbsp;liście ↓</a>' +
+          '</div>' +
+        '</div>';
+      m.bindPopup(popupHtml, { maxWidth: 260, closeButton: true });
+      markers[key] = m;
+    });
+
+    // Synchronizacja lista ↔ mapa
+    function activate(key) {
+      Object.keys(markers).forEach(function(k) {
+        markers[k].setIcon(makePin(false));
+      });
+      document.querySelectorAll('.invmap__item').forEach(function(el) {
+        el.classList.toggle('is-active', el.dataset.inv === key);
+      });
+      if (markers[key]) {
+        markers[key].setIcon(makePin(true));
+        map.flyTo([investments[key].lat, investments[key].lng], 14, { duration: .6 });
+        markers[key].openPopup();
+      }
+    }
+
+    document.querySelectorAll('.invmap__item').forEach(function(btn) {
+      btn.addEventListener('click', function() { activate(btn.dataset.inv); });
+    });
+    Object.keys(markers).forEach(function(key) {
+      markers[key].on('click', function() { activate(key); });
+    });
+
+    // Scroll-wheel zoom: włącz tylko po kliknięciu na mapę
+    map.on('click', function() { map.scrollWheelZoom.enable(); });
+    map.on('mouseout', function() { map.scrollWheelZoom.disable(); });
+
+    // === PORTFOLIO HUB: synchronizacja mapy ↔ listy ===
+    // Klik na popup CTA lub dwuklik pinezki → scroll do karty w allinv
+    function scrollToCard(key) {
+      var card = document.getElementById('card-' + key);
+      if (!card) return;
+      // Zamknij popup i nie przenoś widoku mapy
+      if (markers[key]) markers[key].closePopup();
+      // Smooth scroll z offsetem
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Highlight z animacją (1.8s klas pulsuje, potem zostaje inset glow)
+      document.querySelectorAll('.allinv__card.is-highlighted').forEach(function(c) {
+        c.classList.remove('is-highlighted');
+      });
+      setTimeout(function() {
+        card.classList.add('is-highlighted');
+        setTimeout(function() { card.classList.remove('is-highlighted'); }, 2400);
+      }, 400);
+    }
+
+    // Dwuklik pinezki = przeskok do karty
+    Object.keys(markers).forEach(function(key) {
+      markers[key].on('dblclick', function() { scrollToCard(key); });
+    });
+
+    // Klik "Zobacz w liście" w popupie Leaflet → scroll do karty (event delegation,
+    // bo popup generuje się dynamicznie po kliknięciu pinezki)
+    document.addEventListener('click', function(e) {
+      var link = e.target.closest('[data-scroll-card]');
+      if (!link) return;
+      e.preventDefault();
+      scrollToCard(link.dataset.scrollCard);
+    });
+
+    // Dwuklik na item w liście mapy (po lewej) = przeskok do karty
+    document.querySelectorAll('.invmap__item').forEach(function(btn) {
+      btn.addEventListener('dblclick', function() { scrollToCard(btn.dataset.inv); });
+    });
+
+    // === PORTFOLIO HUB: Toggle tabs MAPA ↔ LISTA ===
+    var hubTabs = document.querySelectorAll('.portfolio-hub__tab');
+    function setActiveTab(view) {
+      hubTabs.forEach(function(t) {
+        var isActive = t.dataset.view === view;
+        t.classList.toggle('is-active', isActive);
+        t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+    }
+    hubTabs.forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        setActiveTab(tab.dataset.view);
+      });
+    });
+    // Linki bridge / backtop też przełączają stan
+    document.querySelectorAll('[data-view-link]').forEach(function(link) {
+      link.addEventListener('click', function() {
+        setActiveTab(link.dataset.viewLink);
+      });
+    });
+    // Obserwacja scrolla — aktualizuj aktywny tab w zależności od pozycji
+    var mapaEl = document.getElementById('mapa');
+    var listaEl = document.getElementById('lista');
+    if (mapaEl && listaEl && 'IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting && e.intersectionRatio > 0.3) {
+            setActiveTab(e.target.id === 'mapa' ? 'map' : 'grid');
+          }
+        });
+      }, { threshold: [0.3, 0.5] });
+      io.observe(mapaEl);
+      io.observe(listaEl);
+    }
+  })();
+  </script>
+
+  <!-- ===== WYSZUKIWARKA — tabs, miasta, slidery, submit ===== -->
+  <script>
+  (function() {
+    var finder = document.getElementById('wyszukaj');
+    if (!finder) return;
+
+    // Tabs: typ inwestycji
+    finder.querySelectorAll('.finder__tab').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        finder.querySelectorAll('.finder__tab').forEach(function(b) { b.classList.remove('is-active'); b.setAttribute('aria-selected','false'); });
+        btn.classList.add('is-active'); btn.setAttribute('aria-selected','true');
+      });
+    });
+
+    // Miasta
+    finder.querySelectorAll('.finder__city').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        finder.querySelectorAll('.finder__city').forEach(function(b) { b.classList.remove('is-active'); });
+        btn.classList.add('is-active');
+      });
+    });
+
+    // Dwuuchwytowe slidery
+    function formatValue(name, v) {
+      if (name === 'price') return Math.round(v).toLocaleString('pl-PL') + ' zł';
+      return String(Math.round(v));
+    }
+    function parseNum(str) {
+      return parseFloat(String(str).replace(/[^\d.-]/g, '')) || 0;
+    }
+
+    finder.querySelectorAll('.finder__slider').forEach(function(slider) {
+      var name = slider.dataset.slider;
+      var minB = parseFloat(slider.dataset.min);
+      var maxB = parseFloat(slider.dataset.max);
+      var valMin = parseFloat(slider.dataset.valMin);
+      var valMax = parseFloat(slider.dataset.valMax);
+      var handles = { min: slider.querySelector('[data-handle=min]'), max: slider.querySelector('[data-handle=max]') };
+      var fill = slider.querySelector('.finder__slider-fill');
+      var inputs = {
+        min: finder.querySelector('.finder__num[data-range="' + name + '"][data-bound="min"]'),
+        max: finder.querySelector('.finder__num[data-range="' + name + '"][data-bound="max"]')
+      };
+
+      function pctOf(v) { return (v - minB) / (maxB - minB) * 100; }
+      function update() {
+        var pctMin = pctOf(valMin), pctMax = pctOf(valMax);
+        handles.min.style.left = pctMin + '%';
+        handles.max.style.left = pctMax + '%';
+        fill.style.left = pctMin + '%';
+        fill.style.right = (100 - pctMax) + '%';
+        handles.min.setAttribute('aria-valuenow', valMin);
+        handles.max.setAttribute('aria-valuenow', valMax);
+        if (inputs.min) inputs.min.value = formatValue(name, valMin);
+        if (inputs.max) inputs.max.value = formatValue(name, valMax);
+      }
+
+      function startDrag(bound) {
+        return function(evStart) {
+          evStart.preventDefault();
+          var rect = slider.getBoundingClientRect();
+          function onMove(ev) {
+            var x = (ev.touches ? ev.touches[0].clientX : ev.clientX) - rect.left;
+            var pct = Math.max(0, Math.min(100, x / rect.width * 100));
+            var val = minB + pct / 100 * (maxB - minB);
+            if (name !== 'price') val = Math.round(val);
+            if (bound === 'min') valMin = Math.min(val, valMax - (name === 'price' ? 1000 : 1));
+            else valMax = Math.max(val, valMin + (name === 'price' ? 1000 : 1));
+            valMin = Math.max(valMin, minB); valMax = Math.min(valMax, maxB);
+            update();
+          }
+          function onEnd() {
+            document.removeEventListener('mousemove', onMove);
+            document.removeEventListener('mouseup', onEnd);
+            document.removeEventListener('touchmove', onMove);
+            document.removeEventListener('touchend', onEnd);
+          }
+          document.addEventListener('mousemove', onMove);
+          document.addEventListener('mouseup', onEnd);
+          document.addEventListener('touchmove', onMove, { passive: false });
+          document.addEventListener('touchend', onEnd);
+        };
+      }
+      handles.min.addEventListener('mousedown', startDrag('min'));
+      handles.max.addEventListener('mousedown', startDrag('max'));
+      handles.min.addEventListener('touchstart', startDrag('min'), { passive: false });
+      handles.max.addEventListener('touchstart', startDrag('max'), { passive: false });
+
+      // Synchronizacja z inputami
+      ['min','max'].forEach(function(b) {
+        if (!inputs[b]) return;
+        inputs[b].addEventListener('change', function() {
+          var v = parseNum(inputs[b].value);
+          v = Math.max(minB, Math.min(maxB, v));
+          if (b === 'min') valMin = Math.min(v, valMax - 1); else valMax = Math.max(v, valMin + 1);
+          update();
+        });
+      });
+
+      update();
+      slider._state = { get: function() { return { min: valMin, max: valMax }; } };
+    });
+
+    // Submit — filtruj siatkę allinv
+    var submitBtn = document.getElementById('fndSubmit');
+    var resetBtn = document.getElementById('fndReset');
+    var investSelect = document.getElementById('fndInvestment');
+    var grid = document.getElementById('allinvGrid');
+
+    if (submitBtn && grid) {
+      submitBtn.addEventListener('click', function() {
+        var activeType = finder.querySelector('.finder__tab.is-active').dataset.type;
+        var activeCity = finder.querySelector('.finder__city.is-active').dataset.city;
+        var selectedInv = investSelect.value;
+
+        // Podświetl pasujące karty, ukryj resztę
+        grid.querySelectorAll('.allinv__card').forEach(function(card) {
+          var name = card.querySelector('.allinv__card-name').textContent.trim().toLowerCase();
+          var loc = card.querySelector('.allinv__card-loc').textContent.trim().toLowerCase();
+          var show = true;
+
+          // Filtr: miasto (aktualnie wszystkie inwestycje Megapolis są w Krakowie — pokazuj tylko gdy krakow wybrany)
+          if (activeCity === 'wroclaw' || activeCity === 'gdansk') show = false;
+
+          // Filtr: konkretna inwestycja
+          if (selectedInv !== 'all') {
+            var map = { ozon: 'osiedle ozon', bunscha: 'link bunscha', fi: 'nowe osiedle fi', clou: 'clou lindego', michalczyka: 'michalczyka', ozon2: 'osiedle ozon ii', ruczaj: 'ruczaj park', panorama: 'panorama wawel' };
+            if (map[selectedInv] && !name.includes(map[selectedInv])) show = false;
+          }
+
+          card.style.display = show ? '' : 'none';
+        });
+
+        // Scroll do wyników
+        var target = document.getElementById('wszystkie-inwestycje');
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
+
+    if (resetBtn) {
+      resetBtn.addEventListener('click', function() {
+        // Reset typu
+        finder.querySelectorAll('.finder__tab').forEach(function(b, i) {
+          b.classList.toggle('is-active', i === 0);
+          b.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+        });
+        // Reset miasta
+        finder.querySelectorAll('.finder__city').forEach(function(b, i) {
+          b.classList.toggle('is-active', i === 0);
+        });
+        // Reset select
+        if (investSelect) investSelect.value = 'all';
+        // Reset slidery — przeładuj stronę aby odświeżyć wartości (najprostsze)
+        finder.querySelectorAll('.finder__slider').forEach(function(slider) {
+          var event = new Event('reset');
+          slider.dispatchEvent(event);
+        });
+        // Pokaż wszystkie karty
+        if (grid) grid.querySelectorAll('.allinv__card').forEach(function(card) { card.style.display = ''; });
+      });
+    }
+
+    // Filtry statusu w sekcji allinv (Wszystkie / W sprzedaży / Zrealizowane / Wkrótce)
+    var filterBtns = document.querySelectorAll('.allinv__filter');
+    var emptyMsg   = document.getElementById('allinvEmpty');
+    if (filterBtns.length) {
+      filterBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var filter = btn.getAttribute('data-filter');
+          // zmien aktywna zakladke
+          filterBtns.forEach(function(b) {
+            b.classList.remove('is-active');
+            b.setAttribute('aria-selected', 'false');
+          });
+          btn.classList.add('is-active');
+          btn.setAttribute('aria-selected', 'true');
+          // przefiltruj karty
+          var cards = document.querySelectorAll('#allinvGrid .allinv__card');
+          var visible = 0;
+          cards.forEach(function(card) {
+            var match = filter === 'all' || card.getAttribute('data-status') === filter;
+            card.style.display = match ? '' : 'none';
+            if (match) visible++;
+          });
+          if (emptyMsg) emptyMsg.hidden = visible !== 0;
+        });
+      });
+    }
+  })();
+  </script>
 </body>
 </html>

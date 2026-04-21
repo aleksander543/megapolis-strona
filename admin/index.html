@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Megapolis — Panel administratora</title>
+<link rel="stylesheet" href="/admin/style.css">
+<!-- Fonty lokalne Ubuntu (z /fonts/) — @font-face w /css/style.css -->
+<link rel="preload" href="/fonts/Ubuntu-Regular.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="/fonts/Ubuntu-Medium.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="/fonts/Ubuntu-Bold.ttf" as="font" type="font/ttf" crossorigin>
+</head>
+<body>
+
+<!-- ========== LOGIN SCREEN ========== -->
+<section id="loginScreen" class="login-screen">
+  <div class="login-card">
+    <div class="login-brand">
+      <span class="login-brand__mark">M</span>
+      <div>
+        <div class="login-brand__name">MEGAPOLIS</div>
+        <div class="login-brand__sub">Panel administracyjny</div>
+      </div>
+    </div>
+    <form id="loginForm" class="login-form">
+      <label>
+        <span>Uzytkownik</span>
+        <input type="text" name="user" autocomplete="username" required>
+      </label>
+      <label>
+        <span>Haslo</span>
+        <input type="password" name="pass" autocomplete="current-password" required>
+      </label>
+      <button type="submit" class="btn btn--primary btn--block">Zaloguj sie</button>
+      <p id="loginError" class="login-error" hidden></p>
+      <p class="login-hint">Domyslne dane: <code>admin</code> / <code>megapolis2026</code></p>
+    </form>
+  </div>
+</section>
+
+<!-- ========== ADMIN APP ========== -->
+<div id="adminApp" class="admin-app" hidden>
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="admin-logo">
+      <span class="admin-logo__mark">M</span>
+      <span class="admin-logo__name">MEGAPOLIS</span>
+    </div>
+    <nav class="admin-nav">
+      <button class="admin-nav__item is-active" data-section="dashboard">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Pulpit
+      </button>
+      <div class="admin-nav__group">Tresc</div>
+      <button class="admin-nav__item" data-section="news">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="17" y2="13"/><line x1="7" y1="17" x2="13" y2="17"/></svg>
+        Aktualnosci
+      </button>
+      <button class="admin-nav__item" data-section="realizacje">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-8h6v8"/></svg>
+        Realizacje
+      </button>
+      <button class="admin-nav__item" data-section="faq">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.5-2.5 2-2.5 3.5"/><circle cx="12" cy="17" r="0.5" fill="currentColor"/></svg>
+        FAQ
+      </button>
+      <button class="admin-nav__item" data-section="testimonials">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+        Opinie
+      </button>
+      <button class="admin-nav__item" data-section="apartments">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="1"/><path d="M4 10h16M4 16h16M10 4v16M16 4v16"/></svg>
+        Mieszkania (THTG)
+      </button>
+      <button class="admin-nav__item" data-section="jobs">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        Oferty pracy
+      </button>
+      <div class="admin-nav__group">Multisite</div>
+      <button class="admin-nav__item" data-section="osiedla">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Strony osiedli
+      </button>
+      <div class="admin-nav__group">Ustawienia</div>
+      <button class="admin-nav__item" data-section="settings">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Ustawienia strony
+      </button>
+      <button class="admin-nav__item" data-section="i18n">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 3 2.5 15 0 18M12 3c-2.5 3-2.5 15 0 18"/></svg>
+        Tlumaczenia (WPML)
+      </button>
+      <button class="admin-nav__item" data-section="submissions">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 12h-6l-2 3h-4l-2-3H2M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+        Wiadomosci z formularzy
+      </button>
+    </nav>
+    <div class="admin-sidebar__footer">
+      <button id="logoutBtn" class="btn btn--ghost btn--block">Wyloguj sie</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="admin-main">
+    <header class="admin-topbar">
+      <div>
+        <h1 id="pageTitle">Pulpit</h1>
+        <p id="pageSub" class="admin-topbar__sub">Podsumowanie aktywnosci w serwisie</p>
+      </div>
+      <div class="admin-topbar__actions">
+        <a class="btn btn--ghost" href="/" target="_blank" rel="noopener">Podglad strony</a>
+        <span id="saveStatus" class="save-status"></span>
+      </div>
+    </header>
+
+    <div id="sectionRoot" class="admin-content">
+      <!-- section rendered by JS -->
+    </div>
+  </main>
+</div>
+
+<!-- WYSIWYG toolbar template (hidden, used by JS) -->
+<template id="wysiwygTpl">
+  <div class="wysiwyg">
+    <div class="wysiwyg__toolbar">
+      <button type="button" data-cmd="bold" title="Pogrubienie (Ctrl+B)"><b>B</b></button>
+      <button type="button" data-cmd="italic" title="Kursywa (Ctrl+I)"><i>I</i></button>
+      <button type="button" data-cmd="underline" title="Podkreslenie"><u>U</u></button>
+      <button type="button" data-cmd="strikethrough" title="Przekreslenie"><s>S</s></button>
+      <span class="wysiwyg__sep"></span>
+      <select data-cmd="formatBlock">
+        <option value="p">Akapit</option>
+        <option value="h1">Naglowek 1</option>
+        <option value="h2">Naglowek 2</option>
+        <option value="h3">Naglowek 3</option>
+        <option value="h4">Naglowek 4</option>
+        <option value="blockquote">Cytat</option>
+        <option value="pre">Kod</option>
+      </select>
+      <span class="wysiwyg__sep"></span>
+      <button type="button" data-cmd="justifyLeft" title="Do lewej">&#8676;</button>
+      <button type="button" data-cmd="justifyCenter" title="Do srodka">&#8652;</button>
+      <button type="button" data-cmd="justifyRight" title="Do prawej">&#8677;</button>
+      <span class="wysiwyg__sep"></span>
+      <button type="button" data-cmd="insertUnorderedList" title="Punkty">&#8226;</button>
+      <button type="button" data-cmd="insertOrderedList" title="Numerowane">1.</button>
+      <span class="wysiwyg__sep"></span>
+      <button type="button" data-cmd="createLink" title="Wstaw link">&#128279;</button>
+      <button type="button" data-cmd="unlink" title="Usun link">&times;</button>
+      <button type="button" data-cmd="insertImage" title="Wstaw obraz">&#128247;</button>
+      <span class="wysiwyg__sep"></span>
+      <button type="button" data-cmd="removeFormat" title="Wyczysc formatowanie">T</button>
+      <button type="button" data-cmd="viewHtml" title="Kod HTML">&lt;/&gt;</button>
+    </div>
+    <div class="wysiwyg__editor" contenteditable="true"></div>
+    <textarea class="wysiwyg__html" hidden></textarea>
+  </div>
+</template>
+
+<script src="/admin/app.js"></script>
+</body>
+</html>

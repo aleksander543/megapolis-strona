@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="pl" data-site="osiedle">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Osiedle — Megapolis</title>
+<meta name="description" content="Strona osiedla — ekosystem Megapolis">
+<!-- Fonty lokalne Ubuntu (z /fonts/) — @font-face w /css/style.css -->
+<link rel="preload" href="/fonts/Ubuntu-Regular.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="/fonts/Ubuntu-Medium.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="/fonts/Ubuntu-Bold.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="stylesheet" href="/css/style.css">
+<style>
+  /* Site-level overrides per osiedle (injected via JS) */
+  .osiedle-hero {
+    min-height: 82vh;
+    display:grid; place-items:center;
+    text-align:center;
+    background:
+      linear-gradient(180deg, rgba(6,8,14,0.5) 0%, rgba(6,8,14,0.85) 100%),
+      #0a0c15 center/cover no-repeat;
+    padding: 120px 20px 60px;
+  }
+  .osiedle-hero__kicker {
+    font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 24px;
+  }
+  .osiedle-hero__title {
+    font-family: 'Ubuntu', serif;
+    font-size: clamp(40px, 7vw, 88px);
+    font-weight: 500; line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+    color: #fff;
+  }
+  .osiedle-hero__tagline {
+    font-family: 'Ubuntu', serif;
+    font-size: clamp(18px, 2vw, 24px);
+    color: rgba(255,255,255,0.75);
+    max-width: 640px; margin: 0 auto;
+  }
+  .osiedle-hero__meta {
+    display:flex; justify-content:center; gap: 40px;
+    margin-top: 48px;
+    flex-wrap: wrap;
+  }
+  .osiedle-hero__meta-item {
+    display:flex; flex-direction:column; gap: 6px;
+  }
+  .osiedle-hero__meta-label {
+    font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+  }
+  .osiedle-hero__meta-value {
+    font-family: 'Ubuntu', serif; font-size: 20px;
+    color: var(--accent);
+  }
+  .osiedle-section { padding: 100px 20px; max-width: 1200px; margin: 0 auto; }
+  .osiedle-section__title {
+    font-family: 'Ubuntu', serif;
+    font-size: clamp(28px, 4vw, 44px);
+    margin-bottom: 16px;
+    color:#fff;
+  }
+  .osiedle-section__kicker {
+    color: var(--accent); font-size: 11px; letter-spacing: 0.28em;
+    text-transform: uppercase; margin-bottom: 14px;
+  }
+  .osiedle-section__lede { font-size: 17px; line-height: 1.7; color: rgba(255,255,255,0.75); max-width: 700px; margin-bottom: 56px; }
+  .osiedle-facts {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px; margin-top: 50px;
+  }
+  .osiedle-fact { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
+  .osiedle-fact__num { font-family: 'Ubuntu', serif; font-size: 44px; color: var(--accent); margin-bottom: 6px; }
+  .osiedle-fact__label { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.65); }
+  .osiedle-apart-list { display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .osiedle-apart {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 24px;
+    transition: all 0.25s;
+  }
+  .osiedle-apart:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .osiedle-apart__header { display:flex; justify-content:space-between; margin-bottom: 14px; }
+  .osiedle-apart__num { color: var(--accent); font-weight: 600; letter-spacing: 0.12em; }
+  .osiedle-apart__status {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; padding: 3px 8px;
+    border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.7);
+  }
+  .osiedle-apart__stats { display:grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 16px 0 20px; }
+  .osiedle-apart__stat-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
+  .osiedle-apart__stat-value { font-family: 'Ubuntu', serif; font-size: 18px; color: #fff; }
+  .osiedle-apart__price { font-family: 'Ubuntu', serif; font-size: 24px; color: var(--accent); }
+  .osiedle-apart__price-old { color: rgba(255,255,255,0.4); text-decoration: line-through; font-size: 14px; margin-right: 10px; }
+
+  .osiedle-cta {
+    text-align: center;
+    padding: 80px 20px;
+    background: linear-gradient(135deg, rgba(201,169,110,0.1), rgba(201,169,110,0.02));
+    border-top: 1px solid rgba(201,169,110,0.2);
+    border-bottom: 1px solid rgba(201,169,110,0.2);
+  }
+  .osiedle-cta__title { font-family: 'Ubuntu', serif; font-size: clamp(28px, 4vw, 40px); margin-bottom: 14px; }
+  .osiedle-cta__text { color: rgba(255,255,255,0.7); max-width: 600px; margin: 0 auto 30px; }
+
+  .osiedle-back-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--accent); font-size: 12px; letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    border: 1px solid rgba(201,169,110,0.3);
+    margin-bottom: 20px;
+  }
+  .osiedle-back-link:hover { background: rgba(201,169,110,0.1); }
+
+  .osiedle-err { text-align:center; padding: 120px 20px; }
+  .osiedle-err__title { font-family: 'Ubuntu', serif; font-size: 40px; margin-bottom: 14px; }
+  .osiedle-err__text { color: rgba(255,255,255,0.65); margin-bottom: 28px; }
+</style>
+</head>
+<body>
+
+<!-- Top Bar (CMS) -->
+<div class="top-bar" data-cms="topbar">
+  <div class="container top-bar__inner">
+    <span class="top-bar__text"><span class="top-bar__dot"></span><span data-cms-field="text"></span></span>
+    <a href="#kontakt" class="top-bar__cta" data-cms-field="ctaLink"></a>
+  </div>
+</div>
+
+<!-- Minimal header -->
+<header class="header" style="position:sticky;top:0;z-index:50;background:rgba(6,8,14,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06)">
+  <div class="container header__inner">
+    <a class="header__logo" href="/">
+      <div class="header__logo-mark">
+        <svg class="header__logo-icon" viewBox="-1 8 57 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M54.46 39.33h-3.53v-3.47h-3.64l-4.46-2.31v5.78h-2.31l-.01-16.2h-1.15v-5.78h-6.94v21.98H30.1V26.6h-2.31V9.25h-9.25v30.08h-2.32v-16.2H11.6v16.2H9.28v-5.78L3.5 35.78v3.55H-.05v1.16h4.71v-3.91l3.47-1.43v5.34h4.62v-16.2h2.32v16.2h4.62V10.41h6.94v17.35h2.32v12.73h4.62V18.51h4.63v5.78h1.16v16.2h4.63v-5.04L47 37.03l2.76-.03v3.49h4.7v-1.16z" fill="#fff"/>
+        </svg>
+        <span class="header__logo-text">Megapolis</span>
+      </div>
+    </a>
+    <nav class="header__nav">
+      <ul class="nav__list">
+        <li class="nav__item"><a class='nav__link' href='/' data-i18n="nav.home">Megapolis</a></li>
+        <li class="nav__item"><a class='nav__link' href='/realizacje' data-i18n="nav.realizacje">Nasze realizacje</a></li>
+        <li class="nav__item"><a class='nav__link' href='/kontakt' data-i18n="nav.contact">Kontakt</a></li>
+      </ul>
+    </nav>
+    <div class="header__actions">
+      <div class="lang-switch" data-lang-switcher></div>
+    </div>
+  </div>
+</header>
+
+<main id="siteRoot">
+  <p style="text-align:center;padding:140px 20px;color:rgba(255,255,255,0.5)">Ladowanie...</p>
+</main>
+
+<!-- Footer (minimal) -->
+<footer class="footer" style="border-top:1px solid rgba(255,255,255,0.06);padding:40px 0;text-align:center">
+  <div class="container">
+    <p style="color:rgba(255,255,255,0.5);font-size:13px">&copy; 2026 Megapolis — <a href="/" style="color:var(--accent)">wroc do Megapolis</a></p>
+  </div>
+</footer>
+
+<script src="/js/cms.js"></script>
+<script>
+(function () {
+  'use strict';
+  // Parse slug from URL: /site/:slug  OR ?slug=:slug
+  const pathMatch = location.pathname.match(/^\/site\/([^\/]+)/);
+  const urlParams = new URLSearchParams(location.search);
+  const slug = (pathMatch && pathMatch[1]) || urlParams.get('slug');
+
+  async function fetchJSON(p) { const r = await fetch('/api' + p); return r.ok ? r.json() : null; }
+  function escapeHtml(s) { return String(s || '').replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+  function fmtPrice(p) { return (p || 0).toLocaleString('pl-PL') + ' PLN'; }
+
+  async function render() {
+    const root = document.getElementById('siteRoot');
+    if (!slug) {
+      return renderList(root);
+    }
+    const [osiedla, realizacje, apartments] = await Promise.all([
+      fetchJSON('/content/osiedla'),
+      fetchJSON('/content/realizacje'),
+      fetchJSON('/thtg/apartments?investment=' + encodeURIComponent(slug)),
+    ]);
+    const site = (osiedla || []).find(o => o.slug === slug);
+    const rlz = (realizacje || []).find(r => r.slug === slug) || {};
+    if (!site && !rlz.slug) {
+      root.innerHTML = `
+        <div class="osiedle-err">
+          <h1 class="osiedle-err__title">Strona nie znaleziona</h1>
+          <p class="osiedle-err__text">Osiedle o adresie <code>${escapeHtml(slug)}</code> nie istnieje w ekosystemie.</p>
+          <a class="btn btn--pill btn--outline" href="/">Wroc do Megapolis</a>
+        </div>`;
+      return;
+    }
+    // Apply accent if provided
+    if (site && site.accent) document.documentElement.style.setProperty('--accent', site.accent);
+    document.title = (site ? site.name : rlz.title) + ' — Megapolis';
+
+    const title = site ? site.name : rlz.title;
+    const tagline = site ? site.tagline : (rlz.description || '').replace(/<[^>]+>/g,'').slice(0,140);
+    const city = site ? site.city : rlz.city;
+
+    const apts = (apartments && apartments.items) || [];
+    const available = apts.filter(a => a.status === 'available').length;
+    const fromPrice = apts.filter(a => a.status === 'available').reduce((min, a) => a.price < min ? a.price : min, Infinity);
+
+    root.innerHTML = `
+      <section class="osiedle-hero" ${rlz.cover ? `style="background-image:linear-gradient(180deg, rgba(6,8,14,0.4) 0%, rgba(6,8,14,0.9) 100%), url('${rlz.cover}')"` : ''}>
+        <div style="position:relative;z-index:2;max-width:980px">
+          <div class="osiedle-hero__kicker">${escapeHtml(city || '')}</div>
+          <h1 class="osiedle-hero__title">${escapeHtml(title)}</h1>
+          <p class="osiedle-hero__tagline">${escapeHtml(tagline)}</p>
+          <div class="osiedle-hero__meta">
+            <div class="osiedle-hero__meta-item"><div class="osiedle-hero__meta-label">Lokali</div><div class="osiedle-hero__meta-value">${rlz.units || apts.length}</div></div>
+            <div class="osiedle-hero__meta-item"><div class="osiedle-hero__meta-label">Metraz</div><div class="osiedle-hero__meta-value">${escapeHtml(rlz.area || '—')}</div></div>
+            <div class="osiedle-hero__meta-item"><div class="osiedle-hero__meta-label">Dostepne</div><div class="osiedle-hero__meta-value">${available}</div></div>
+            ${fromPrice !== Infinity ? `<div class="osiedle-hero__meta-item"><div class="osiedle-hero__meta-label">Od</div><div class="osiedle-hero__meta-value">${fmtPrice(fromPrice)}</div></div>` : ''}
+          </div>
+        </div>
+      </section>
+
+      <section class="osiedle-section">
+        <a class="osiedle-back-link" href="/realizacje">&larr; Wszystkie realizacje</a>
+        <div class="osiedle-section__kicker">O inwestycji</div>
+        <h2 class="osiedle-section__title">${escapeHtml(title)}</h2>
+        <div class="osiedle-section__lede">${rlz.description || '<p>Opis inwestycji jest w trakcie przygotowywania.</p>'}</div>
+        <div class="osiedle-facts">
+          <div class="osiedle-fact"><div class="osiedle-fact__num">${rlz.units || apts.length}</div><div class="osiedle-fact__label">Lokali</div></div>
+          <div class="osiedle-fact"><div class="osiedle-fact__num">${rlz.year || '—'}</div><div class="osiedle-fact__label">Rok realizacji</div></div>
+          <div class="osiedle-fact"><div class="osiedle-fact__num">${escapeHtml(rlz.area || '—')}</div><div class="osiedle-fact__label">Metraz</div></div>
+          <div class="osiedle-fact"><div class="osiedle-fact__num">${available}</div><div class="osiedle-fact__label">Dostepnych</div></div>
+        </div>
+      </section>
+
+      <section class="osiedle-section" id="mieszkania">
+        <div class="osiedle-section__kicker">Mieszkania</div>
+        <h2 class="osiedle-section__title">Dostepne lokale</h2>
+        <p class="osiedle-section__lede">Lista lokali zaciagana w czasie rzeczywistym z systemu CRM THTG.</p>
+        <div class="osiedle-apart-list">
+          ${apts.map(a => `
+            <div class="osiedle-apart">
+              <div class="osiedle-apart__header">
+                <div class="osiedle-apart__num">M.${escapeHtml(a.building)}-${a.floor}-${a.id.replace(/^a/,'')}</div>
+                <div class="osiedle-apart__status">${a.status === 'available' ? 'Dostepne' : a.status === 'reserved' ? 'Zarezerwowane' : 'Sprzedane'}</div>
+              </div>
+              <div class="osiedle-apart__stats">
+                <div><div class="osiedle-apart__stat-label">Pokoje</div><div class="osiedle-apart__stat-value">${a.rooms}</div></div>
+                <div><div class="osiedle-apart__stat-label">Metraz</div><div class="osiedle-apart__stat-value">${a.area} m&sup2;</div></div>
+                <div><div class="osiedle-apart__stat-label">Pietro</div><div class="osiedle-apart__stat-value">${a.floor}</div></div>
+              </div>
+              <div class="osiedle-apart__price">
+                ${a.priceOld ? `<span class="osiedle-apart__price-old">${fmtPrice(a.priceOld)}</span>` : ''}
+                ${fmtPrice(a.price)}
+              </div>
+              <button class="btn btn--pill btn--outline" style="margin-top:16px;width:100%" onclick="document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})">Zapytaj o lokal</button>
+            </div>
+          `).join('') || '<p style="color:rgba(255,255,255,0.5)">Brak lokali w bazie.</p>'}
+        </div>
+      </section>
+
+      <section class="osiedle-cta" id="kontakt">
+        <h2 class="osiedle-cta__title">Umow wizyte</h2>
+        <p class="osiedle-cta__text">Skontaktuj sie z naszym doradca aby umowic prywatna prezentacje apartamentu.</p>
+        <form class="contact-form" style="max-width:520px;margin:0 auto;text-align:left" data-cms-form="reservation" novalidate>
+          <input type="hidden" name="subject" value="Zapytanie o inwestycje ${escapeHtml(title)}">
+          <input type="hidden" name="apartmentId" value="">
+          <div class="contact-form__row contact-form__row--half">
+            <div class="contact-form__field"><label>Imie i nazwisko *</label><input type="text" name="name" required></div>
+            <div class="contact-form__field"><label>Telefon</label><input type="tel" name="phone"></div>
+          </div>
+          <div class="contact-form__row"><div class="contact-form__field"><label>Email *</label><input type="email" name="email" required></div></div>
+          <div class="contact-form__row"><div class="contact-form__field"><label>Wiadomosc</label><textarea name="message" rows="3"></textarea></div></div>
+          <label class="contact-form__checkbox"><input type="checkbox" name="privacy" required><span>Akceptuje polityke prywatnosci.</span></label>
+          <button type="submit" class="btn btn--pill btn--full">Wyslij zapytanie</button>
+        </form>
+      </section>
+    `;
+    // Re-wire forms (cms.js already wired but after dynamic render we need to re-run)
+    if (window.MegapolisCMS) { /* cms.js auto-wires on load; attach here */ }
+    document.querySelectorAll('form[data-cms-form]').forEach(f => {
+      if (f.dataset.cmsWired) return;
+      f.dataset.cmsWired = '1';
+      f.addEventListener('submit', async e => {
+        e.preventDefault();
+        const fd = new FormData(f); const body = {};
+        fd.forEach((v,k) => body[k] = v);
+        body.formType = f.getAttribute('data-cms-form');
+        body.sourcePage = '/site/' + slug;
+        body.site = slug;
+        try {
+          const res = await fetch('/api/forms/submit', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+          if (!res.ok) throw new Error('error');
+          f.reset();
+          let fb = f.querySelector('.cms-form-feedback');
+          if (!fb) { fb = document.createElement('div'); fb.className = 'cms-form-feedback'; f.appendChild(fb); }
+          fb.className = 'cms-form-feedback cms-form-feedback--success';
+          fb.textContent = 'Wiadomosc wyslana. Skontaktujemy sie wkrotce.';
+        } catch (err) {
+          let fb = f.querySelector('.cms-form-feedback');
+          if (!fb) { fb = document.createElement('div'); fb.className = 'cms-form-feedback'; f.appendChild(fb); }
+          fb.className = 'cms-form-feedback cms-form-feedback--error';
+          fb.textContent = 'Blad wysylania. Sprobuj ponownie.';
+        }
+      });
+    });
+  }
+
+  // When no slug provided: render a list of all osiedla (index page)
+  async function renderList(root) {
+    const osiedla = (await fetchJSON('/content/osiedla')) || [];
+    const published = osiedla.filter(o => o.published);
+    document.title = 'Strony osiedli — Megapolis';
+    root.innerHTML = `
+      <section class="osiedle-section">
+        <div class="osiedle-section__kicker">Multisite</div>
+        <h1 class="osiedle-section__title">Strony osiedli Megapolis</h1>
+        <p class="osiedle-section__lede">Kazde z naszych osiedli ma wlasna strone — z dedykowana identyfikacja wizualna i katalogiem mieszkan.</p>
+        <div class="osiedle-apart-list">
+          ${published.map(o => `
+            <a class="osiedle-apart" href="/site/${encodeURIComponent(o.slug)}" style="text-decoration:none;color:inherit;display:block">
+              <div style="width:100%;height:6px;background:${o.accent};margin:-24px -24px 20px"></div>
+              <div class="osiedle-apart__num">${escapeHtml(o.name)}</div>
+              <p style="color:rgba(255,255,255,0.7);font-size:14px;margin:10px 0 16px;line-height:1.6">${escapeHtml(o.tagline || '')}</p>
+              <div style="font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.5)">${escapeHtml(o.city || '')} &rarr;</div>
+            </a>
+          `).join('') || '<p style="color:rgba(255,255,255,0.5)">Brak opublikowanych stron osiedli.</p>'}
+        </div>
+      </section>
+    `;
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>

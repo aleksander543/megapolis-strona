@@ -1,0 +1,188 @@
+[
+  {
+    "id": "a1",
+    "investment": "cloud-lindego",
+    "building": "A",
+    "floor": 3,
+    "rooms": 2,
+    "area": 52.4,
+    "price": 890000,
+    "priceOld": null,
+    "direction": "S",
+    "features": [
+      "balkon"
+    ],
+    "status": "available"
+  },
+  {
+    "id": "a2",
+    "investment": "cloud-lindego",
+    "building": "A",
+    "floor": 5,
+    "rooms": 3,
+    "area": 74.8,
+    "price": 1240000,
+    "priceOld": null,
+    "direction": "W",
+    "features": [
+      "balkon",
+      "taras"
+    ],
+    "status": "available"
+  },
+  {
+    "id": "a3",
+    "investment": "cloud-lindego",
+    "building": "A",
+    "floor": 8,
+    "rooms": 4,
+    "area": 118,
+    "price": 2150000,
+    "priceOld": null,
+    "direction": "SW",
+    "features": [
+      "taras",
+      "antresola"
+    ],
+    "status": "reserved"
+  },
+  {
+    "id": "a4",
+    "investment": "osiedle-ozon",
+    "building": "C",
+    "floor": 1,
+    "rooms": 2,
+    "area": 48.6,
+    "price": 730000,
+    "priceOld": 780000,
+    "direction": "E",
+    "features": [
+      "ogrodek"
+    ],
+    "status": "available"
+  },
+  {
+    "id": "a5",
+    "investment": "osiedle-ozon",
+    "building": "C",
+    "floor": 2,
+    "rooms": 3,
+    "area": 68.2,
+    "price": 950000,
+    "priceOld": null,
+    "direction": "S",
+    "features": [
+      "balkon"
+    ],
+    "status": "available"
+  },
+  {
+    "id": "a6",
+    "investment": "osiedle-ozon",
+    "building": "D",
+    "floor": 4,
+    "rooms": 4,
+    "area": 92.5,
+    "price": 1350000,
+    "priceOld": 1420000,
+    "direction": "W",
+    "features": [
+      "balkon",
+      "taras"
+    ],
+    "status": "available"
+  },
+  {
+    "id": "a7",
+    "investment": "osiedle-fi",
+    "building": "B",
+    "floor": 0,
+    "rooms": 2,
+    "area": 45.1,
+    "price": 680000,
+    "priceOld": null,
+    "direction": "N",
+    "features": [
+      "ogrodek"
+    ],
+    "status": "sold"
+  },
+  {
+    "id": "a8",
+    "investment": "osiedle-fi",
+    "building": "B",
+    "floor": 3,
+    "rooms": 3,
+    "area": 72.4,
+    "price": 980000,
+    "priceOld": null,
+    "direction": "SE",
+    "features": [
+      "balkon",
+      "taras"
+    ],
+    "status": "available"
+  },
+  {
+    "id": "a9",
+    "investment": "linden-bunscha",
+    "building": "A",
+    "floor": 6,
+    "rooms": 3,
+    "area": 88,
+    "price": 2100000,
+    "priceOld": null,
+    "direction": "W",
+    "features": [
+      "taras"
+    ],
+    "status": "available"
+  },
+  {
+    "id": "a10",
+    "investment": "linden-bunscha",
+    "building": "A",
+    "floor": 7,
+    "rooms": 4,
+    "area": 156,
+    "price": 3800000,
+    "priceOld": null,
+    "direction": "SW",
+    "features": [
+      "taras",
+      "antresola"
+    ],
+    "status": "reserved"
+  },
+  {
+    "id": "a11",
+    "investment": "cloud-mazowiecka",
+    "building": "A",
+    "floor": 12,
+    "rooms": 2,
+    "area": 54,
+    "price": 1150000,
+    "priceOld": null,
+    "direction": "E",
+    "features": [
+      "balkon"
+    ],
+    "status": "available"
+  },
+  {
+    "id": "a12",
+    "investment": "cloud-mazowiecka",
+    "building": "A",
+    "floor": 20,
+    "rooms": 4,
+    "area": 140,
+    "price": 3500000,
+    "priceOld": null,
+    "direction": "S",
+    "features": [
+      "taras",
+      "antresola"
+    ],
+    "status": "available"
+  }
+]

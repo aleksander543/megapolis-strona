@@ -1,0 +1,46 @@
+[
+  {
+    "id": "j1",
+    "slug": "project-manager",
+    "title": "Project Manager — inwestycje premium",
+    "city": "Kraków",
+    "department": "Rozwój",
+    "type": "Pełny etat",
+    "published": "2026-04-02",
+    "salary": "18 000 - 24 000 PLN",
+    "description": "<p>Szukamy doświadczonego Project Managera do prowadzenia inwestycji mieszkaniowych premium.</p><h3>Wymagania</h3><ul><li>5+ lat doświadczenia w deweloperce</li><li>Znajomość Primavera / MS Project</li><li>Umiejętności negocjacyjne</li><li>Biegła znajomość języka polskiego</li></ul><h3>Oferujemy</h3><ul><li>Prywatną opiekę medyczną</li><li>Kartę sportową</li><li>Możliwość pracy hybrydowej</li><li>Budżet szkoleniowy i udział w konferencjach branżowych</li></ul>"
+  },
+  {
+    "id": "j2",
+    "slug": "architekt-wnetrz",
+    "title": "Architekt wnętrz",
+    "city": "Kraków",
+    "department": "Design",
+    "type": "Pełny etat",
+    "published": "2026-03-28",
+    "salary": "12 000 - 16 000 PLN",
+    "description": "<p>Do rozbudowującego się zespołu Design poszukujemy architekta wnętrz specjalizującego się w&nbsp;projektach premium.</p><h3>Wymagania</h3><ul><li>3+ lat doświadczenia w projektowaniu wnętrz mieszkaniowych</li><li>Biegła obsługa ArchiCAD lub AutoCAD + Sketchup</li><li>Portfolio zrealizowanych projektów</li></ul><h3>Oferujemy</h3><ul><li>Udział w projektach flagowych Megapolis</li><li>Współpraca z zespołem doświadczonych architektów</li><li>Prywatna opieka medyczna i karta sportowa</li></ul>"
+  },
+  {
+    "id": "j3",
+    "slug": "specjalista-sprzedazy",
+    "title": "Specjalista ds. sprzedaży mieszkań",
+    "city": "Kraków",
+    "department": "Sprzedaż",
+    "type": "Pełny etat",
+    "published": "2026-03-15",
+    "salary": "Podstawa + prowizja",
+    "description": "<p>Doradca klienta prowadzący transakcje od&nbsp;pierwszego kontaktu aż&nbsp;do&nbsp;odbioru kluczy.</p><h3>Wymagania</h3><ul><li>Doświadczenie w sprzedaży bezpośredniej (preferowana branża nieruchomości)</li><li>Bardzo dobre umiejętności komunikacyjne</li><li>Prawo jazdy kat. B</li></ul><h3>Oferujemy</h3><ul><li>Atrakcyjną podstawę + wysokie prowizje</li><li>Pakiet benefitów (medyczny, sportowy, mobilność)</li><li>Szkolenia produktowe i sprzedażowe</li></ul>"
+  },
+  {
+    "id": "j4",
+    "slug": "marketing-manager",
+    "title": "Marketing Manager",
+    "city": "Kraków",
+    "department": "Marketing",
+    "type": "Pełny etat",
+    "published": "2026-02-28",
+    "salary": "15 000 - 20 000 PLN",
+    "description": "<p>Osoba odpowiedzialna za&nbsp;całościową strategię marketingową Megapolis — kampanie brandowe, digital, lead generation i&nbsp;komunikację inwestycji.</p><h3>Wymagania</h3><ul><li>5+ lat doświadczenia w marketingu (preferowana deweloperka lub luxury)</li><li>Zarządzanie zespołem i agencjami</li><li>Doświadczenie z&nbsp;performance marketingiem i analityką</li></ul><h3>Oferujemy</h3><ul><li>Samodzielność w budowie strategii marki</li><li>Budżet marketingowy na rozwój marki</li><li>Pełen pakiet benefitów</li></ul>"
+  }
+]

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="260" viewBox="0 0 360 260" fill="none">
+  <!-- Pojedyncza elegancka krzywa z drobnymi punktami — akcent -->
+  <g stroke="#003C71" stroke-width="1" fill="none" opacity="0.25">
+    <path d="M0 260 Q 120 200, 200 140 T 360 40"/>
+    <path d="M0 260 Q 140 240, 220 180 T 360 80" opacity="0.6"/>
+  </g>
+  <g fill="#003C71" opacity="0.45">
+    <circle cx="60" cy="230" r="2"/>
+    <circle cx="150" cy="175" r="2"/>
+    <circle cx="240" cy="115" r="2"/>
+    <circle cx="320" cy="60" r="2"/>
+  </g>
+</svg>

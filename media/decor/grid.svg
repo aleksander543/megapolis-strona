@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240" fill="none">
+  <!-- Delikatna siatka krzywych — abstrakcja miejskich linii -->
+  <g stroke="#003C71" stroke-width="0.8" fill="none" opacity="0.2">
+    <path d="M0 40 Q 60 40 60 100 T 120 160 T 180 220 T 240 280"/>
+    <path d="M0 80 Q 80 80 80 140 T 160 200 T 240 260"/>
+    <path d="M0 120 Q 100 120 100 180 T 200 240"/>
+    <path d="M0 160 Q 120 160 120 220"/>
+  </g>
+</svg>

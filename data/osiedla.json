@@ -1,0 +1,29 @@
+[
+  {
+    "id": "s1",
+    "slug": "osiedle-ozon",
+    "name": "Osiedle Ozon",
+    "city": "Gdansk",
+    "accent": "#7cb7a8",
+    "tagline": "Miejska enklawa w sercu Wrzeszcza",
+    "published": true
+  },
+  {
+    "id": "s2",
+    "slug": "osiedle-fi",
+    "name": "Osiedle Fi",
+    "city": "Gdynia",
+    "accent": "#d4a373",
+    "tagline": "Architektura bliska naturze",
+    "published": true
+  },
+  {
+    "id": "s3",
+    "slug": "cloud-lindego",
+    "name": "Cloud Lindego",
+    "city": "Gdansk",
+    "accent": "#8b9fc7",
+    "tagline": "Nad Baltykiem. Nad codziennoscia.",
+    "published": true
+  }
+]

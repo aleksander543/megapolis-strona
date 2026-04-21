@@ -1,0 +1,32 @@
+{
+  "logo": "MEGAPOLIS",
+  "accent": "#c9a96e",
+  "bg": "#06080e",
+  "contact": {
+    "phone": "+48 58 123 45 67",
+    "email": "biuro@megapolis.pl",
+    "address": "ul. Przykladowa 12, 80-001 Gdansk"
+  },
+  "social": {
+    "facebook": "https://facebook.com/megapolis",
+    "instagram": "https://instagram.com/megapolis",
+    "linkedin": "https://linkedin.com/company/megapolis"
+  },
+  "topBar": {
+    "enabled": false,
+    "text": "",
+    "ctaText": "",
+    "ctaLink": ""
+  },
+  "promoModal": {
+    "enabled": false,
+    "title": "",
+    "body": "",
+    "ctaText": "",
+    "ctaLink": ""
+  },
+  "seo": {
+    "title": "Megapolis � deweloper premium",
+    "description": "Luksusowe inwestycje mieszkaniowe w Trojmiescie i calej Polsce."
+  }
+}

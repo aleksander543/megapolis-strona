@@ -1,0 +1,110 @@
+{
+  "pl": {
+    "nav": {
+      "home": "Strona glowna",
+      "about": "O nas",
+      "realizacje": "Nasze realizacje",
+      "generalContractor": "Generalny wykonawca",
+      "career": "Kariera",
+      "contact": "Kontakt",
+      "search": "Wyszukiwarka"
+    },
+    "hero": {
+      "kicker": "PREMIUM REAL ESTATE",
+      "title": "Gdzie architektura spotyka codziennosc",
+      "subtitle": "Tworzymy inwestycje dla osob, ktore oczekuja wiecej niz czterech scian.",
+      "cta": "Zobacz inwestycje"
+    },
+    "search": {
+      "title": "Znajdz swoje mieszkanie",
+      "text": "Wybierz lokalizacje i parametry, a my pokazemy Ci dostepne oferty.",
+      "rooms": "Pokoje",
+      "area": "Powierzchnia",
+      "price": "Cena",
+      "floor": "Pietro"
+    },
+    "realizacje": {
+      "title": "Nasze realizacje",
+      "grid": "Siatka",
+      "map": "Mapa",
+      "all": "Wszystkie",
+      "building": "W budowie",
+      "done": "Zrealizowane"
+    },
+    "news": {
+      "title": "Aktualnosci",
+      "more": "Czytaj wiecej",
+      "all": "Zobacz wszystkie"
+    },
+    "faq": {
+      "title": "Pytania i odpowiedzi"
+    },
+    "contact": {
+      "title": "Skontaktuj sie",
+      "submit": "Wyslij wiadomosc",
+      "name": "Imie i nazwisko",
+      "email": "Email",
+      "phone": "Telefon",
+      "message": "Wiadomosc",
+      "policy": "Akceptuje polityke prywatnosci"
+    },
+    "footer": {
+      "rights": "Wszelkie prawa zastrzezone.",
+      "privacy": "Polityka prywatnosci"
+    }
+  },
+  "en": {
+    "nav": {
+      "home": "Home",
+      "about": "About us",
+      "realizacje": "Our portfolio",
+      "generalContractor": "General contractor",
+      "career": "Careers",
+      "contact": "Contact",
+      "search": "Search"
+    },
+    "hero": {
+      "kicker": "PREMIUM REAL ESTATE",
+      "title": "Where architecture meets everyday",
+      "subtitle": "We create homes for people who expect more than four walls.",
+      "cta": "Explore portfolio"
+    },
+    "search": {
+      "title": "Find your apartment",
+      "text": "Pick a location and parameters — we will show matching offers.",
+      "rooms": "Rooms",
+      "area": "Area",
+      "price": "Price",
+      "floor": "Floor"
+    },
+    "realizacje": {
+      "title": "Our portfolio",
+      "grid": "Grid",
+      "map": "Map",
+      "all": "All",
+      "building": "Under construction",
+      "done": "Completed"
+    },
+    "news": {
+      "title": "News",
+      "more": "Read more",
+      "all": "See all"
+    },
+    "faq": {
+      "title": "Frequently asked questions"
+    },
+    "contact": {
+      "title": "Get in touch",
+      "submit": "Send message",
+      "name": "Full name",
+      "email": "Email",
+      "phone": "Phone",
+      "message": "Message",
+      "policy": "I accept the privacy policy"
+    },
+    "footer": {
+      "rights": "All rights reserved.",
+      "privacy": "Privacy policy"
+    }
+  }
+}

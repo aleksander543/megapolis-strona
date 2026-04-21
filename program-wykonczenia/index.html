@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="pl" data-site="megapolis">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Program wykończenia mieszkań — Megapolis</title>
+  <meta name="description" content="Wykończ mieszkanie pod klucz z trzema starannie dobranymi partnerami Megapolis: Deer Design, Nilen, Excellent. Trzy style, trzy filozofie, jeden standard obsługi.">
+  <link rel="preload" href="/fonts/Ubuntu-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/fonts/Ubuntu-Medium.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/fonts/Ubuntu-Bold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    /* ====================================================================
+       PROGRAM WYKOŃCZENIA — premium landing
+       ==================================================================== */
+    .pw-page { background: #f4f2ec; color: var(--graphite); }
+    .pw-page main { overflow: hidden; }
+
+    /* ========= HERO ========= */
+    .pw-hero {
+      position: relative;
+      padding: 180px 0 70px;
+      background: linear-gradient(180deg, #ffffff 0%, #f4f2ec 100%);
+      overflow: hidden;
+    }
+    .pw-hero::before {
+      content: ''; position: absolute; top: -60px; right: -80px;
+      width: 540px; height: 540px;
+      background: url('/media/decor/arcs.svg') no-repeat top right;
+      background-size: contain;
+      opacity: 0.35; pointer-events: none;
+    }
+    .pw-hero::after {
+      content: ''; position: absolute; bottom: -60px; left: -40px;
+      width: 420px; height: 320px;
+      background: url('/media/decor/curve.svg') no-repeat bottom left;
+      background-size: contain;
+      opacity: 0.7; pointer-events: none;
+    }
+    .pw-hero__container {
+      position: relative; z-index: 1;
+      max-width: 1240px; margin: 0 auto;
+      padding: 0 24px;
+    }
+    .pw-hero__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .pw-crumbs {
+      font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--graphite); opacity: 0.5;
+      margin-bottom: 28px;
+    }
+    .pw-crumbs a { color: var(--brand-night); text-decoration: none; }
+    .pw-crumbs .sep { margin: 0 10px; opacity: 0.5; }
+    .pw-eyebrow {
+      display: inline-flex; align-items: center; gap: 14px;
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-night);
+      margin-bottom: 28px;
+    }
+    .pw-eyebrow::before,
+    .pw-eyebrow::after { content: ''; width: 48px; height: 1px; background: var(--brand-night); }
+
+    .pw-hero__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(52px, 7.5vw, 112px);
+      font-weight: 800;
+      line-height: 0.96;
+      letter-spacing: -2.5px;
+      color: var(--brand-night);
+      margin: 0 0 28px;
+    }
+    .pw-hero__title em {
+      font-style: italic; font-weight: 300;
+      opacity: 0.6; display: inline-block;
+    }
+    .pw-hero__lead {
+      font-size: clamp(17px, 1.5vw, 21px);
+      line-height: 1.7;
+      color: var(--graphite);
+      max-width: 640px;
+      margin: 0 0 44px;
+    }
+
+    /* Style-preview row (duże kafelki z nazwą partnera i paletą) */
+    .pw-styles {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .pw-style {
+      position: relative;
+      display: flex; flex-direction: column;
+      aspect-ratio: 4 / 5;
+      border-radius: 16px;
+      overflow: hidden;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 20px 60px rgba(0, 60, 113, 0.12);
+      transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.5s;
+    }
+    .pw-style:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 30px 80px rgba(0, 60, 113, 0.22);
+    }
+    .pw-style__swatches {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+      position: relative;
+    }
+    /* Logo firmy centralnie na paletach */
+    .pw-style__logo {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 58%; max-height: 60px;
+      width: auto; height: auto;
+      object-fit: contain;
+      z-index: 2;
+      pointer-events: none;
+    }
+    /* Deer — logo wybielane na granatowym tle */
+    .pw-style--deer .pw-style__logo { filter: brightness(0) invert(1); max-width: 44%; }
+    /* Nilen — bez filtra, na jasnym tle */
+    .pw-style--nilen .pw-style__logo { max-width: 56%; }
+    /* Excellent — tonowane na złoto */
+    .pw-style--excellent .pw-style__logo {
+      filter: brightness(0) invert(1) sepia(0.35) saturate(2) hue-rotate(5deg);
+      max-width: 44%;
+    }
+    .pw-style__content {
+      padding: 20px 24px;
+      background: #ffffff;
+      border-top: 1px solid rgba(0, 60, 113, 0.08);
+    }
+    .pw-style__num {
+      font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--brand-night); opacity: 0.55;
+      margin-bottom: 6px;
+    }
+    .pw-style__name {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(20px, 2vw, 28px);
+      font-weight: 800;
+      color: var(--brand-night);
+      margin: 0 0 4px;
+      letter-spacing: -0.3px;
+    }
+    .pw-style__tag {
+      font-size: 12px; color: var(--graphite); opacity: 0.65;
+      letter-spacing: 0.3px;
+    }
+
+    /* Paleta Deer — granat/navy */
+    .pw-style--deer .pw-style__swatches > :nth-child(1) { background: #003C71; }
+    .pw-style--deer .pw-style__swatches > :nth-child(2) { background: #1a5490; }
+    .pw-style--deer .pw-style__swatches > :nth-child(3) { background: #B7C9D3; }
+    /* Paleta Nilen — scandi beige */
+    .pw-style--nilen .pw-style__swatches > :nth-child(1) { background: #f4f2ec; border-right: 1px solid rgba(0,0,0,0.04); }
+    .pw-style--nilen .pw-style__swatches > :nth-child(2) { background: #d8d1bf; }
+    .pw-style--nilen .pw-style__swatches > :nth-child(3) { background: #a89d87; }
+    /* Paleta Excellent — tabaco/gold */
+    .pw-style--excellent .pw-style__swatches > :nth-child(1) { background: #2c2418; }
+    .pw-style--excellent .pw-style__swatches > :nth-child(2) { background: #4a3b26; }
+    .pw-style--excellent .pw-style__swatches > :nth-child(3) { background: #c9a96e; }
+
+    /* ========= STATS PASEK ========= */
+    .pw-stats {
+      padding: 60px 24px 80px;
+      max-width: 1240px; margin: 0 auto;
+    }
+    .pw-stats__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: rgba(0, 60, 113, 0.12);
+      border: 1px solid rgba(0, 60, 113, 0.12);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0, 60, 113, 0.06);
+    }
+    .pw-stat {
+      padding: 36px 28px;
+      background: #ffffff;
+      text-align: center;
+    }
+    .pw-stat__num {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(32px, 3.5vw, 48px);
+      font-weight: 800;
+      color: var(--brand-night);
+      line-height: 1;
+      letter-spacing: -1px;
+      margin-bottom: 10px;
+    }
+    .pw-stat__lbl {
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--graphite); opacity: 0.65;
+      font-weight: 600;
+    }
+
+    /* ========= PROCESS ========= */
+    .pw-process {
+      padding: 60px 24px 40px;
+      max-width: 1240px; margin: 0 auto;
+    }
+    .pw-process__head {
+      max-width: 720px; margin: 0 auto 40px;
+      text-align: center;
+    }
+    .pw-section-eyebrow {
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-night); opacity: 0.7;
+      margin-bottom: 14px;
+    }
+    .pw-section-title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(32px, 4vw, 56px);
+      font-weight: 800;
+      color: var(--brand-night);
+      margin: 0 0 16px;
+      letter-spacing: -0.8px;
+      line-height: 1.05;
+    }
+    .pw-section-title em { font-style: italic; font-weight: 300; opacity: 0.65; }
+    .pw-section-sub {
+      font-size: 16px; line-height: 1.7;
+      color: var(--graphite); opacity: 0.8;
+      max-width: 640px; margin: 0 auto;
+    }
+    .pw-process__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      position: relative;
+    }
+    .pw-process__grid::before {
+      content: ''; position: absolute;
+      top: 40px; left: 8%; right: 8%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(0, 60, 113, 0.25), rgba(0, 60, 113, 0.25), transparent);
+    }
+    .pw-step {
+      position: relative; z-index: 1;
+      padding: 28px 24px 28px;
+      background: #ffffff;
+      border: 1px solid rgba(0, 60, 113, 0.1);
+      border-radius: 14px;
+      transition: all 0.3s ease;
+    }
+    .pw-step:hover {
+      border-color: var(--brand-night);
+      transform: translateY(-3px);
+      box-shadow: 0 14px 40px rgba(0, 60, 113, 0.1);
+    }
+    .pw-step__num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--brand-night); color: #fff;
+      font-size: 15px; font-weight: 800;
+      margin-bottom: 18px;
+      box-shadow: 0 6px 16px rgba(0, 60, 113, 0.22);
+    }
+    .pw-step__name {
+      font-size: 17px; font-weight: 700;
+      color: var(--brand-night);
+      margin: 0 0 10px;
+    }
+    .pw-step__desc {
+      font-size: 13px; line-height: 1.7;
+      color: var(--graphite); opacity: 0.85;
+      margin: 0;
+    }
+
+    /* ========= PARTNER ========= */
+    .pw-partner {
+      padding: 60px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .pw-partner--alt { background: #ffffff; }
+    .pw-partner__inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      position: relative; z-index: 1;
+    }
+    .pw-partner--flip .pw-partner__image { order: 2; }
+    .pw-partner--flip .pw-partner__content { order: 1; }
+
+    .pw-partner__image {
+      aspect-ratio: 4 / 3;
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 30px 80px rgba(0, 60, 113, 0.18);
+      transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.6s;
+      background: linear-gradient(135deg, #003C71 0%, #1a5490 100%);
+    }
+    .pw-partner__image:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 40px 100px rgba(0, 60, 113, 0.28);
+    }
+    .pw-partner__image::before {
+      content: ''; position: absolute; top: 0; right: 0;
+      width: 60%; height: 60%;
+      background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.15), transparent 60%);
+      pointer-events: none;
+    }
+    .pw-partner__image::after {
+      content: ''; position: absolute; inset: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      pointer-events: none;
+    }
+    .pw-partner__image--nilen { background: linear-gradient(135deg, #f4f2ec 0%, #eae6dc 100%); }
+    .pw-partner__image--nilen::before { background: radial-gradient(circle at top right, rgba(0, 60, 113, 0.06), transparent 60%); }
+    .pw-partner__image--nilen::after { border-color: rgba(0, 60, 113, 0.12); }
+    .pw-partner__image--excellent { background: linear-gradient(135deg, #2c2418 0%, #4a3b26 100%); }
+    .pw-partner__image--excellent::before { background: radial-gradient(circle at top right, rgba(232, 215, 179, 0.15), transparent 60%); }
+    .pw-partner__image--excellent::after { border-color: rgba(201, 169, 110, 0.25); }
+
+    .pw-partner__mark {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 18px;
+      padding: 32px;
+    }
+    .pw-partner__mark-label {
+      font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+      opacity: 0.6; font-weight: 600;
+    }
+    .pw-partner__mark-logo {
+      max-width: min(240px, 55%);
+      max-height: 150px;
+      width: auto; height: auto;
+      display: block; object-fit: contain;
+    }
+    .pw-partner__image--deer .pw-partner__mark { color: #ffffff; }
+    .pw-partner__image--deer .pw-partner__mark-label { color: var(--brand-moon); }
+    .pw-partner__image--deer .pw-partner__mark-logo { filter: brightness(0) invert(1); max-width: min(180px, 45%); }
+    .pw-partner__image--nilen .pw-partner__mark { color: var(--brand-night); }
+    .pw-partner__image--nilen .pw-partner__mark-label { color: var(--brand-night); opacity: 0.5; }
+    .pw-partner__image--excellent .pw-partner__mark { color: #e8d7b3; }
+    .pw-partner__image--excellent .pw-partner__mark-label { color: #c9a96e; }
+    .pw-partner__image--excellent .pw-partner__mark-logo {
+      filter: brightness(0) invert(1) sepia(0.35) saturate(2) hue-rotate(5deg);
+      max-width: min(180px, 45%);
+    }
+    .pw-partner__mark-divider { width: 60px; height: 1px; background: currentColor; opacity: 0.45; }
+    .pw-partner__mark-tagline {
+      font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+      opacity: 0.75; font-weight: 600;
+    }
+
+    .pw-partner__kicker {
+      font-size: 11px; letter-spacing: 3px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-night); opacity: 0.7;
+      margin-bottom: 14px;
+    }
+    .pw-partner__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(38px, 4.5vw, 64px);
+      font-weight: 800;
+      line-height: 1.02;
+      letter-spacing: -1px;
+      color: var(--brand-night);
+      margin: 0 0 12px;
+    }
+    .pw-partner__tagline {
+      font-size: clamp(16px, 1.3vw, 19px);
+      color: var(--brand-night);
+      opacity: 0.75; font-style: italic;
+      margin: 0 0 24px;
+      line-height: 1.5;
+    }
+    .pw-partner__desc {
+      font-size: 15px; line-height: 1.8;
+      color: var(--graphite);
+      margin: 0 0 28px;
+      max-width: 560px;
+    }
+    .pw-partner__desc strong { color: var(--brand-night); font-weight: 700; }
+
+    .pw-packages {
+      display: flex; flex-direction: column; gap: 10px;
+      margin: 28px 0;
+    }
+    .pw-package {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 16px; align-items: center;
+      padding: 16px 22px;
+      background: #ffffff;
+      border: 1px solid rgba(0, 60, 113, 0.1);
+      border-radius: 12px;
+      transition: all 0.25s ease;
+    }
+    .pw-partner--alt .pw-package { background: #f4f2ec; }
+    .pw-package:hover {
+      border-color: var(--brand-night);
+      box-shadow: 0 8px 20px rgba(0, 60, 113, 0.08);
+    }
+    .pw-package__dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--brand-night);
+    }
+    .pw-package__name {
+      font-size: 14px; font-weight: 700; color: var(--brand-night);
+      letter-spacing: 0.2px;
+    }
+    .pw-package__price {
+      font-size: 13px; font-weight: 600;
+      color: var(--graphite); opacity: 0.75;
+      letter-spacing: 0.2px;
+    }
+
+    .pw-features {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin-bottom: 32px;
+    }
+    .pw-feature {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 16px;
+      background: rgba(183, 201, 211, 0.35);
+      color: var(--brand-night);
+      font-size: 12px; font-weight: 600; letter-spacing: 0.3px;
+      border-radius: 9999px;
+    }
+
+    .pw-btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+    .pw-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 28px;
+      border-radius: 9999px;
+      font-size: 14px; font-weight: 600;
+      letter-spacing: 0.2px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+    .pw-btn--primary {
+      background: var(--brand-night);
+      color: #fff;
+      border: 1.5px solid var(--brand-night);
+    }
+    .pw-btn--primary:hover {
+      background: #1a5490; border-color: #1a5490;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(0, 60, 113, 0.28);
+    }
+    .pw-btn--ghost {
+      background: transparent;
+      color: var(--brand-night);
+      border: 1.5px solid rgba(0, 60, 113, 0.3);
+    }
+    .pw-btn--ghost:hover {
+      background: var(--brand-night); color: #fff; border-color: var(--brand-night);
+    }
+
+    /* ========= TABELA PORÓWNANIA ========= */
+    .pw-compare {
+      padding: 70px 24px;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .pw-compare__head {
+      text-align: center; max-width: 640px;
+      margin: 0 auto 36px;
+    }
+    .pw-compare__table-wrap {
+      background: #ffffff;
+      border: 1px solid rgba(0, 60, 113, 0.1);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0, 60, 113, 0.08);
+    }
+    .pw-compare__table {
+      width: 100%; border-collapse: collapse;
+    }
+    .pw-compare__table th, .pw-compare__table td {
+      padding: 18px 22px; text-align: left;
+      border-bottom: 1px solid rgba(0, 60, 113, 0.08);
+      font-size: 14px; line-height: 1.5;
+    }
+    .pw-compare__table thead tr { background: linear-gradient(180deg, rgba(0, 60, 113, 0.06), rgba(0, 60, 113, 0.02)); }
+    .pw-compare__table th {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--brand-night); font-weight: 800;
+    }
+    .pw-compare__table tr:last-child td { border-bottom: 0; }
+    .pw-compare__table tbody tr { transition: background 0.2s; }
+    .pw-compare__table tbody tr:hover { background: rgba(0, 60, 113, 0.03); }
+    .pw-compare__table td:first-child { color: var(--brand-night); }
+    .pw-compare__table td strong { color: var(--brand-night); font-weight: 700; }
+
+    /* ========= OPINIE ========= */
+    .pw-reviews {
+      padding: 60px 24px 70px;
+      background: #ffffff;
+      position: relative;
+      overflow: hidden;
+    }
+    .pw-reviews::before {
+      content: ''; position: absolute; top: -40px; left: -60px;
+      width: 300px; height: 300px;
+      background: url('/media/decor/dots.svg') no-repeat top left;
+      background-size: contain; opacity: 0.5;
+      pointer-events: none;
+    }
+    .pw-reviews__inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+    .pw-reviews__head { text-align: center; margin-bottom: 40px; }
+    .pw-reviews__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .pw-review {
+      padding: 32px 28px;
+      background: #f4f2ec;
+      border: 1px solid rgba(0, 60, 113, 0.08);
+      border-radius: 14px;
+      display: flex; flex-direction: column;
+    }
+    .pw-review__quote {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: 15px; line-height: 1.75;
+      color: var(--graphite); font-style: italic;
+      margin: 0 0 22px;
+    }
+    .pw-review__quote::before {
+      content: '"';
+      display: block;
+      font-family: 'Ubuntu', sans-serif;
+      font-size: 56px; font-weight: 800;
+      color: var(--brand-night); opacity: 0.25;
+      line-height: 0.5; margin-bottom: 10px;
+    }
+    .pw-review__meta {
+      margin-top: auto;
+      padding-top: 18px;
+      border-top: 1px solid rgba(0, 60, 113, 0.1);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .pw-review__avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: rgba(183, 201, 211, 0.4);
+      color: var(--brand-night);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 800; letter-spacing: 0.5px;
+    }
+    .pw-review__name { font-size: 14px; font-weight: 700; color: var(--brand-night); margin: 0; }
+    .pw-review__detail { font-size: 12px; color: var(--graphite); opacity: 0.6; margin: 2px 0 0; }
+    .pw-review__partner {
+      display: inline-block;
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-night); opacity: 0.7;
+      padding: 4px 10px;
+      border: 1px solid rgba(0, 60, 113, 0.18);
+      border-radius: 9999px;
+      margin-bottom: 14px;
+    }
+
+    /* ========= CTA ========= */
+    .pw-cta {
+      padding: 60px 24px 100px;
+      max-width: 1100px; margin: 0 auto;
+      position: relative;
+    }
+    .pw-cta__box {
+      padding: 72px 48px;
+      background: linear-gradient(135deg, #003C71 0%, #1a5490 100%);
+      color: #fff;
+      border-radius: 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 40px 100px rgba(0, 60, 113, 0.25);
+    }
+    .pw-cta__box::before {
+      content: ''; position: absolute;
+      top: -80px; right: -80px;
+      width: 320px; height: 320px;
+      background: url('/media/decor/arcs.svg') no-repeat top right;
+      background-size: contain;
+      opacity: 0.2;
+      filter: invert(1);
+      pointer-events: none;
+    }
+    .pw-cta__eyebrow {
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700;
+      color: var(--brand-moon);
+      margin-bottom: 14px;
+    }
+    .pw-cta__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(30px, 3.5vw, 48px);
+      font-weight: 800;
+      line-height: 1.1;
+      margin: 0 0 20px;
+      letter-spacing: -0.5px;
+    }
+    .pw-cta__title em { font-style: italic; font-weight: 300; color: var(--brand-moon); }
+    .pw-cta__text {
+      font-size: 17px; line-height: 1.7;
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 640px; margin: 0 auto 32px;
+    }
+    .pw-cta__btn {
+      display: inline-flex; align-items: center; gap: 12px;
+      padding: 16px 40px;
+      background: var(--brand-moon);
+      color: var(--brand-night);
+      border-radius: 9999px;
+      font-size: 15px; font-weight: 700; letter-spacing: 0.3px;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .pw-cta__btn:hover {
+      background: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 16px 40px rgba(183, 201, 211, 0.4);
+    }
+
+    /* ========= REVEAL ========= */
+    [data-rev] {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    [data-rev].is-revealed { opacity: 1; transform: translateY(0); }
+
+    /* ========= RESPONSIVE ========= */
+    @media (max-width: 900px) {
+      .pw-hero { padding: 140px 0 80px; }
+      .pw-styles { grid-template-columns: 1fr; gap: 14px; }
+      .pw-style { aspect-ratio: 16 / 6; flex-direction: row; align-items: stretch; }
+      .pw-style__swatches { flex: 1; grid-template-columns: 1fr 1fr 1fr; }
+      .pw-style__content { flex: 0 0 55%; border-top: 0; border-left: 1px solid rgba(0, 60, 113, 0.08); display: flex; flex-direction: column; justify-content: center; }
+      .pw-stats__grid { grid-template-columns: repeat(2, 1fr); }
+      .pw-process__grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+      .pw-process__grid::before { display: none; }
+      .pw-partner__inner { grid-template-columns: 1fr; gap: 40px; }
+      .pw-partner--flip .pw-partner__image { order: 0; }
+      .pw-partner--flip .pw-partner__content { order: 0; }
+      .pw-compare { overflow-x: auto; }
+      .pw-compare__table { min-width: 620px; }
+      .pw-reviews__grid { grid-template-columns: 1fr; }
+      .pw-cta__box { padding: 48px 24px; }
+    }
+    @media (max-width: 560px) {
+      .pw-stats__grid { grid-template-columns: 1fr; }
+      .pw-process__grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body class="pw-page">
+
+  <!-- HEADER -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a class="header__logo" href="/">
+        <img src="/media/megapolis-logo-whitetext.svg" alt="Megapolis" class="header__logo-img">
+      </a>
+      <div class="header__actions">
+        <a class="header__cta header__cta--find" href="/wyszukiwarka" title="Znajdź swoje mieszkanie">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span>Znajdź swoje mieszkanie</span>
+        </a>
+        <a class="header__cta header__cta--special" href="/oferta-specjalna">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>Oferta specjalna</span>
+        </a>
+        <a class="header__phone" href="tel:+48123000077"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>12 300 00 77</span></a>
+        <button class="header__burger" id="burgerBtn" aria-label="Otwórz menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- DRAWER -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__inner">
+      <ul class="mobile-menu__list">
+        <li class="mobile-menu__has-sub">
+          <a href="/o-nas" class="mobile-menu__toggle"><span>O nas</span>
+            <svg class="mobile-menu__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </a>
+          <ul class="mobile-menu__sub">
+            <li><a href="/o-nas/historia">Historia firmy</a></li>
+            <li><a href="/o-nas/zespol">Zespół</a></li>
+            <li><a href="/o-nas/misja">Misja i wartości</a></li>
+            <li><a href="/o-nas/holding">Grupa Holding 1</a></li>
+          </ul>
+        </li>
+        <li><a href="/nasze-standardy">Nasze standardy</a></li>
+        <li><a href="/realizacje">Nasze realizacje</a></li>
+        <li><a href="/lokale-uslugowe">Lokale usługowe</a></li>
+        <li><a href="/program-wykonczenia">Program wykończenia mieszkań</a></li>
+        <li><a href="/finansowanie">Finansowanie</a></li>
+        <li><a href="/kariera">Kariera i społecznie odpowiedzialni</a></li>
+        <li><a href="/aktualnosci">Aktualności</a></li>
+        <li><a href="/kontakt">Kontakt</a></li>
+      </ul>
+      <div class="mobile-menu__footer">
+        <a href="tel:+48123000077" class="mobile-menu__phone">12 300 00 77</a>
+        <a href="mailto:biuro@megapolis.pl" class="mobile-menu__email">biuro@megapolis.pl</a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content">
+
+    <!-- HERO -->
+    <section class="pw-hero">
+      <div class="pw-hero__container">
+        <nav class="pw-crumbs" data-rev>
+          <a href="/">Strona główna</a>
+          <span class="sep">·</span>
+          <span>Program wykończenia mieszkań</span>
+        </nav>
+        <p class="pw-eyebrow" data-rev>Wykończenie pod klucz</p>
+        <h1 class="pw-hero__title" data-rev>Trzy style.<br><em>Jedno gotowe</em> mieszkanie.</h1>
+        <p class="pw-hero__lead" data-rev>
+          Megapolis wybrał trzech sprawdzonych partnerów, którzy&nbsp;wykończą Twoje mieszkanie w&nbsp;filozofii dopasowanej do&nbsp;Twojego stylu życia. Bez&nbsp;remontowego stresu — z&nbsp;jednym&nbsp;harmonogramem, jedną umową i&nbsp;jedną gwarancją jakości.
+        </p>
+
+        <!-- Style preview cards -->
+        <div class="pw-styles" data-rev>
+          <a class="pw-style pw-style--deer" href="#deer">
+            <div class="pw-style__swatches">
+              <span></span><span></span><span></span>
+              <img class="pw-style__logo" src="/media/partners/deer.png" alt="Deer Design" loading="lazy" referrerpolicy="no-referrer">
+            </div>
+            <div class="pw-style__content">
+              <div class="pw-style__num">Partner 01</div>
+              <h3 class="pw-style__name">Deer Design</h3>
+              <p class="pw-style__tag">Architekturalny · Nowoczesny</p>
+            </div>
+          </a>
+          <a class="pw-style pw-style--nilen" href="#nilen">
+            <div class="pw-style__swatches">
+              <span></span><span></span><span></span>
+              <img class="pw-style__logo" src="/media/partners/nilen.svg" alt="Nilen" loading="lazy" referrerpolicy="no-referrer">
+            </div>
+            <div class="pw-style__content">
+              <div class="pw-style__num">Partner 02</div>
+              <h3 class="pw-style__name">Nilen</h3>
+              <p class="pw-style__tag">Skandynawski minimalizm</p>
+            </div>
+          </a>
+          <a class="pw-style pw-style--excellent" href="#excellent">
+            <div class="pw-style__swatches">
+              <span></span><span></span><span></span>
+              <img class="pw-style__logo" src="/media/partners/excellent.png" alt="Excellent" loading="lazy" referrerpolicy="no-referrer">
+            </div>
+            <div class="pw-style__content">
+              <div class="pw-style__num">Partner 03</div>
+              <h3 class="pw-style__name">Excellent</h3>
+              <p class="pw-style__tag">Klasyczna elegancja</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROCESS -->
+    <section class="pw-process">
+      <div class="pw-process__head">
+        <p class="pw-section-eyebrow" data-rev>Jak to działa</p>
+        <h2 class="pw-section-title" data-rev>Cztery kroki do&nbsp;<em>gotowego mieszkania</em></h2>
+        <p class="pw-section-sub" data-rev>Proces jest taki sam niezależnie od&nbsp;wybranego partnera — różnice pojawiają się tylko na&nbsp;etapie estetyki i&nbsp;materiałów.</p>
+      </div>
+
+      <div class="pw-process__grid">
+        <div class="pw-step" data-rev>
+          <div class="pw-step__num">01</div>
+          <h3 class="pw-step__name">Wybór partnera</h3>
+          <p class="pw-step__desc">Wybierasz jednego z&nbsp;trzech partnerów — Deer Design, Nilen lub Excellent — na&nbsp;podstawie stylu życia i&nbsp;oczekiwań.</p>
+        </div>
+        <div class="pw-step" data-rev>
+          <div class="pw-step__num">02</div>
+          <h3 class="pw-step__name">Konsultacja</h3>
+          <p class="pw-step__desc">Bezpłatne spotkanie z&nbsp;projektantem. Rozmawiacie o&nbsp;układzie, budżecie i&nbsp;indywidualnych potrzebach.</p>
+        </div>
+        <div class="pw-step" data-rev>
+          <div class="pw-step__num">03</div>
+          <h3 class="pw-step__name">Realizacja</h3>
+          <p class="pw-step__desc">Partner przeprowadza cały remont — materiały, wykonawcy, nadzór, kontrola jakości. Bez&nbsp;Twojego udziału.</p>
+        </div>
+        <div class="pw-step" data-rev>
+          <div class="pw-step__num">04</div>
+          <h3 class="pw-step__name">Odbiór</h3>
+          <p class="pw-step__desc">Wchodzisz do&nbsp;wykończonego mieszkania. Klucze, protokół odbioru, gwarancja — kompletnie bez&nbsp;stresu.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============== DEER DESIGN =============== -->
+    <section id="deer" class="pw-partner">
+      <div class="pw-partner__inner">
+        <div class="pw-partner__image pw-partner__image--deer" data-rev>
+          <div class="pw-partner__mark">
+            <span class="pw-partner__mark-label">Partner 01</span>
+            <img class="pw-partner__mark-logo" src="/media/partners/deer.png" alt="Deer Design" loading="lazy" referrerpolicy="no-referrer">
+            <div class="pw-partner__mark-divider"></div>
+            <span class="pw-partner__mark-tagline">Architecture &amp; Interiors</span>
+          </div>
+        </div>
+        <div class="pw-partner__content" data-rev>
+          <div class="pw-partner__kicker">01 · Architekt w&nbsp;każdym mieszkaniu</div>
+          <h2 class="pw-partner__title">Deer Design</h2>
+          <p class="pw-partner__tagline">Architekturalne podejście — od&nbsp;koncepcji po&nbsp;odbiór kluczy</p>
+          <p class="pw-partner__desc">
+            Pracownia architektury wnętrz specjalizująca się w&nbsp;realizacjach pod&nbsp;klucz. <strong>Trzy wystandaryzowane pakiety</strong> różniące się klasą materiałów i&nbsp;poziomem personalizacji — od&nbsp;dynamicznego Smart Life po&nbsp;High Life premium.
+          </p>
+
+          <div class="pw-packages">
+            <div class="pw-package"><div class="pw-package__dot"></div><div class="pw-package__name">Smart Life</div><div class="pw-package__price">od&nbsp;~1&nbsp;400&nbsp;zł/m²</div></div>
+            <div class="pw-package"><div class="pw-package__dot"></div><div class="pw-package__name">Modern Life</div><div class="pw-package__price">od&nbsp;~2&nbsp;100&nbsp;zł/m²</div></div>
+            <div class="pw-package"><div class="pw-package__dot"></div><div class="pw-package__name">High Life</div><div class="pw-package__price">od&nbsp;~3&nbsp;200&nbsp;zł/m²</div></div>
+          </div>
+
+          <div class="pw-features">
+            <span class="pw-feature">Projekt architektoniczny</span>
+            <span class="pw-feature">Wizualizacje 3D</span>
+            <span class="pw-feature">Materiały premium</span>
+            <span class="pw-feature">Pełna dokumentacja</span>
+          </div>
+
+          <div class="pw-btns">
+            <a href="/program-wykonczenia/deer/" class="pw-btn pw-btn--primary">
+              Zobacz ofertę Deer Design
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+            <a href="/kontakt?partner=deer" class="pw-btn pw-btn--ghost">Zamów konsultację</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============== NILEN =============== -->
+    <section id="nilen" class="pw-partner pw-partner--alt pw-partner--flip">
+      <div class="pw-partner__inner">
+        <div class="pw-partner__image pw-partner__image--nilen" data-rev>
+          <div class="pw-partner__mark">
+            <span class="pw-partner__mark-label">Partner 02</span>
+            <img class="pw-partner__mark-logo" src="/media/partners/nilen.svg" alt="Nilen" loading="lazy" referrerpolicy="no-referrer">
+            <div class="pw-partner__mark-divider"></div>
+            <span class="pw-partner__mark-tagline">Nordic Minimalism</span>
+          </div>
+        </div>
+        <div class="pw-partner__content" data-rev>
+          <div class="pw-partner__kicker">02 · Skandynawski minimalizm</div>
+          <h2 class="pw-partner__title">Nilen</h2>
+          <p class="pw-partner__tagline">Jasno, naturalnie, bez&nbsp;kompromisów na&nbsp;funkcjonalności</p>
+          <p class="pw-partner__desc">
+            Nilen specjalizuje się w&nbsp;nordyckiej estetyce — jasne dębowe podłogi, naturalne materiały, biały lakier, czysta linia. <strong>Jeden spójny standard</strong> z&nbsp;opcją dopasowania wybranych elementów do&nbsp;stylu życia.
+          </p>
+
+          <div class="pw-packages">
+            <div class="pw-package"><div class="pw-package__dot"></div><div class="pw-package__name">Nordic Essentials</div><div class="pw-package__price">od&nbsp;~1&nbsp;800&nbsp;zł/m²</div></div>
+            <div class="pw-package"><div class="pw-package__dot"></div><div class="pw-package__name">Nordic Signature</div><div class="pw-package__price">od&nbsp;~2&nbsp;600&nbsp;zł/m²</div></div>
+          </div>
+
+          <div class="pw-features">
+            <span class="pw-feature">Skandynawska paleta</span>
+            <span class="pw-feature">Naturalne materiały</span>
+            <span class="pw-feature">Meble na&nbsp;wymiar</span>
+            <span class="pw-feature">Ekologiczne rozwiązania</span>
+          </div>
+
+          <div class="pw-btns">
+            <a href="/program-wykonczenia/nilen/" class="pw-btn pw-btn--primary">
+              Zobacz ofertę Nilen
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+            <a href="/kontakt?partner=nilen" class="pw-btn pw-btn--ghost">Zamów konsultację</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============== EXCELLENT =============== -->
+    <section id="excellent" class="pw-partner">
+      <div class="pw-partner__inner">
+        <div class="pw-partner__image pw-partner__image--excellent" data-rev>
+          <div class="pw-partner__mark">
+            <span class="pw-partner__mark-label">Partner 03</span>
+            <img class="pw-partner__mark-logo" src="/media/partners/excellent.png" alt="Excellent" loading="lazy" referrerpolicy="no-referrer">
+            <div class="pw-partner__mark-divider"></div>
+            <span class="pw-partner__mark-tagline">Classic Elegance</span>
+          </div>
+        </div>
+        <div class="pw-partner__content" data-rev>
+          <div class="pw-partner__kicker">03 · Klasyczna elegancja</div>
+          <h2 class="pw-partner__title">Excellent</h2>
+          <p class="pw-partner__tagline">Ponadczasowe wnętrza z&nbsp;dbałością o&nbsp;każdy detal</p>
+          <p class="pw-partner__desc">
+            Excellent to&nbsp;partner dla tych, którzy&nbsp;cenią klasykę z&nbsp;nutą nowoczesności. <strong>Indywidualny projekt do&nbsp;każdego mieszkania</strong> — sztukaterie, boazerie, parkiet jodełka, naturalne kamienie. Idealny wybór do&nbsp;mieszkań premium i&nbsp;apartamentów.
+          </p>
+
+          <div class="pw-packages">
+            <div class="pw-package"><div class="pw-package__dot"></div><div class="pw-package__name">Classic</div><div class="pw-package__price">od&nbsp;~2&nbsp;400&nbsp;zł/m²</div></div>
+            <div class="pw-package"><div class="pw-package__dot"></div><div class="pw-package__name">Signature</div><div class="pw-package__price">od&nbsp;~3&nbsp;500&nbsp;zł/m²</div></div>
+            <div class="pw-package"><div class="pw-package__dot"></div><div class="pw-package__name">Bespoke</div><div class="pw-package__price">wycena indywidualna</div></div>
+          </div>
+
+          <div class="pw-features">
+            <span class="pw-feature">Projekt indywidualny</span>
+            <span class="pw-feature">Stolarka dębowa</span>
+            <span class="pw-feature">Naturalne kamienie</span>
+            <span class="pw-feature">Koncierż projektu</span>
+          </div>
+
+          <div class="pw-btns">
+            <a href="/program-wykonczenia/excellent/" class="pw-btn pw-btn--primary">
+              Zobacz ofertę Excellent
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+            <a href="/kontakt?partner=excellent" class="pw-btn pw-btn--ghost">Zamów konsultację</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============== PORÓWNANIE =============== -->
+    <section class="pw-compare">
+      <div class="pw-compare__head">
+        <p class="pw-section-eyebrow" data-rev>Szybkie porównanie</p>
+        <h2 class="pw-section-title" data-rev>Który&nbsp;partner <em>do&nbsp;Ciebie</em> pasuje?</h2>
+      </div>
+      <div class="pw-compare__table-wrap" data-rev>
+        <table class="pw-compare__table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Deer Design</th>
+              <th>Nilen</th>
+              <th>Excellent</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Styl</strong></td>
+              <td>Nowoczesny, architektoniczny</td>
+              <td>Skandynawski minimalizm</td>
+              <td>Klasyczna elegancja</td>
+            </tr>
+            <tr>
+              <td><strong>Pakiety</strong></td>
+              <td>3 standardy</td>
+              <td>2 standardy</td>
+              <td>3 standardy + bespoke</td>
+            </tr>
+            <tr>
+              <td><strong>Cena od</strong></td>
+              <td>~1&nbsp;400&nbsp;zł/m²</td>
+              <td>~1&nbsp;800&nbsp;zł/m²</td>
+              <td>~2&nbsp;400&nbsp;zł/m²</td>
+            </tr>
+            <tr>
+              <td><strong>Personalizacja</strong></td>
+              <td>Do&nbsp;wyboru warianty</td>
+              <td>Częściowa</td>
+              <td>W&nbsp;pełni indywidualna</td>
+            </tr>
+            <tr>
+              <td><strong>Projekt 3D</strong></td>
+              <td>Tak (Modern/High)</td>
+              <td>Tak</td>
+              <td>Tak, wszystkie pakiety</td>
+            </tr>
+            <tr>
+              <td><strong>Czas realizacji</strong></td>
+              <td>6 — 10 tygodni</td>
+              <td>5 — 8 tygodni</td>
+              <td>10 — 16 tygodni</td>
+            </tr>
+            <tr>
+              <td><strong>Idealne dla</strong></td>
+              <td>Pierwsze M, M2–M4</td>
+              <td>Rodziny, miłośnicy natury</td>
+              <td>Apartamenty premium</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- =============== OPINIE =============== -->
+    <section class="pw-reviews">
+      <div class="pw-reviews__inner">
+        <div class="pw-reviews__head">
+          <p class="pw-section-eyebrow" data-rev>Opinie klientów</p>
+          <h2 class="pw-section-title" data-rev>Zrealizowali z&nbsp;<em>nami program</em></h2>
+        </div>
+        <div class="pw-reviews__grid">
+          <div class="pw-review" data-rev>
+            <span class="pw-review__partner">Deer Design</span>
+            <p class="pw-review__quote">Proces był przemyślany od&nbsp;A do&nbsp;Z. Projektant zaproponował rozwiązania, o&nbsp;których nie pomyślałbym sam — a&nbsp;cena pakietu Modern Life została dotrzymana bez&nbsp;żadnych ukrytych doplat.</p>
+            <div class="pw-review__meta">
+              <span class="pw-review__avatar">TK</span>
+              <div>
+                <p class="pw-review__name">Tomasz K.</p>
+                <p class="pw-review__detail">Osiedle OZON, M3 · 2025</p>
+              </div>
+            </div>
+          </div>
+          <div class="pw-review" data-rev>
+            <span class="pw-review__partner">Nilen</span>
+            <p class="pw-review__quote">Wybraliśmy Nilen dla&nbsp;prostoty — efekt przerósł oczekiwania. Jasne, spokojne wnętrze, dobrze dobrane materiały, a&nbsp;ekipa sprzątała po&nbsp;sobie każdego dnia. Rzadki luksus przy remoncie.</p>
+            <div class="pw-review__meta">
+              <span class="pw-review__avatar">MK</span>
+              <div>
+                <p class="pw-review__name">Monika &amp; Kamil</p>
+                <p class="pw-review__detail">LINK Bunscha, M4 · 2024</p>
+              </div>
+            </div>
+          </div>
+          <div class="pw-review" data-rev>
+            <span class="pw-review__partner">Excellent</span>
+            <p class="pw-review__quote">Apartament 110&nbsp;m² wymagał klasycznej ręki — sztukateria, drewno dębowe, indywidualnie projektowane drzwi. Excellent dostarczył na&nbsp;poziomie, którego oczekiwałam po&nbsp;partnerze premium.</p>
+            <div class="pw-review__meta">
+              <span class="pw-review__avatar">AW</span>
+              <div>
+                <p class="pw-review__name">Anna W.</p>
+                <p class="pw-review__detail">CLOU Lindego, M5 · 2024</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============== CTA =============== -->
+    <section class="pw-cta">
+      <div class="pw-cta__box" data-rev>
+        <p class="pw-cta__eyebrow">Nie wiesz, który wybrać?</p>
+        <h2 class="pw-cta__title">Doradca Megapolis pomoże Ci <em>podjąć decyzję</em></h2>
+        <p class="pw-cta__text">
+          Opowiedz nam o&nbsp;Twoim mieszkaniu, stylu życia i&nbsp;budżecie — dobierzemy partnera, który&nbsp;najlepiej pasuje. Konsultacja jest bezpłatna i&nbsp;niezobowiązująca.
+        </p>
+        <a href="/kontakt" class="pw-cta__btn">
+          Umów konsultację
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__bottom" style="padding:32px 0;">
+        <p style="font-size:12px;color:var(--white-40);">&copy; 2026 Megapolis Sp. z&nbsp;o.o. &nbsp;·&nbsp; <a href="/polityka-prywatnosci" style="color:var(--white-60);">Polityka prywatności</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/main.js"></script>
+  <script>
+    (function () {
+      const els = document.querySelectorAll('[data-rev]');
+      if (!('IntersectionObserver' in window)) {
+        els.forEach(e => e.classList.add('is-revealed'));
+        return;
+      }
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) { e.target.classList.add('is-revealed'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      els.forEach(e => io.observe(e));
+    })();
+  </script>
+</body>
+</html>
