@@ -543,6 +543,67 @@
     body[data-site="megapolis"] .finder__container { padding: 6px 30px !important; }
 
     body[data-site="megapolis"] .allinv__grid { gap: 12px !important; }
+
+    /* Ograniczenie do 4 widocznych kart + gladkie pokazanie reszty */
+    body[data-site="megapolis"] .allinv__grid .allinv__card:nth-of-type(n+5):not(.is-revealed) {
+      display: none !important;
+    }
+    body[data-site="megapolis"] .allinv.is-expanded .allinv__grid .allinv__card:nth-of-type(n+5) {
+      display: flex !important;
+      animation: allinvCardIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    }
+    body[data-site="megapolis"] .allinv.is-expanded .allinv__grid .allinv__card:nth-of-type(5)  { animation-delay: 0.05s; }
+    body[data-site="megapolis"] .allinv.is-expanded .allinv__grid .allinv__card:nth-of-type(6)  { animation-delay: 0.12s; }
+    body[data-site="megapolis"] .allinv.is-expanded .allinv__grid .allinv__card:nth-of-type(7)  { animation-delay: 0.19s; }
+    body[data-site="megapolis"] .allinv.is-expanded .allinv__grid .allinv__card:nth-of-type(8)  { animation-delay: 0.26s; }
+    body[data-site="megapolis"] .allinv.is-expanded .allinv__grid .allinv__card:nth-of-type(9)  { animation-delay: 0.33s; }
+    body[data-site="megapolis"] .allinv.is-expanded .allinv__grid .allinv__card:nth-of-type(10) { animation-delay: 0.4s; }
+    @keyframes allinvCardIn {
+      from { opacity: 0; transform: translateY(30px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Rozwin dalej button - elegancki, premium */
+    .allinv__expand {
+      display: flex; justify-content: center;
+      margin-top: 24px;
+    }
+    body[data-site="megapolis"] .allinv.is-expanded .allinv__expand { display: none; }
+    .allinv__expand-btn {
+      display: inline-flex; align-items: center; gap: 12px;
+      padding: 14px 28px;
+      background: #ffffff;
+      border: 1.5px solid rgba(0, 60, 113, 0.14);
+      border-radius: 9999px;
+      color: var(--brand-night, #003C71);
+      font-family: inherit;
+      font-size: 12px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+      box-shadow: 0 6px 18px rgba(0, 60, 113, 0.06);
+    }
+    .allinv__expand-btn:hover {
+      background: var(--brand-night, #003C71);
+      border-color: var(--brand-night, #003C71);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(0, 60, 113, 0.2);
+    }
+    .allinv__expand-btn:hover .allinv__expand-count {
+      background: rgba(255, 255, 255, 0.2);
+      color: #c9a55c;
+    }
+    .allinv__expand-count {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 24px; height: 22px;
+      padding: 0 8px;
+      background: rgba(201, 165, 92, 0.14);
+      color: #c9a55c;
+      border-radius: 9999px;
+      font-size: 11px; font-weight: 900; letter-spacing: 0.3px;
+    }
+    .allinv__expand-icon { transition: transform 0.3s ease; }
+    .allinv__expand-btn:hover .allinv__expand-icon { transform: translateY(3px); }
     body[data-site="megapolis"] .allinv__head { margin-bottom: 8px !important; }
     body[data-site="megapolis"] .allinv__inner { padding: 4px 0 !important; }
 
@@ -1718,6 +1779,15 @@
 
         <!-- Pusty stan (pokazywany gdy filtr nic nie znajdzie) -->
         <p class="allinv__empty" id="allinvEmpty" hidden>Brak inwestycji w&nbsp;tej kategorii.</p>
+
+        <!-- Rozwin dalej button - pokazuje ukryte karty (>4) -->
+        <div class="allinv__expand" id="allinvExpand">
+          <button type="button" class="allinv__expand-btn" id="allinvExpandBtn">
+            <span class="allinv__expand-txt">Rozwiń dalej</span>
+            <span class="allinv__expand-count" id="allinvExpandCount">6</span>
+            <svg class="allinv__expand-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
       </div>
     </section>
 
@@ -2995,6 +3065,46 @@
         });
       }, { threshold: 0.35 });
       io.observe(bar);
+    })();
+
+    // Allinv: rozwin dalej - pokazuje ukryte karty (>4)
+    (function () {
+      var btn = document.getElementById('allinvExpandBtn');
+      var allinv = document.querySelector('.allinv');
+      var grid = document.getElementById('allinvGrid');
+      var countEl = document.getElementById('allinvExpandCount');
+      var expandWrap = document.getElementById('allinvExpand');
+      if (!btn || !allinv || !grid) return;
+
+      function updateCount() {
+        // Policz widoczne karty (te ktore match filter) - pomijaj display:none wymuszone filtrem
+        var cards = grid.querySelectorAll('.allinv__card');
+        var visible = 0, hidden = 0;
+        cards.forEach(function (card, i) {
+          // Jesli karta ma display:none od filtra (not matching), pomin
+          var cs = window.getComputedStyle(card);
+          var isFilteredOut = card.style.display === 'none' && !allinv.classList.contains('is-expanded') === false;
+          // Uproszczenie: karty 5+ są schowane dopoki not expanded
+          if (i >= 4 && !allinv.classList.contains('is-expanded')) hidden++;
+        });
+        if (countEl) countEl.textContent = hidden;
+        // Ukryj button jesli nie ma nic do pokazania
+        if (expandWrap) expandWrap.style.display = hidden > 0 ? '' : 'none';
+      }
+
+      btn.addEventListener('click', function () {
+        allinv.classList.add('is-expanded');
+        updateCount();
+        // Scroll smooth do piatej karty (pierwsza z rozwinietych)
+        var fifthCard = grid.querySelectorAll('.allinv__card')[4];
+        if (fifthCard) {
+          setTimeout(function () {
+            fifthCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 450);
+        }
+      });
+
+      updateCount();
     })();
   </script>
 </body>
