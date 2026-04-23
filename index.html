@@ -620,7 +620,7 @@
        ========================================================================= */
     .showcase {
       position: relative; z-index: 5;
-      padding: 88px 0 72px;
+      padding: 64px 0 56px;
       background: #f4f2ec;
       overflow: hidden;
       transform-origin: center top;
@@ -645,9 +645,9 @@
     .showcase__head {
       display: grid;
       grid-template-columns: auto 1fr auto;
-      gap: 32px;
+      gap: 28px;
       align-items: center;
-      margin-bottom: 52px;
+      margin-bottom: 32px;
     }
     .showcase__eyebrow {
       display: inline-flex; align-items: center; gap: 10px;
@@ -700,47 +700,36 @@
     .showcase__link svg { transition: transform 0.3s ease; }
     .showcase__link:hover svg { transform: translateX(4px); }
 
-    /* === RAIL - horizontal scroll z oddechem === */
+    /* === GRID - 3 karty rownej szerokosci, bez horizontal scroll === */
     .showcase__rail {
       display: grid;
-      grid-auto-flow: column;
-      grid-auto-columns: minmax(340px, 1fr);
-      gap: 28px;
-      overflow-x: auto;
-      overflow-y: visible;
-      scroll-snap-type: x mandatory;
-      scrollbar-width: none;
-      padding: 4px 40px 24px;
-      margin: 0 -40px;
-      scroll-behavior: smooth;
-      scroll-padding-left: 40px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      padding: 4px 0 12px;
     }
-    .showcase__rail::-webkit-scrollbar { display: none; }
 
-    /* === CARD - premium minimal. Zdjecie dominuje, minimum tekstu. === */
+    /* === CARD - premium minimal. 16:11 landscape, zdjecie/video dominuje. === */
     .sc-card {
       position: relative;
-      aspect-ratio: 4 / 5;
-      border-radius: 16px;
+      aspect-ratio: 16 / 11;
+      border-radius: 14px;
       overflow: hidden;
       text-decoration: none;
       color: #fff;
-      scroll-snap-align: start;
       background: #e6dfd0;
-      box-shadow: 0 20px 50px -20px rgba(0, 30, 60, 0.22);
+      box-shadow: 0 16px 40px -18px rgba(0, 30, 60, 0.2);
       transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
                   box-shadow 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
       display: block;
-      min-height: 440px;
     }
     .sc-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 40px 80px -18px rgba(0, 30, 60, 0.38);
+      transform: translateY(-6px);
+      box-shadow: 0 28px 60px -18px rgba(0, 30, 60, 0.32);
     }
     .sc-card__img {
       position: absolute; inset: 0; z-index: 0;
       overflow: hidden;
-      border-radius: 16px;
+      border-radius: 14px;
     }
     .sc-card__img img,
     .sc-card__img video {
@@ -755,15 +744,15 @@
     .sc-card__img--video { position: relative; }
     .sc-card__img--video video { filter: saturate(1.05) contrast(1.02); }
 
-    /* Gradient overlay - tylko na dole, clean na gorze */
+    /* Gradient overlay - subtelny, tylko dolne 45%, wiecej widac zdjecie/video */
     .sc-card::before {
       content: '';
       position: absolute; inset: 0; z-index: 1;
       background: linear-gradient(180deg,
         rgba(0, 0, 0, 0) 0%,
-        rgba(0, 0, 0, 0) 45%,
-        rgba(0, 15, 30, 0.55) 80%,
-        rgba(0, 15, 30, 0.92) 100%);
+        rgba(0, 0, 0, 0) 55%,
+        rgba(0, 20, 40, 0.55) 85%,
+        rgba(0, 15, 30, 0.88) 100%);
       transition: background 0.5s ease;
     }
 
@@ -791,31 +780,31 @@
     .sc-card__status--soon  { color: #6e5327; }
     .sc-card__status--soon::before  { background: #c9a96e; }
 
-    /* Body - 3 kolumny: nazwa + lokalizacja / cena / strzalka */
+    /* Body - 3 kolumny: nazwa + lokalizacja / cena / strzalka, premium kompakt */
     .sc-card__body {
       position: absolute; left: 0; right: 0; bottom: 0;
       z-index: 2;
-      padding: 28px 24px 24px;
+      padding: 20px 22px 20px;
       display: grid;
       grid-template-columns: 1fr auto auto;
       grid-template-areas: "names price arrow";
-      gap: 16px;
+      gap: 14px;
       align-items: end;
     }
     .sc-card__names { grid-area: names; min-width: 0; }
     .sc-card__name {
       font-family: 'Ubuntu', sans-serif;
-      font-size: clamp(19px, 1.7vw, 23px);
+      font-size: clamp(17px, 1.4vw, 21px);
       font-weight: 700;
-      letter-spacing: -0.4px;
-      line-height: 1.18;
+      letter-spacing: -0.3px;
+      line-height: 1.2;
       color: #fff;
-      margin: 0 0 5px;
-      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+      margin: 0 0 4px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
     }
     .sc-card__loc {
       display: block;
-      font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+      font-size: 10px; font-weight: 600; letter-spacing: 1.3px; text-transform: uppercase;
       color: rgba(255, 255, 255, 0.78);
     }
     .sc-card__price {
@@ -839,7 +828,7 @@
     }
     .sc-card__arrow {
       grid-area: arrow;
-      width: 38px; height: 38px;
+      width: 34px; height: 34px;
       border-radius: 50%;
       display: inline-flex; align-items: center; justify-content: center;
       background: rgba(255, 255, 255, 0.14);
@@ -856,8 +845,9 @@
       transform: translateX(4px);
     }
 
-    /* === FOOT - progress bar + arrows, minimalisticzne === */
-    .showcase__foot {
+    /* === FOOT - ukryty, 3 karty w grid sa wszystkie widoczne === */
+    .showcase__foot { display: none; }
+    .showcase__foot--show {
       display: flex; align-items: center; gap: 32px;
       margin-top: 44px;
     }
@@ -934,16 +924,18 @@
       transition-delay: 1.1s;
     }
 
-    @media (max-width: 920px) {
-      .showcase { padding: 56px 0 48px; }
+    @media (max-width: 980px) {
+      .showcase { padding: 48px 0 40px; }
       .showcase__container { padding: 0 24px; }
-      .showcase__head { grid-template-columns: 1fr; gap: 14px; margin-bottom: 30px; }
+      .showcase__head { grid-template-columns: 1fr; gap: 12px; margin-bottom: 22px; }
       .showcase__link { justify-self: start; }
-      .showcase__rail { margin: 0 -24px; padding: 4px 24px 20px; grid-auto-columns: minmax(280px, 1fr); gap: 18px; scroll-padding-left: 24px; }
-      .sc-card { min-height: 380px; aspect-ratio: 3 / 4; }
-      .sc-card__body { padding: 20px 18px 18px; grid-template-columns: 1fr auto; grid-template-areas: "names price" "arrow arrow"; gap: 12px; }
-      .sc-card__arrow { justify-self: end; }
-      .showcase__foot { gap: 20px; margin-top: 28px; }
+      .showcase__rail { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+      .sc-card { aspect-ratio: 4 / 3; }
+      .sc-card__body { padding: 16px 16px 16px; gap: 10px; }
+    }
+    @media (max-width: 640px) {
+      .showcase__rail { grid-template-columns: 1fr; gap: 14px; }
+      .sc-card { aspect-ratio: 16 / 10; }
     }
 
     /* (stare hero-offers usuniete) */
@@ -1257,42 +1249,6 @@
               <div class="sc-card__price">
                 <span class="sc-card__price-lbl">od</span>
                 <span class="sc-card__price-val">9&nbsp;200&nbsp;zł/m²</span>
-              </div>
-              <span class="sc-card__arrow" aria-hidden="true">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-              </span>
-            </div>
-          </a>
-
-          <a class="sc-card" href="/wyszukiwarka-3d/?inv=link" data-sc-anim="card">
-            <div class="sc-card__img"><img src="/media/link/link-1.webp" alt="LINK Bunscha" loading="lazy"></div>
-            <span class="sc-card__status sc-card__status--ready">Gotowe</span>
-            <div class="sc-card__body">
-              <div class="sc-card__names">
-                <h3 class="sc-card__name">LINK Bunscha</h3>
-                <span class="sc-card__loc">Kraków&nbsp;· Dębniki</span>
-              </div>
-              <div class="sc-card__price">
-                <span class="sc-card__price-lbl">od</span>
-                <span class="sc-card__price-val">8&nbsp;400&nbsp;zł/m²</span>
-              </div>
-              <span class="sc-card__arrow" aria-hidden="true">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-              </span>
-            </div>
-          </a>
-
-          <a class="sc-card" href="/wyszukiwarka/?miasto=wroclaw" data-sc-anim="card">
-            <div class="sc-card__img"><img src="https://megapolis.pl/wp-content/uploads/2025/10/WIDOK_5-1-1024x576.jpg" alt="Michalczyka 15" loading="lazy"></div>
-            <span class="sc-card__status sc-card__status--soon">Wkrótce</span>
-            <div class="sc-card__body">
-              <div class="sc-card__names">
-                <h3 class="sc-card__name">Michalczyka 15</h3>
-                <span class="sc-card__loc">Wrocław&nbsp;· Szczepin</span>
-              </div>
-              <div class="sc-card__price">
-                <span class="sc-card__price-lbl">start</span>
-                <span class="sc-card__price-val">Q1&nbsp;2027</span>
               </div>
               <span class="sc-card__arrow" aria-hidden="true">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
