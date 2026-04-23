@@ -57,19 +57,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const introReveal = document.getElementById('introReveal');
 
     if (showcase) {
-      // Scroll-scrub: showcase skaluje sie z 0.88 do 1 + top-radius znika wraz ze scrollem
+      // Scroll-scrub: showcase wychodzi z WYRAZISTEJ kopulki z silna krzywizna gora
+      // Scale mocniejszy (0.78 -> 1) + wieksze rounded corners + dluzszy scroll range
       gsap.fromTo(showcase,
-        { scale: 0.88, borderTopLeftRadius: '50vw', borderTopRightRadius: '50vw' },
+        { scale: 0.78, borderTopLeftRadius: '100vw', borderTopRightRadius: '100vw' },
         {
           scale: 1,
           borderTopLeftRadius: '0px',
           borderTopRightRadius: '0px',
-          ease: 'power1.out',
+          ease: 'power2.out',
           scrollTrigger: {
             trigger: showcase,
-            start: 'top 85%',
-            end: 'top 20%',
-            scrub: 1,
+            start: 'top 95%',
+            end: 'top 10%',
+            scrub: 1.2,
           }
         }
       );
