@@ -742,13 +742,18 @@
       overflow: hidden;
       border-radius: 16px;
     }
-    .sc-card__img img {
+    .sc-card__img img,
+    .sc-card__img video {
       width: 100%; height: 100%;
       object-fit: cover;
       transition: transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
       display: block;
     }
-    .sc-card:hover .sc-card__img img { transform: scale(1.08); }
+    .sc-card:hover .sc-card__img img,
+    .sc-card:hover .sc-card__img video { transform: scale(1.06); }
+    /* Karty z video - subtelne pulsowanie luminance dla efektu "zywosci" */
+    .sc-card__img--video { position: relative; }
+    .sc-card__img--video video { filter: saturate(1.05) contrast(1.02); }
 
     /* Gradient overlay - tylko na dole, clean na gorze */
     .sc-card::before {
@@ -1191,7 +1196,12 @@
         <div class="showcase__rail" id="showcaseRail">
 
           <a class="sc-card" href="/wyszukiwarka-3d/?inv=fi" data-sc-anim="card">
-            <div class="sc-card__img"><img src="/media/fi/fi-new-sunset.jpg" alt="Nowe Osiedle Fi" loading="lazy"></div>
+            <div class="sc-card__img sc-card__img--video">
+              <video autoplay muted loop playsinline preload="metadata" poster="/media/fi/fi-new-sunset.jpg" aria-label="Nowe Osiedle Fi - animacja">
+                <source src="/media/showcase/fi-anim.mp4" type="video/mp4">
+                <img src="/media/fi/fi-new-sunset.jpg" alt="Nowe Osiedle Fi">
+              </video>
+            </div>
             <span class="sc-card__status sc-card__status--sale">W&nbsp;sprzedaży</span>
             <div class="sc-card__body">
               <div class="sc-card__names">
@@ -1209,7 +1219,12 @@
           </a>
 
           <a class="sc-card" href="/wyszukiwarka-3d/?inv=ozon" data-sc-anim="card">
-            <div class="sc-card__img"><img src="/media/ozon/ozon-ii-6.webp" alt="Osiedle OZON III" loading="lazy"></div>
+            <div class="sc-card__img sc-card__img--video">
+              <video autoplay muted loop playsinline preload="metadata" poster="/media/ozon/ozon-ii-6.webp" aria-label="Osiedle OZON III - animacja">
+                <source src="/media/showcase/ozon-anim.mp4" type="video/mp4">
+                <img src="/media/ozon/ozon-ii-6.webp" alt="Osiedle OZON III">
+              </video>
+            </div>
             <span class="sc-card__status sc-card__status--sale">W&nbsp;sprzedaży</span>
             <div class="sc-card__body">
               <div class="sc-card__names">
@@ -1227,7 +1242,12 @@
           </a>
 
           <a class="sc-card" href="/wyszukiwarka-3d/?inv=clou" data-sc-anim="card">
-            <div class="sc-card__img"><img src="/media/clou/lindego-panorama.jpg" alt="CLOU Lindego" loading="lazy"></div>
+            <div class="sc-card__img sc-card__img--video">
+              <video autoplay muted loop playsinline preload="metadata" poster="/media/clou/lindego-panorama.jpg" aria-label="CLOU Lindego - animacja">
+                <source src="/media/showcase/clou-anim.mp4" type="video/mp4">
+                <img src="/media/clou/lindego-panorama.jpg" alt="CLOU Lindego">
+              </video>
+            </div>
             <span class="sc-card__status sc-card__status--ready">Gotowe</span>
             <div class="sc-card__body">
               <div class="sc-card__names">
