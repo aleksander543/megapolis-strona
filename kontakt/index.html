@@ -302,6 +302,51 @@
       accent-color: var(--brand-night);
     }
     .kon-form__checkbox a { color: var(--brand-night); font-weight: 700; text-decoration: underline; }
+    .kon-form__hint {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 1px 8px;
+      background: rgba(0, 60, 113, 0.06);
+      border-radius: 9999px;
+      font-size: 9px; letter-spacing: 1.2px; text-transform: uppercase;
+      font-weight: 700;
+      color: rgba(0, 60, 113, 0.7);
+    }
+
+    /* Fieldset zgod RODO */
+    .kon-form__consents {
+      border: 1px solid rgba(0, 60, 113, 0.12);
+      border-radius: 12px;
+      padding: 20px 22px 18px;
+      margin: 18px 0 0;
+      background: rgba(0, 60, 113, 0.02);
+    }
+    .kon-form__consents-legend {
+      padding: 0 10px;
+      font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--brand-night);
+      opacity: 0.85;
+    }
+    .kon-form__checkbox--required {
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(0, 60, 113, 0.08);
+      margin-bottom: 6px;
+      margin-top: 0;
+    }
+    .kon-form__checkbox--required strong {
+      display: inline-block;
+      margin-left: 4px;
+      font-size: 10px; letter-spacing: 0.8px; text-transform: uppercase;
+      color: #c53030;
+    }
+    .kon-form__rodo-note {
+      margin: 14px 0 0;
+      padding-top: 12px;
+      border-top: 1px dashed rgba(0, 60, 113, 0.1);
+      font-size: 11px; line-height: 1.6;
+      color: rgba(0, 0, 0, 0.55);
+      font-style: italic;
+    }
     .kon-form__submit {
       display: inline-flex; align-items: center; justify-content: center; gap: 10px;
       padding: 15px 32px;
@@ -729,10 +774,32 @@
                 <textarea id="k-msg" name="message" rows="5" placeholder="Opisz czego dotyczy Twoje zapytanie…"></textarea>
               </div>
             </div>
-            <label class="kon-form__checkbox">
-              <input type="checkbox" name="privacy" required>
-              <span>Wyrażam zgodę na&nbsp;przetwarzanie moich danych osobowych zgodnie z&nbsp;<a href="/polityka-prywatnosci">polityką prywatności</a>. *</span>
-            </label>
+            <fieldset class="kon-form__consents">
+              <legend class="kon-form__consents-legend">Zgody RODO</legend>
+
+              <label class="kon-form__checkbox kon-form__checkbox--required">
+                <input type="checkbox" name="privacy" required>
+                <span>Wyrażam zgodę na&nbsp;przetwarzanie moich danych osobowych przez&nbsp;Megapolis Sp.&nbsp;z&nbsp;o.o. w&nbsp;celu odpowiedzi na&nbsp;moje zapytanie, zgodnie z&nbsp;<a href="/polityka-prywatnosci">polityką prywatności</a>. <strong>(wymagane)</strong></span>
+              </label>
+
+              <label class="kon-form__checkbox">
+                <input type="checkbox" name="consent_marketing">
+                <span>Wyrażam zgodę na&nbsp;otrzymywanie informacji handlowych (oferty, promocje, newsletter) drogą mailową na&nbsp;podany adres. <span class="kon-form__hint">opcjonalnie</span></span>
+              </label>
+
+              <label class="kon-form__checkbox">
+                <input type="checkbox" name="consent_phone">
+                <span>Wyrażam zgodę na&nbsp;kontakt telefoniczny w&nbsp;celach marketingowych — wsparcie doradcy w&nbsp;wyborze mieszkania. <span class="kon-form__hint">opcjonalnie</span></span>
+              </label>
+
+              <label class="kon-form__checkbox">
+                <input type="checkbox" name="consent_profiling">
+                <span>Wyrażam zgodę na&nbsp;profilowanie moich preferencji w&nbsp;celu lepszego dopasowania ofert mieszkaniowych. <span class="kon-form__hint">opcjonalnie</span></span>
+              </label>
+
+              <p class="kon-form__rodo-note">Zgody opcjonalne możesz w&nbsp;każdej chwili wycofać. Pełne informacje o&nbsp;przetwarzaniu danych — w&nbsp;<a href="/polityka-prywatnosci">polityce prywatności</a>.</p>
+            </fieldset>
+
             <button type="submit" class="kon-form__submit">
               Wyślij wiadomość
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
