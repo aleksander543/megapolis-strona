@@ -686,6 +686,40 @@
       font-style: normal;
       font-weight: 800;
     }
+
+    /* Hint dla 1 mieszkania (zacheta zeby dodac wiecej) */
+    .cmpc-hint {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 16px;
+      padding: 36px 28px;
+      background: rgba(0, 60, 113, 0.04);
+      border: 1px dashed rgba(0, 60, 113, 0.2);
+      border-radius: 16px;
+      text-align: center;
+    }
+    .cmpc-hint svg {
+      color: var(--brand-night, #003C71);
+      opacity: 0.6;
+    }
+    .cmpc-hint p {
+      margin: 0;
+      max-width: 480px;
+      font-size: 14px; line-height: 1.6;
+      color: rgba(0, 0, 0, 0.7);
+    }
+    .cmpc-hint p strong { color: var(--brand-night, #003C71); font-weight: 700; }
+    .cmpc-hint__cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 20px;
+      background: var(--brand-night, #003C71);
+      color: #fff !important;
+      border-radius: 9999px;
+      font-size: 12px; letter-spacing: 0.6px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 0.2s ease;
+    }
+    .cmpc-hint__cta:hover { background: var(--accent, #c9a96e); color: var(--brand-night, #003C71) !important; }
   </style>
 </head>
 <body class="fav-page">
@@ -980,22 +1014,32 @@
         var ids = window.MegapolisFavs.getAll();
         var apts = ids.map(window.getMegapolisApartment).filter(Boolean);
 
-        // Mniej niz 2 mieszkania - nic do porownania, ukryj cala sekcje
-        if (apts.length < 2) {
+        // 0 ulubionych — ukryj cala sekcje
+        if (apts.length === 0) {
           compareSection.hidden = true;
           tableRoot.innerHTML = '';
           return;
         }
 
-        // Pokaz sekcje (header jest statyczny w HTML, renderujemy tylko tableRoot)
-        compareSection.hidden = false;
+        // 1 ulubione — pokaz hint zachecajacy do dodania kolejnych
+        if (apts.length === 1) {
+          compareSection.hidden = false;
+          tableRoot.innerHTML =
+            '<div class="cmpc-hint">' +
+              '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>' +
+              '<p><strong>Dodaj jeszcze przynajmniej jedno mieszkanie</strong>, aby zobaczyć porównanie obok siebie — z plakietkami „najtańsza", „największa", „najlepsza cena za m²" i „najwcześniej oddawana".</p>' +
+              '<a class="cmpc-hint__cta" href="/wyszukiwarka">Przeglądaj mieszkania →</a>' +
+            '</div>';
+          return;
+        }
 
+        // 2+ ulubione — pelne porownanie
+        compareSection.hidden = false;
         var renderer = window.renderMegapolisCompareCards || window.renderMegapolisCompareTable;
         if (!renderer) return;
         renderer(tableRoot, ids, {
           showRemove: true,
           removeAction: function (id) {
-            // Usun z ulubionych - to spowoduje re-render przez listener
             window.MegapolisFavs.toggle(id);
           }
         });
