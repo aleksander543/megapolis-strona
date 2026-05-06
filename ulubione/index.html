@@ -226,6 +226,171 @@
       .fav-card { grid-template-columns: 1fr; }
       .fav-card__plan { display: none; }
     }
+
+    /* === AKCJE: udostepnij === */
+    .fav-actions { margin-top: 16px; }
+    .fav-share-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 11px 22px;
+      background: var(--brand-night, #003C71);
+      color: #fff;
+      border: 0; border-radius: 9999px;
+      font-size: 12px; font-weight: 700; letter-spacing: 1.4px;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-family: inherit;
+      box-shadow: 0 8px 24px rgba(0, 60, 113, 0.2);
+      transition: all 0.25s ease;
+    }
+    .fav-share-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 32px rgba(0, 60, 113, 0.3);
+      background: var(--accent, #c9a96e);
+      color: var(--brand-night, #003C71);
+    }
+
+    /* Toast */
+    .fav-toast {
+      position: fixed;
+      bottom: 30px; left: 50%;
+      transform: translateX(-50%) translateY(40px);
+      padding: 14px 26px;
+      background: #1c5f48;
+      color: #fff;
+      border-radius: 9999px;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
+      font-size: 13px; font-weight: 600;
+      z-index: 200;
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .fav-toast.is-visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* === SEKCJA AUTO-PORÓWNYWARKI === */
+    .fav-compare-section {
+      margin-top: 56px;
+      padding: 36px 32px;
+      background: #ffffff;
+      border: 1px solid rgba(0, 60, 113, 0.1);
+      border-radius: 22px;
+      box-shadow: 0 18px 60px rgba(0, 60, 113, 0.06);
+    }
+    .fav-compare-section[hidden] { display: none; }
+    .fav-compare-section__head {
+      padding-bottom: 22px;
+      margin-bottom: 22px;
+      border-bottom: 1px solid rgba(0, 60, 113, 0.08);
+      text-align: center;
+    }
+    .fav-compare-section__eyebrow {
+      display: inline-block;
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 800;
+      color: var(--brand-night, #003C71);
+      padding: 6px 18px;
+      border: 1px solid rgba(0, 60, 113, 0.18);
+      border-radius: 9999px;
+      margin-bottom: 14px;
+    }
+    .fav-compare-section__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(24px, 2.6vw, 34px);
+      font-weight: 800;
+      color: var(--brand-night, #003C71);
+      margin: 0 0 8px;
+      letter-spacing: -0.4px;
+    }
+    .fav-compare-section__sub {
+      font-size: 13px;
+      color: rgba(0, 0, 0, 0.6);
+      margin: 0;
+      max-width: 520px;
+      margin-left: auto; margin-right: auto;
+    }
+
+    /* Tabela CSS — dziedziczone z compare-table.js (style w wyszukiwarce) — kopiuje minimum */
+    .fav-compare-section .cmp-wrap { overflow-x: auto; }
+    .fav-compare-section .cmp-table {
+      width: 100%;
+      min-width: 720px;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .fav-compare-section .cmp-table th,
+    .fav-compare-section .cmp-table td {
+      padding: 14px 14px;
+      text-align: left;
+      border-bottom: 1px solid rgba(0, 60, 113, 0.06);
+      vertical-align: top;
+    }
+    .fav-compare-section .cmp-row-label-head { background: transparent; border-bottom: 0; }
+    .fav-compare-section .cmp-table thead th {
+      background: #faf8f2;
+      vertical-align: top;
+      min-width: 180px;
+      max-width: 240px;
+    }
+    .fav-compare-section .cmp-col-head { display: flex; flex-direction: column; gap: 6px; position: relative; }
+    .fav-compare-section .cmp-col-remove {
+      position: absolute; top: -6px; right: -6px;
+      width: 26px; height: 26px;
+      background: #ffffff;
+      border: 1px solid rgba(0, 60, 113, 0.2);
+      border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: var(--brand-night, #003C71);
+      cursor: pointer;
+    }
+    .fav-compare-section .cmp-col-remove:hover { background: #e8414c; color: #fff; border-color: #e8414c; }
+    .fav-compare-section .cmp-col-plan {
+      width: 80px; height: 100px;
+      background: #fff;
+      border: 1px solid rgba(0, 60, 113, 0.08);
+      border-radius: 8px;
+      padding: 6px;
+    }
+    .fav-compare-section .cmp-col-plan img { width: 100%; height: 100%; object-fit: contain; }
+    .fav-compare-section .cmp-col-id {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: 22px; font-weight: 800;
+      color: var(--brand-night, #003C71);
+    }
+    .fav-compare-section .cmp-col-sub {
+      font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; font-weight: 700;
+      color: rgba(0,0,0,0.55);
+    }
+    .fav-compare-section .cmp-row-label {
+      font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 700;
+      color: rgba(0, 60, 113, 0.7);
+      width: 160px;
+      background: #fafaf6;
+    }
+    .fav-compare-section .cmp-cell--best { font-weight: 700; color: #1c5f48; }
+    .fav-compare-section .cmp-cell--best::before { content: '★ '; color: var(--accent, #c9a96e); }
+    .fav-compare-section .cmp-price {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: 16px; font-weight: 800;
+      color: var(--brand-night, #003C71);
+    }
+    .fav-compare-section .cmp-feat {
+      display: inline-block; margin: 0 4px 4px 0;
+      padding: 2px 8px;
+      background: rgba(0, 60, 113, 0.06);
+      border-radius: 9999px;
+      font-size: 10px; color: var(--brand-night, #003C71);
+    }
+    .fav-compare-section .cmp-status {
+      display: inline-block; padding: 3px 10px; border-radius: 9999px;
+      font-size: 10px; letter-spacing: 0.8px; font-weight: 700;
+    }
+    .fav-compare-section .cmp-status--available { background: rgba(45, 122, 95, 0.12); color: #1c5f48; }
+    .fav-compare-section .cmp-status--reserved { background: rgba(201, 165, 92, 0.18); color: #8a6e2e; }
+    .fav-compare-section .cmp-status--sold { background: rgba(0,0,0,0.08); color: rgba(0,0,0,0.55); }
+    .fav-compare-section .cmp-link { font-weight: 700; color: var(--brand-night, #003C71); text-decoration: underline; text-underline-offset: 3px; }
+    .fav-compare-section .cmp-legend { margin: 16px 0 0; font-size: 12px; color: rgba(0,0,0,0.5); font-style: italic; }
+    .fav-compare-section .cmp-legend-star { color: var(--accent, #c9a96e); }
   </style>
 </head>
 <body class="fav-page">
@@ -306,12 +471,22 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           <span>Zapisane: <strong id="favCounterNum">0</strong></span>
         </div>
+        <div class="fav-actions" id="favActions" hidden>
+          <button type="button" class="fav-share-btn" id="favShareBtn" aria-label="Udostepnij liste ulubionych">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Udostępnij listę
+          </button>
+        </div>
       </div>
     </section>
 
     <section class="fav-list-wrap">
       <div id="favRoot"></div>
+      <div id="favCompareSection" class="fav-compare-section" hidden></div>
     </section>
+
+    <!-- Toast po skopiowaniu linka -->
+    <div class="fav-toast" id="favToast" role="status" aria-live="polite" hidden></div>
 
   </main>
 
@@ -327,13 +502,88 @@
   <script src="/js/favorites.js"></script>
   <script src="/js/apartments-data.js"></script>
   <script src="/js/header-fav-badge.js"></script>
+  <script src="/js/compare-table.js"></script>
   <script>
     (function () {
       var root = document.getElementById('favRoot');
       var counter = document.getElementById('favCounter');
       var counterNum = document.getElementById('favCounterNum');
+      var actions = document.getElementById('favActions');
+      var shareBtn = document.getElementById('favShareBtn');
+      var compareSection = document.getElementById('favCompareSection');
+      var toast = document.getElementById('favToast');
 
       function fmtPrice(p) { return window.formatMegapolisPrice ? window.formatMegapolisPrice(p) : (p + ' zł'); }
+
+      // === URL ?favs=A-01,B-02 — wczytaj liste z parametru (dla odbiorcy linka) ===
+      (function loadFromUrl() {
+        try {
+          var params = new URLSearchParams(window.location.search);
+          var raw = params.get('favs');
+          if (!raw) return;
+          var ids = raw.split(',').map(function (s) { return s.trim().toUpperCase(); }).filter(Boolean);
+          if (ids.length === 0) return;
+          // Dodaj nowe ID do localStorage (nie nadpisuj istniejacych)
+          var current = window.MegapolisFavs.getAll();
+          var added = 0;
+          ids.forEach(function (id) {
+            if (current.indexOf(id) === -1) {
+              window.MegapolisFavs.toggle(id);
+              added++;
+            }
+          });
+          if (added > 0) showToast('Dodano ' + added + ' mieszkania z udostepnionej listy do Twoich ulubionych');
+        } catch (e) {}
+      })();
+
+      // === TOAST ===
+      var toastTimer = null;
+      function showToast(msg) {
+        if (!toast) return;
+        toast.textContent = msg;
+        toast.hidden = false;
+        requestAnimationFrame(function () {
+          toast.classList.add('is-visible');
+        });
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () {
+          toast.classList.remove('is-visible');
+          setTimeout(function () { toast.hidden = true; }, 300);
+        }, 3000);
+      }
+
+      // === UDOSTĘPNIJ ===
+      function buildShareUrl() {
+        var ids = window.MegapolisFavs.getAll();
+        var u = window.location.origin + window.location.pathname + '?favs=' + ids.join(',');
+        return u;
+      }
+      if (shareBtn) {
+        shareBtn.addEventListener('click', function () {
+          var url = buildShareUrl();
+          var count = window.MegapolisFavs.count();
+          var shareData = {
+            title: 'Moje ulubione mieszkania — Megapolis',
+            text: 'Wybralem(am) ' + count + ' mieszkania z oferty Megapolis. Sprawdz, co o tym myslisz:',
+            url: url
+          };
+          // Web Share API (mobile, niektore desktopy)
+          if (navigator.share) {
+            navigator.share(shareData).catch(function () { /* user anulowal */ });
+          } else if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(url).then(function () {
+              showToast('Link skopiowany do schowka');
+            }).catch(function () {
+              fallbackPrompt(url);
+            });
+          } else {
+            fallbackPrompt(url);
+          }
+        });
+      }
+      function fallbackPrompt(url) {
+        window.prompt('Skopiuj ten link, aby udostepnic liste:', url);
+      }
 
       function render() {
         var ids = window.MegapolisFavs.getAll();
@@ -341,6 +591,7 @@
           counter.hidden = ids.length === 0;
           if (counterNum) counterNum.textContent = String(ids.length);
         }
+        if (actions) actions.hidden = ids.length === 0;
 
         if (ids.length === 0) {
           root.innerHTML =
@@ -355,6 +606,7 @@
                 'Przeglądaj mieszkania' +
               '</a>' +
             '</div>';
+          if (compareSection) compareSection.hidden = true;
           return;
         }
 
@@ -411,6 +663,41 @@
             if (e.target.closest('[data-remove]') || e.target.closest('a')) return;
             window.location.href = '/mieszkanie/?id=' + card.dataset.id;
           });
+        });
+
+        // === AUTO-PORÓWNYWARKA: gdy >=2 ulubione, pokaz tabele pod karto ===
+        renderCompare();
+      }
+
+      function renderCompare() {
+        if (!compareSection || !window.renderMegapolisCompareTable) return;
+        var ids = window.MegapolisFavs.getAll();
+        var apts = ids.map(window.getMegapolisApartment).filter(Boolean);
+
+        if (apts.length < 2) {
+          compareSection.hidden = true;
+          compareSection.innerHTML = '';
+          return;
+        }
+
+        var headerHtml =
+          '<header class="fav-compare-section__head">' +
+            '<span class="fav-compare-section__eyebrow">Porównanie</span>' +
+            '<h2 class="fav-compare-section__title">Twoje ulubione obok siebie</h2>' +
+            '<p class="fav-compare-section__sub">Automatycznie zestawione wszystkie zapisane oferty. Usun mieszkanie z porownania klikajac × przy nim.</p>' +
+          '</header>' +
+          '<div id="favCompareTableRoot"></div>';
+
+        compareSection.innerHTML = headerHtml;
+        compareSection.hidden = false;
+
+        var tableRoot = document.getElementById('favCompareTableRoot');
+        window.renderMegapolisCompareTable(tableRoot, ids, {
+          showRemove: true,
+          removeAction: function (id) {
+            // Usun z ulubionych - to spowoduje re-render przez listener
+            window.MegapolisFavs.toggle(id);
+          }
         });
       }
 

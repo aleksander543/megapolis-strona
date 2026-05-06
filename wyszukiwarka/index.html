@@ -1020,6 +1020,38 @@
       animation: ws-heart-ring 0.65s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
     }
 
+    /* === Porownywarka: button na kazdej karcie === */
+    .ws-card { padding-bottom: 50px; }
+    .ws-cmp-btn {
+      position: absolute;
+      bottom: 14px; left: 22px;
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 16px;
+      background: #ffffff;
+      border: 1.5px solid rgba(0, 60, 113, 0.18);
+      border-radius: 9999px;
+      font-size: 11px; font-weight: 700; letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: var(--brand-night, #003C71);
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s ease;
+      z-index: 5;
+    }
+    .ws-cmp-btn:hover {
+      border-color: var(--brand-night, #003C71);
+      background: rgba(0, 60, 113, 0.04);
+    }
+    .ws-cmp-btn.is-active {
+      background: var(--brand-night, #003C71);
+      color: #ffffff;
+      border-color: var(--brand-night, #003C71);
+    }
+    .ws-cmp-btn svg { color: inherit; }
+    .ws-card--comparing {
+      box-shadow: 0 0 0 2px rgba(0, 60, 113, 0.18), 0 12px 32px rgba(0, 60, 113, 0.12);
+    }
+
     /* Mini wizualizacja rzutu - po prawej stronie karty */
     .ws-card__plan {
       display: flex; flex-direction: column;
@@ -1487,6 +1519,222 @@
     @media (max-width: 560px) {
       .ws-card { grid-template-columns: 1fr; gap: 0; }
       .ws-card__plan { display: none; }
+    }
+
+    /* === FLOATING COMPARE BAR === */
+    .ws-compare-bar {
+      position: fixed;
+      bottom: 24px; left: 50%;
+      transform: translateX(-50%) translateY(140%);
+      display: flex; align-items: center; gap: 18px;
+      padding: 14px 22px 14px 26px;
+      background: var(--brand-night, #003C71);
+      color: #fff;
+      border-radius: 9999px;
+      box-shadow: 0 16px 48px rgba(0, 60, 113, 0.35);
+      z-index: 100;
+      font-size: 13px; font-weight: 600; letter-spacing: 0.3px;
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .ws-compare-bar.is-visible { transform: translateX(-50%) translateY(0); }
+    .ws-compare-bar__count strong { font-weight: 800; color: var(--accent, #c9a96e); }
+    .ws-compare-bar__btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 22px;
+      background: var(--accent, #c9a96e);
+      color: var(--brand-night, #003C71);
+      border: 0; border-radius: 9999px;
+      font-size: 12px; font-weight: 800; letter-spacing: 0.6px;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .ws-compare-bar__btn:hover { background: #ffffff; transform: translateY(-1px); }
+    .ws-compare-bar__btn:disabled {
+      background: rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.4);
+      cursor: not-allowed;
+      transform: none;
+    }
+    .ws-compare-bar__clear {
+      background: transparent; border: 0;
+      color: rgba(255,255,255,0.6);
+      font-size: 12px; letter-spacing: 0.4px;
+      cursor: pointer;
+      padding: 6px 4px;
+      font-family: inherit;
+    }
+    .ws-compare-bar__clear:hover { color: #fff; }
+
+    /* === COMPARE MODAL === */
+    .ws-compare-modal {
+      position: fixed; inset: 0;
+      z-index: 200;
+      background: rgba(0, 28, 56, 0.78);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      overflow-y: auto;
+    }
+    .ws-compare-modal[hidden] { display: none; }
+    .ws-compare-modal__inner {
+      max-width: 1180px;
+      width: 100%;
+      max-height: calc(100vh - 48px);
+      background: #ffffff;
+      border-radius: 22px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 40px 100px rgba(0, 0, 0, 0.4);
+    }
+    .ws-compare-modal__head {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      gap: 16px;
+      padding: 26px 32px 18px;
+      border-bottom: 1px solid rgba(0, 60, 113, 0.08);
+    }
+    .ws-compare-modal__title {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: clamp(22px, 2.2vw, 30px);
+      font-weight: 800;
+      color: var(--brand-night, #003C71);
+      margin: 0 0 4px;
+      letter-spacing: -0.4px;
+    }
+    .ws-compare-modal__sub {
+      font-size: 13px; color: rgba(0,0,0,0.6);
+      margin: 0;
+    }
+    .ws-compare-modal__close {
+      background: transparent; border: 1px solid rgba(0, 60, 113, 0.2);
+      color: var(--brand-night, #003C71);
+      width: 40px; height: 40px; border-radius: 50%;
+      cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .ws-compare-modal__close:hover {
+      background: var(--brand-night, #003C71);
+      color: #fff;
+    }
+    .ws-compare-modal__body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px 32px 32px;
+    }
+
+    /* === TABELA PORÓWNAWCZA === */
+    .cmp-wrap { overflow-x: auto; }
+    .cmp-table {
+      width: 100%;
+      min-width: 720px;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .cmp-table th, .cmp-table td {
+      padding: 14px 14px;
+      text-align: left;
+      border-bottom: 1px solid rgba(0, 60, 113, 0.06);
+      vertical-align: top;
+    }
+    .cmp-row-label-head { background: transparent; border-bottom: 0; }
+    .cmp-table thead th {
+      background: #faf8f2;
+      vertical-align: top;
+      min-width: 180px;
+      max-width: 240px;
+    }
+    .cmp-col-head { display: flex; flex-direction: column; gap: 6px; position: relative; }
+    .cmp-col-remove {
+      position: absolute; top: -6px; right: -6px;
+      width: 26px; height: 26px;
+      background: #ffffff;
+      border: 1px solid rgba(0, 60, 113, 0.2);
+      border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: var(--brand-night, #003C71);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .cmp-col-remove:hover { background: #e8414c; color: #fff; border-color: #e8414c; }
+    .cmp-col-plan {
+      width: 80px; height: 100px;
+      background: #fff;
+      border: 1px solid rgba(0, 60, 113, 0.08);
+      border-radius: 8px;
+      padding: 6px;
+      align-self: flex-start;
+    }
+    .cmp-col-plan img {
+      width: 100%; height: 100%; object-fit: contain;
+    }
+    .cmp-col-id {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: 22px; font-weight: 800;
+      color: var(--brand-night, #003C71);
+      letter-spacing: -0.4px;
+    }
+    .cmp-col-sub {
+      font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; font-weight: 700;
+      color: rgba(0,0,0,0.55);
+    }
+    .cmp-row-label {
+      font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 700;
+      color: rgba(0, 60, 113, 0.7);
+      width: 160px;
+      background: #fafaf6;
+    }
+    .cmp-cell { color: var(--graphite, #222); }
+    .cmp-cell--best { font-weight: 700; color: #1c5f48; position: relative; }
+    .cmp-cell--best::before { content: '★ '; color: var(--accent, #c9a96e); }
+    .cmp-price {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: 16px; font-weight: 800;
+      color: var(--brand-night, #003C71);
+    }
+    .cmp-feat {
+      display: inline-block;
+      margin: 0 4px 4px 0;
+      padding: 2px 8px;
+      background: rgba(0, 60, 113, 0.06);
+      border-radius: 9999px;
+      font-size: 10px;
+      letter-spacing: 0.5px;
+      color: var(--brand-night, #003C71);
+    }
+    .cmp-status {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      font-size: 10px; letter-spacing: 0.8px; font-weight: 700;
+    }
+    .cmp-status--available { background: rgba(45, 122, 95, 0.12); color: #1c5f48; }
+    .cmp-status--reserved { background: rgba(201, 165, 92, 0.18); color: #8a6e2e; }
+    .cmp-status--sold { background: rgba(0,0,0,0.08); color: rgba(0,0,0,0.55); }
+    .cmp-link {
+      font-weight: 700; color: var(--brand-night, #003C71);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .cmp-legend {
+      margin: 16px 0 0;
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.5);
+      font-style: italic;
+    }
+    .cmp-legend-star { color: var(--accent, #c9a96e); }
+
+    @media (max-width: 720px) {
+      .ws-compare-modal { padding: 12px; }
+      .ws-compare-modal__head { padding: 20px 20px 14px; }
+      .ws-compare-modal__body { padding: 16px 20px 24px; }
+      .cmp-table thead th { min-width: 140px; }
+      .cmp-row-label { width: 120px; font-size: 10px; }
     }
   </style>
 </head>
@@ -2223,10 +2471,38 @@
     </div>
   </footer>
 
+  <!-- Floating compare bar -->
+  <div class="ws-compare-bar" id="wsCompareBar" role="region" aria-label="Pasek porownywarki">
+    <span class="ws-compare-bar__count">Wybrano <strong id="wsCompareCount">0</strong> z 4 mieszkań</span>
+    <button type="button" class="ws-compare-bar__btn" id="wsCompareGo" disabled>
+      Porównaj
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </button>
+    <button type="button" class="ws-compare-bar__clear" id="wsCompareClear">Wyczyść</button>
+  </div>
+
+  <!-- Modal/sekcja porownania -->
+  <div class="ws-compare-modal" id="wsCompareModal" hidden role="dialog" aria-modal="true" aria-labelledby="wsCompareTitle">
+    <div class="ws-compare-modal__inner">
+      <header class="ws-compare-modal__head">
+        <div>
+          <h2 class="ws-compare-modal__title" id="wsCompareTitle">Porównanie mieszkań</h2>
+          <p class="ws-compare-modal__sub">Wybrane oferty obok siebie — porównaj kluczowe parametry.</p>
+        </div>
+        <button type="button" class="ws-compare-modal__close" id="wsCompareClose" aria-label="Zamknij porownywarke">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </header>
+      <div class="ws-compare-modal__body" id="wsCompareTableRoot"></div>
+    </div>
+  </div>
+
   <script src="/js/main.js"></script>
   <script src="/js/favorites.js"></script>
   <script src="/js/header-fav-badge.js"></script>
   <script src="/js/apartments-data.js"></script>
+  <script src="/js/compare.js"></script>
+  <script src="/js/compare-table.js"></script>
   <script>
     // Toggle Rzut/Zdjecia + galeria zdjec w kartach wyszukiwarki
     (function () {
@@ -2884,6 +3160,145 @@
 
       // Start
       render();
+    })();
+  </script>
+
+  <!-- ===== PORÓWNYWARKA: dorzuca button do kazdej karty + obsluga floating bar i modalu ===== -->
+  <script>
+    (function () {
+      if (!window.MegapolisCompare) return;
+
+      var bar      = document.getElementById('wsCompareBar');
+      var countEl  = document.getElementById('wsCompareCount');
+      var goBtn    = document.getElementById('wsCompareGo');
+      var clearBtn = document.getElementById('wsCompareClear');
+      var modal    = document.getElementById('wsCompareModal');
+      var modalRoot= document.getElementById('wsCompareTableRoot');
+      var closeBtn = document.getElementById('wsCompareClose');
+
+      // Dorzuc przycisk porownania do kazdej karty (data-id z atrybutu data-fav button)
+      function injectCompareButtons() {
+        document.querySelectorAll('.ws-card').forEach(function (card) {
+          if (card.querySelector('.ws-cmp-btn')) return;
+          var favBtn = card.querySelector('.ws-fav-btn[data-fav]');
+          if (!favBtn) return;
+          var id = favBtn.dataset.fav;
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'ws-cmp-btn';
+          btn.dataset.cmp = id;
+          btn.setAttribute('aria-label', 'Dodaj do porownywarki');
+          btn.innerHTML =
+            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+              '<rect x="3" y="3" width="7" height="7" rx="1"/>' +
+              '<rect x="14" y="3" width="7" height="7" rx="1"/>' +
+              '<rect x="3" y="14" width="7" height="7" rx="1"/>' +
+              '<rect x="14" y="14" width="7" height="7" rx="1"/>' +
+            '</svg>' +
+            '<span class="ws-cmp-btn__lbl">Porównaj</span>';
+          card.appendChild(btn);
+        });
+        syncCardStates();
+      }
+
+      function syncCardStates() {
+        var ids = window.MegapolisCompare.getAll();
+        document.querySelectorAll('.ws-cmp-btn').forEach(function (btn) {
+          var isInComp = ids.indexOf(String(btn.dataset.cmp).toUpperCase()) !== -1;
+          btn.classList.toggle('is-active', isInComp);
+          var lbl = btn.querySelector('.ws-cmp-btn__lbl');
+          if (lbl) lbl.textContent = isInComp ? 'W porównaniu' : 'Porównaj';
+          var card = btn.closest('.ws-card');
+          if (card) card.classList.toggle('ws-card--comparing', isInComp);
+        });
+      }
+
+      function syncBar() {
+        var ids = window.MegapolisCompare.getAll();
+        if (countEl) countEl.textContent = ids.length;
+        if (bar) bar.classList.toggle('is-visible', ids.length > 0);
+        if (goBtn) goBtn.disabled = ids.length < 2;
+      }
+
+      // Klik przycisku porownania na karcie
+      document.addEventListener('click', function (e) {
+        var btn = e.target.closest('.ws-cmp-btn');
+        if (!btn) return;
+        e.preventDefault();
+        e.stopPropagation();
+        var id = btn.dataset.cmp;
+        var added = window.MegapolisCompare.toggle(id);
+        // Jesli byl limit (4), pokaz info
+        if (added === false && !window.MegapolisCompare.has(id) && window.MegapolisCompare.count() >= window.MegapolisCompare.MAX) {
+          // Brak miejsca i nie usunieto - to znaczy ze probowano dodac przy max
+          alert('Mozna porownywac maksymalnie ' + window.MegapolisCompare.MAX + ' mieszkania na raz.');
+        }
+      });
+
+      // Floating bar buttons
+      if (clearBtn) clearBtn.addEventListener('click', function () { window.MegapolisCompare.clear(); });
+      if (goBtn) goBtn.addEventListener('click', function () {
+        openModal();
+      });
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      if (modal) modal.addEventListener('click', function (e) {
+        if (e.target === modal) closeModal();
+      });
+
+      function openModal() {
+        if (!modal || !modalRoot || !window.renderMegapolisCompareTable) return;
+        var ids = window.MegapolisCompare.getAll();
+        if (ids.length < 2) return;
+        window.renderMegapolisCompareTable(modalRoot, ids, {
+          showRemove: true,
+          removeAction: function (id) {
+            window.MegapolisCompare.remove(id);
+            // Re-render lub zamknij gdy <2
+            var nowIds = window.MegapolisCompare.getAll();
+            if (nowIds.length < 2) {
+              closeModal();
+            } else {
+              window.renderMegapolisCompareTable(modalRoot, nowIds, {
+                showRemove: true,
+                removeAction: arguments.callee
+              });
+            }
+          }
+        });
+        modal.hidden = false;
+        document.body.style.overflow = 'hidden';
+      }
+      function closeModal() {
+        if (!modal) return;
+        modal.hidden = true;
+        document.body.style.overflow = '';
+      }
+
+      // Reaguj na zmiany porownywarki (z innych kart, klikow)
+      window.MegapolisCompare.on(function () {
+        syncCardStates();
+        syncBar();
+      });
+      window.addEventListener('megapolis-compare-change', function () {
+        syncCardStates();
+        syncBar();
+      });
+
+      // ESC zamyka modal
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modal && !modal.hidden) closeModal();
+      });
+
+      // Pierwszy injection + observer dla nowo renderowanych kart (po filtrach/paginacji)
+      injectCompareButtons();
+      var resultsEl = document.querySelector('.ws-results');
+      if (resultsEl) {
+        var mo = new MutationObserver(function () {
+          injectCompareButtons();
+        });
+        mo.observe(resultsEl, { childList: true, subtree: false });
+      }
+      syncBar();
     })();
   </script>
 </body>
