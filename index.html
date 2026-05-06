@@ -1960,8 +1960,32 @@
       </div>
     </section>
 
-    <!-- ===== PEŁNA LISTA INWESTYCJI MEGAPOLIS (część portfolio hub) ===== -->
-    <section class="allinv portfolio-hub__block portfolio-hub__block--grid" id="lista">
+    <!-- ===== WYSZUKIWARKA TEKSTOWA POD MAPĄ ===== -->
+    <section class="home-finder portfolio-hub__block portfolio-hub__block--finder" id="finder" aria-label="Wyszukiwarka mieszkań">
+      <div class="container">
+        <div class="home-finder__inner" data-reveal>
+          <div class="home-finder__head">
+            <span class="home-finder__eyebrow">Znajdź swoje mieszkanie</span>
+            <h2 class="home-finder__title">Sprawdź wszystkie <em>dostępne mieszkania</em></h2>
+            <p class="home-finder__lead">Opisz swoje wymarzone mieszkanie albo przejdź od razu do filtrów — wszystkie aktualne oferty z naszych inwestycji w jednym miejscu.</p>
+          </div>
+          <form class="home-finder__form" role="search" action="/wyszukiwarka" method="get">
+            <svg class="home-finder__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" name="q" class="home-finder__input"
+                   placeholder="np. 3 pokoje, balkon, do 700 tys."
+                   autocomplete="off" aria-label="Wpisz czego szukasz w mieszkaniu">
+            <button type="submit" class="home-finder__submit">
+              <span>Szukaj</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+          </form>
+          <a href="/wyszukiwarka" class="home-finder__advanced">Wyszukiwanie zaawansowane (filtry, mapa) →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PEŁNA LISTA INWESTYCJI MEGAPOLIS — UKRYTA (zostaje w MENU > Nasze realizacje) ===== -->
+    <section class="allinv portfolio-hub__block portfolio-hub__block--grid is-hidden" id="lista" hidden style="display:none">
       <div class="container">
         <!-- Filtry statusu -->
         <div class="allinv__filters" data-reveal role="tablist" aria-label="Filtr inwestycji">
@@ -2980,16 +3004,13 @@
       var m = L.marker([inv.lat, inv.lng], { icon: makePin(false) }).addTo(map);
       var searchUrl = invToSearchUrl[key] || '/wyszukiwarka/';
       var ctaLabel  = invToCtaLabel[key]  || 'Zobacz mieszkania →';
+      // Popup minimal — bez opisu, tylko miniatura + CTA do makiety/wyszukiwarki
       var popupHtml =
-        '<div class="invmap-popup">' +
+        '<a class="invmap-popup invmap-popup--minimal" href="' + searchUrl + '">' +
           '<img class="invmap-popup__img" src="' + inv.img + '" alt="' + inv.name + '">' +
-          '<div class="invmap-popup__body">' +
-            '<h3 class="invmap-popup__name">' + inv.name + '</h3>' +
-            '<p class="invmap-popup__loc">' + inv.loc + '</p>' +
-            '<a class="invmap-popup__cta" href="' + searchUrl + '">' + ctaLabel + '</a>' +
-          '</div>' +
-        '</div>';
-      m.bindPopup(popupHtml, { maxWidth: 260, closeButton: true });
+          '<span class="invmap-popup__cta invmap-popup__cta--block">' + ctaLabel + '</span>' +
+        '</a>';
+      m.bindPopup(popupHtml, { maxWidth: 240, closeButton: true });
       markers[key] = m;
     });
 
