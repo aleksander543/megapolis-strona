@@ -391,6 +391,309 @@
     .fav-compare-section .cmp-link { font-weight: 700; color: var(--brand-night, #003C71); text-decoration: underline; text-underline-offset: 3px; }
     .fav-compare-section .cmp-legend { margin: 16px 0 0; font-size: 12px; color: rgba(0,0,0,0.5); font-style: italic; }
     .fav-compare-section .cmp-legend-star { color: var(--accent, #c9a96e); }
+
+    /* === NOWY LAYOUT PORÓWNYWARKI: KARTY (cmpc) === */
+    .fav-compare-section { padding: 44px 36px 40px; border-radius: 26px; }
+    .fav-compare-section__head { margin-bottom: 30px; }
+
+    .cmpc-grid {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+    .cmpc-grid[data-count="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .cmpc-grid[data-count="3"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .cmpc-grid[data-count="4"] { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    @media (max-width: 1100px) {
+      .cmpc-grid[data-count="3"],
+      .cmpc-grid[data-count="4"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 640px) {
+      .cmpc-grid[data-count="2"],
+      .cmpc-grid[data-count="3"],
+      .cmpc-grid[data-count="4"] { grid-template-columns: 1fr; }
+    }
+
+    .cmpc-card {
+      position: relative;
+      display: flex; flex-direction: column;
+      gap: 16px;
+      padding: 22px 22px 20px;
+      background: linear-gradient(180deg, #ffffff 0%, #fbf9f3 100%);
+      border: 1px solid rgba(0, 60, 113, 0.08);
+      border-radius: 18px;
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.7) inset,
+        0 14px 40px rgba(0, 60, 113, 0.06);
+      overflow: hidden;
+      animation: cmpc-card-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .cmpc-card:nth-child(1) { animation-delay: 0.04s; }
+    .cmpc-card:nth-child(2) { animation-delay: 0.10s; }
+    .cmpc-card:nth-child(3) { animation-delay: 0.16s; }
+    .cmpc-card:nth-child(4) { animation-delay: 0.22s; }
+    .cmpc-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(0, 60, 113, 0.16);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.7) inset,
+        0 22px 56px rgba(0, 60, 113, 0.13);
+    }
+    @keyframes cmpc-card-in {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Akcent gornej krawedzi w kolorze inwestycji */
+    .cmpc-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--inv-c, var(--brand-night)) 0%, color-mix(in srgb, var(--inv-c, var(--brand-night)) 30%, white) 100%);
+    }
+
+    /* Subtelny ornament: kropka kolor inwestycji w prawym górnym */
+    .cmpc-card::after {
+      content: '';
+      position: absolute;
+      top: 16px; right: 18px;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--inv-c, var(--brand-night));
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--inv-c, var(--brand-night)) 12%, transparent);
+    }
+
+    /* Plakietki "najlepsze" */
+    .cmpc-badges {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      min-height: 26px;                    /* placeholder dla rownego ulozenia */
+    }
+    .cmpc-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      background: color-mix(in srgb, var(--badge-c, #c9a96e) 12%, white);
+      color: var(--badge-c, #c9a96e);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      border: 1px solid color-mix(in srgb, var(--badge-c, #c9a96e) 28%, transparent);
+    }
+
+    /* Remove button - elegancki krzyzyk w lewym gornym (obok kropki) */
+    .cmpc-card__remove {
+      position: absolute;
+      top: 14px; left: 16px;
+      width: 26px; height: 26px;
+      background: rgba(255,255,255,0.85);
+      border: 1px solid rgba(0, 60, 113, 0.12);
+      border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: rgba(0, 60, 113, 0.5);
+      cursor: pointer;
+      backdrop-filter: blur(4px);
+      transition: all 0.2s ease;
+      z-index: 5;
+    }
+    .cmpc-card__remove:hover {
+      background: #e8414c;
+      color: #ffffff;
+      border-color: #e8414c;
+      transform: rotate(90deg);
+    }
+
+    /* Mini rzut */
+    .cmpc-card__plan {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      background: #fdfbf4;
+      border: 1px solid rgba(0, 60, 113, 0.06);
+      border-radius: 12px;
+      padding: 10px;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .cmpc-card__plan img {
+      max-width: 100%; max-height: 100%;
+      object-fit: contain;
+      mix-blend-mode: multiply;
+    }
+    .cmpc-card__plan-empty {
+      font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+      color: rgba(0,0,0,0.35);
+    }
+
+    /* Glowka */
+    .cmpc-card__head {
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .cmpc-card__inv {
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-weight: 800;
+      color: var(--inv-c, var(--brand-night));
+    }
+    .cmpc-card__id {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      color: var(--brand-night, #003C71);
+      margin: 2px 0 4px;
+      line-height: 1;
+    }
+    .cmpc-status {
+      align-self: flex-start;
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; font-weight: 800;
+    }
+    .cmpc-status::before {
+      content: ''; width: 5px; height: 5px; border-radius: 50%;
+      background: currentColor;
+    }
+    .cmpc-status--available { background: rgba(45, 122, 95, 0.12); color: #1c5f48; }
+    .cmpc-status--reserved  { background: rgba(201, 165, 92, 0.18); color: #8a6e2e; }
+    .cmpc-status--sold      { background: rgba(0,0,0,0.08); color: rgba(0,0,0,0.55); }
+
+    /* Cena */
+    .cmpc-card__price {
+      display: flex; flex-direction: column; gap: 6px;
+      padding: 14px 16px;
+      background: rgba(0, 60, 113, 0.04);
+      border-radius: 12px;
+      border: 1px solid rgba(0, 60, 113, 0.06);
+      transition: background 0.25s ease, border-color 0.25s ease;
+    }
+    .cmpc-card__price.is-best {
+      background: linear-gradient(135deg, rgba(28, 95, 72, 0.1) 0%, rgba(28, 95, 72, 0.04) 100%);
+      border-color: rgba(28, 95, 72, 0.18);
+    }
+    .cmpc-card__price-val {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: 22px; font-weight: 800;
+      color: var(--brand-night, #003C71);
+      letter-spacing: -0.4px;
+      line-height: 1.05;
+    }
+    .cmpc-old-price {
+      display: inline-block;
+      font-size: 12px;
+      color: rgba(0,0,0,0.45);
+      text-decoration: line-through;
+      margin-right: 6px;
+    }
+    .cmpc-promo {
+      display: inline-block;
+      padding: 2px 8px;
+      background: linear-gradient(135deg, #e8414c 0%, #c53030 100%);
+      color: #fff;
+      border-radius: 9999px;
+      font-size: 10px; font-weight: 800; letter-spacing: 0.6px;
+    }
+    .cmpc-card__price-m2 {
+      font-size: 12px;
+      color: rgba(0, 60, 113, 0.7);
+      letter-spacing: 0.3px;
+      font-weight: 600;
+    }
+    .cmpc-card__price-m2.is-best {
+      color: #1c5f48;
+      font-weight: 800;
+    }
+    .cmpc-card__price-m2.is-best::before {
+      content: '★ ';
+      color: var(--accent, #c9a96e);
+    }
+
+    /* Spec list */
+    .cmpc-specs {
+      display: flex; flex-direction: column;
+      gap: 0;
+      margin: 0;
+    }
+    .cmpc-spec {
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px dashed rgba(0, 60, 113, 0.08);
+      font-size: 13px;
+    }
+    .cmpc-spec:last-child { border-bottom: 0; }
+    .cmpc-spec dt {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: rgba(0, 60, 113, 0.7);
+      font-size: 12px; letter-spacing: 0.3px;
+      font-weight: 500;
+      margin: 0;
+    }
+    .cmpc-spec dt svg { color: var(--inv-c, var(--brand-night)); opacity: 0.55; flex: 0 0 auto; }
+    .cmpc-spec dd {
+      margin: 0;
+      font-weight: 700;
+      color: var(--graphite, #222);
+      font-size: 13px;
+    }
+    .cmpc-spec.is-best dd {
+      color: #1c5f48;
+      position: relative;
+    }
+    .cmpc-spec.is-best dd::before {
+      content: '★ ';
+      color: var(--accent, #c9a96e);
+    }
+
+    /* Funkcje (loggia, balkon, etc.) */
+    .cmpc-feats {
+      display: flex; flex-wrap: wrap; gap: 5px;
+    }
+    .cmpc-feat {
+      display: inline-block;
+      padding: 3px 9px;
+      background: rgba(0, 60, 113, 0.05);
+      border: 1px solid rgba(0, 60, 113, 0.08);
+      border-radius: 9999px;
+      font-size: 10px; letter-spacing: 0.6px;
+      color: var(--brand-night, #003C71);
+      font-weight: 600;
+    }
+
+    /* CTA */
+    .cmpc-card__cta {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 18px;
+      background: var(--brand-night, #003C71);
+      color: #fff !important;
+      border-radius: 9999px;
+      font-size: 11px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+      margin-top: auto;
+      box-shadow: 0 8px 22px rgba(0, 60, 113, 0.18);
+    }
+    .cmpc-card__cta:hover {
+      background: var(--accent, #c9a96e);
+      color: var(--brand-night, #003C71) !important;
+      transform: translateY(-1px);
+      box-shadow: 0 12px 30px rgba(201, 169, 110, 0.35);
+    }
+
+    /* Legenda pod siatka */
+    .cmpc-legend {
+      margin: 22px 0 0;
+      padding: 14px 18px;
+      background: rgba(0, 60, 113, 0.03);
+      border-radius: 12px;
+      font-size: 12px; line-height: 1.55;
+      color: rgba(0, 0, 0, 0.65);
+      font-style: italic;
+    }
+    .cmpc-legend__star {
+      color: var(--accent, #c9a96e);
+      font-style: normal;
+      font-weight: 800;
+    }
   </style>
 </head>
 <body class="fav-page">
@@ -503,6 +806,7 @@
   <script src="/js/apartments-data.js"></script>
   <script src="/js/header-fav-badge.js"></script>
   <script src="/js/compare-table.js"></script>
+  <script src="/js/compare-cards.js"></script>
   <script>
     (function () {
       var root = document.getElementById('favRoot');
@@ -692,7 +996,9 @@
         compareSection.hidden = false;
 
         var tableRoot = document.getElementById('favCompareTableRoot');
-        window.renderMegapolisCompareTable(tableRoot, ids, {
+        // Layout KART (ladniejszy niz tabela) - jesli dostepny
+        var renderer = window.renderMegapolisCompareCards || window.renderMegapolisCompareTable;
+        renderer(tableRoot, ids, {
           showRemove: true,
           removeAction: function (id) {
             // Usun z ulubionych - to spowoduje re-render przez listener
@@ -706,5 +1012,6 @@
     })();
   </script>
   <script src="/js/contact-fab.js" defer></script>
+  <script src="/js/contact-section.js" defer></script>
 </body>
 </html>
