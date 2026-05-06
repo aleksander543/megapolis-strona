@@ -426,23 +426,15 @@
         0 1px 0 rgba(255, 255, 255, 0.7) inset,
         0 14px 40px rgba(0, 60, 113, 0.06);
       overflow: hidden;
-      animation: cmpc-card-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+      opacity: 1;
       transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     }
-    .cmpc-card:nth-child(1) { animation-delay: 0.04s; }
-    .cmpc-card:nth-child(2) { animation-delay: 0.10s; }
-    .cmpc-card:nth-child(3) { animation-delay: 0.16s; }
-    .cmpc-card:nth-child(4) { animation-delay: 0.22s; }
     .cmpc-card:hover {
       transform: translateY(-3px);
       border-color: rgba(0, 60, 113, 0.16);
       box-shadow:
         0 1px 0 rgba(255, 255, 255, 0.7) inset,
         0 22px 56px rgba(0, 60, 113, 0.13);
-    }
-    @keyframes cmpc-card-in {
-      from { opacity: 0; transform: translateY(14px); }
-      to   { opacity: 1; transform: translateY(0); }
     }
 
     /* Akcent gornej krawedzi w kolorze inwestycji */
@@ -785,7 +777,14 @@
 
     <section class="fav-list-wrap">
       <div id="favRoot"></div>
-      <div id="favCompareSection" class="fav-compare-section" hidden></div>
+      <div id="favCompareSection" class="fav-compare-section" hidden>
+        <header class="fav-compare-section__head">
+          <span class="fav-compare-section__eyebrow">Porównanie</span>
+          <h2 class="fav-compare-section__title">Twoje ulubione obok siebie</h2>
+          <p class="fav-compare-section__sub">Automatycznie zestawione wszystkie zapisane oferty. Usuń mieszkanie z&nbsp;porównania klikając&nbsp;× przy nim.</p>
+        </header>
+        <div id="favCompareTableRoot"></div>
+      </div>
     </section>
 
     <!-- Toast po skopiowaniu linka -->
@@ -974,30 +973,25 @@
       }
 
       function renderCompare() {
-        if (!compareSection || !window.renderMegapolisCompareTable) return;
+        if (!compareSection) return;
+        var tableRoot = document.getElementById('favCompareTableRoot');
+        if (!tableRoot) return;
+
         var ids = window.MegapolisFavs.getAll();
         var apts = ids.map(window.getMegapolisApartment).filter(Boolean);
 
+        // Mniej niz 2 mieszkania - nic do porownania, ukryj cala sekcje
         if (apts.length < 2) {
           compareSection.hidden = true;
-          compareSection.innerHTML = '';
+          tableRoot.innerHTML = '';
           return;
         }
 
-        var headerHtml =
-          '<header class="fav-compare-section__head">' +
-            '<span class="fav-compare-section__eyebrow">Porównanie</span>' +
-            '<h2 class="fav-compare-section__title">Twoje ulubione obok siebie</h2>' +
-            '<p class="fav-compare-section__sub">Automatycznie zestawione wszystkie zapisane oferty. Usun mieszkanie z porownania klikajac × przy nim.</p>' +
-          '</header>' +
-          '<div id="favCompareTableRoot"></div>';
-
-        compareSection.innerHTML = headerHtml;
+        // Pokaz sekcje (header jest statyczny w HTML, renderujemy tylko tableRoot)
         compareSection.hidden = false;
 
-        var tableRoot = document.getElementById('favCompareTableRoot');
-        // Layout KART (ladniejszy niz tabela) - jesli dostepny
         var renderer = window.renderMegapolisCompareCards || window.renderMegapolisCompareTable;
+        if (!renderer) return;
         renderer(tableRoot, ids, {
           showRemove: true,
           removeAction: function (id) {
