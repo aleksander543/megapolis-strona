@@ -735,13 +735,12 @@ img.lazy-loaded {
 }
 .header__cta--special {
   background: transparent;
-  color: #ffffff;                            /* Bialy tekst — wieksza widocznosc na hero */
+  color: var(--brand-moon);                  /* Mega Moon */
   border: 1.5px solid var(--brand-moon);
 }
 .header__cta--special:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-  border-color: #ffffff;
+  background: rgba(183, 201, 211, 0.1);
+  color: #fff;
 }
 
 /* Telefon */
@@ -4092,115 +4091,6 @@ html.a11y-light body { background:var(--bg); color:var(--white); }
 .portfolio-hub__block { background: transparent !important; }
 .portfolio-hub__block--grid { padding-top: 20px; }
 
-/* === Wyszukiwarka tekstowa pod mapą (home-finder) === */
-.home-finder { padding: 40px 0 60px; }
-.home-finder__inner {
-  max-width: 880px;
-  margin: 0 auto;
-  text-align: center;
-}
-.home-finder__head { margin-bottom: 28px; }
-.home-finder__eyebrow {
-  display: inline-block;
-  font-size: 11px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--brand-night, #003C71);
-  font-weight: 600;
-  padding: 6px 16px;
-  border: 1px solid rgba(0,60,113,0.2);
-  border-radius: 9999px;
-  margin-bottom: 16px;
-}
-.home-finder__title {
-  font-family: var(--font-display, 'Cormorant Garamond', serif);
-  font-size: clamp(28px, 4vw, 44px);
-  line-height: 1.15;
-  font-weight: 600;
-  color: var(--brand-night, #003C71);
-  margin: 0 0 12px;
-}
-.home-finder__title em {
-  font-style: italic;
-  font-weight: 300;
-  color: var(--accent, #c9a96e);
-}
-.home-finder__lead {
-  font-size: 15px;
-  line-height: 1.55;
-  color: rgba(0,0,0,0.62);
-  max-width: 620px;
-  margin: 0 auto 24px;
-}
-.home-finder__form {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: #fff;
-  border: 1px solid rgba(0,60,113,0.15);
-  border-radius: 9999px;
-  padding: 8px 8px 8px 22px;
-  box-shadow: 0 6px 24px rgba(0,60,113,0.08);
-  transition: box-shadow 0.2s ease, border-color 0.2s ease;
-}
-.home-finder__form:focus-within {
-  border-color: var(--brand-night, #003C71);
-  box-shadow: 0 8px 32px rgba(0,60,113,0.16);
-}
-.home-finder__icon { color: var(--brand-night, #003C71); flex: 0 0 auto; }
-.home-finder__input {
-  flex: 1;
-  border: 0;
-  outline: none;
-  background: transparent;
-  font-size: 15px;
-  font-family: inherit;
-  color: var(--graphite, #222);
-  padding: 12px 4px;
-  min-width: 0;
-}
-.home-finder__input::placeholder { color: rgba(0,0,0,0.4); }
-.home-finder__submit {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--brand-night, #003C71);
-  color: #fff;
-  border: 0;
-  border-radius: 9999px;
-  padding: 12px 22px;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.4px;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
-}
-.home-finder__submit:hover {
-  background: var(--brand-night-soft, #1c3d6b);
-  transform: translateY(-1px);
-}
-.home-finder__advanced {
-  display: inline-block;
-  margin-top: 14px;
-  font-size: 13px;
-  letter-spacing: 0.3px;
-  color: var(--brand-night, #003C71);
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  text-decoration-color: rgba(0,60,113,0.3);
-  transition: text-decoration-color 0.2s ease;
-}
-.home-finder__advanced:hover { text-decoration-color: var(--brand-night, #003C71); }
-
-@media (max-width: 640px) {
-  .home-finder__form { flex-wrap: wrap; padding: 10px; border-radius: 22px; }
-  .home-finder__input { padding: 8px 12px; }
-  .home-finder__submit { width: 100%; justify-content: center; }
-}
-
-/* Ukryta lista inwestycji (zostala przeniesiona do menu Nasze realizacje) */
-.allinv.is-hidden { display: none !important; }
-
 /* Highlight karty po kliknięciu pinezki */
 .allinv__card.is-highlighted {
   box-shadow:
@@ -4355,29 +4245,6 @@ html.a11y-light body { background:var(--bg); color:var(--white); }
   color: var(--graphite) !important;
   border-color: var(--graphite) !important;
 }
-
-/* Popup minimal: bez opisu, miniaturka + CTA jako block */
-.invmap-popup--minimal {
-  display: block;
-  text-decoration: none;
-  background: #fff;
-  border-radius: 9px;
-  overflow: hidden;
-}
-.invmap-popup--minimal .invmap-popup__img { height: 130px; border-radius: 0; }
-.invmap-popup__cta--block {
-  display: block;
-  padding: 12px 14px;
-  text-align: center;
-  font-size: 12px;
-  letter-spacing: 1.6px;
-  color: #fff !important;
-  background: var(--brand-night, #003C71);
-  text-transform: uppercase;
-  border: 0 !important;
-  transition: background 0.2s ease;
-}
-.invmap-popup--minimal:hover .invmap-popup__cta--block { background: var(--brand-night-soft, #1c3d6b); }
 
 /* --- Lista inwestycji (allinv) --- */
 .allinv,

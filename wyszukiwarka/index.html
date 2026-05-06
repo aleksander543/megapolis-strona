@@ -112,54 +112,52 @@
     }
 
     /* HERO VIDEO — lekko szerszy, bez dekoracji */
-    /* === Poziome zdjecie hero (zamiast pionowego video) === */
-    .ws-hero-image-wrap {
+    .ws-hero-video-wrap {
       position: relative; z-index: 2;
-      width: 100%; max-width: 560px;
+      width: 100%; max-width: 420px;
       margin-left: auto;
     }
-    .ws-hero-image {
+    .ws-hero-video {
       position: relative;
       width: 100%;
-      aspect-ratio: 4 / 3;
-      margin: 0;
+      aspect-ratio: 4 / 5;
+      min-height: 440px;              /* fallback dla starszych Safari bez aspect-ratio */
       border-radius: 18px;
       overflow: hidden;
       box-shadow: 0 20px 50px rgba(0, 60, 113, 0.15),
                   0 0 0 1px rgba(0, 60, 113, 0.06);
-      background: #0a1e35;
+      background: #0a1e35 url('/media/clou/lindego-panorama.jpg') center / cover;
     }
-    .ws-hero-image img {
+    .ws-hero-video video {
       position: absolute; inset: 0;
       width: 100%; height: 100%;
       object-fit: cover; display: block;
     }
-    .ws-hero-image::after {
+    /* Delikatny gradient na dole - dla czytelnosci podpisu */
+    .ws-hero-video::after {
       content: ''; position: absolute;
       bottom: 0; left: 0; right: 0; height: 38%;
       background: linear-gradient(180deg, transparent 0%, rgba(0, 60, 113, 0.55) 100%);
       pointer-events: none; z-index: 2;
     }
-    .ws-hero-image__caption {
-      position: absolute; bottom: 18px; left: 20px; right: 20px;
+    /* Podpis na dole - minimalny */
+    .ws-hero-video__caption {
+      position: absolute; bottom: 16px; left: 18px; right: 18px;
       z-index: 3;
       color: #fff; text-align: left;
-      display: block;
     }
-    .ws-hero-image__caption-eyebrow {
-      display: block;
+    .ws-hero-video__caption-eyebrow {
       font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase; font-weight: 700;
       color: rgba(183, 201, 211, 0.95);
       margin: 0 0 4px;
     }
-    .ws-hero-image__caption-title {
-      display: block;
+    .ws-hero-video__caption-title {
       font-family: 'Ubuntu', sans-serif;
-      font-size: 16px; font-weight: 700;
+      font-size: 15px; font-weight: 700;
       line-height: 1.25; letter-spacing: -0.2px;
       margin: 0; color: #fff;
     }
-    .ws-hero-image__caption-title em { font-style: italic; font-weight: 300; opacity: 0.9; }
+    .ws-hero-video__caption-title em { font-style: italic; font-weight: 300; opacity: 0.9; }
 
     /* Mobile - stack hero columns */
     @media (max-width: 960px) {
@@ -172,11 +170,11 @@
       .ws-hero__lead { margin: 0 auto; }
       .ws-eyebrow::before { display: none; }
       .ws-eyebrow { justify-content: center; }
-      .ws-hero-image-wrap { margin: 0 auto; max-width: 520px; }
+      .ws-hero-video-wrap { margin: 0 auto; max-width: 360px; }
     }
     @media (max-width: 640px) {
       .ws-hero { padding: 150px 0 50px; }
-      .ws-hero-image-wrap { max-width: 100%; }
+      .ws-hero-video-wrap { max-width: 300px; }
     }
 
     /* STATS premium grid with dividers - kompaktowo, blisko hero i search */
@@ -1572,19 +1570,24 @@
           </p>
         </div>
 
-        <!-- RIGHT: poziome zdjecie hero (panorama inwestycji) -->
-        <div class="ws-hero-image-wrap">
-          <figure class="ws-hero-image">
-            <img
-              src="/media/clou/lindego-panorama.jpg"
-              alt="Panorama inwestycji Megapolis"
-              loading="eager"
-              fetchpriority="high">
-            <figcaption class="ws-hero-image__caption">
-              <span class="ws-hero-image__caption-eyebrow">Megapolis</span>
-              <span class="ws-hero-image__caption-title">Zobacz, <em>gdzie zamieszkasz</em></span>
-            </figcaption>
-          </figure>
+        <!-- RIGHT: video reel (pionowy, minimalny) -->
+        <div class="ws-hero-video-wrap">
+          <div class="ws-hero-video">
+            <video
+              src="/media/hero-2026.mp4"
+              poster="/media/clou/lindego-panorama.jpg"
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="auto"
+              aria-label="Inwestycje Megapolis — przegląd"
+            ></video>
+            <div class="ws-hero-video__caption">
+              <p class="ws-hero-video__caption-eyebrow">Megapolis</p>
+              <h2 class="ws-hero-video__caption-title">Zobacz, <em>gdzie zamieszkasz</em></h2>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -1714,8 +1717,8 @@
           <aside class="ws-body__side" aria-label="Światło w mieszkaniu">
             <div class="ws-sun">
               <div class="ws-sun__head">
-                <span class="ws-sun__title">Strona świata</span>
-                <span class="ws-sun__sub">Usytuowanie mieszkania względem stron świata. Wybierz porę dnia — dopasujemy ekspozycję.</span>
+                <span class="ws-sun__title">Jak chcesz aby padało&nbsp;światło?</span>
+                <span class="ws-sun__sub">Wybierz porę dnia — dopasujemy ekspozycję</span>
               </div>
 
               <!-- Presety - jedno klikniecie -->
