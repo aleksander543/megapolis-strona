@@ -735,12 +735,13 @@ img.lazy-loaded {
 }
 .header__cta--special {
   background: transparent;
-  color: var(--brand-moon);                  /* Mega Moon */
+  color: #ffffff;                            /* Bialy tekst — wieksza widocznosc na hero */
   border: 1.5px solid var(--brand-moon);
 }
 .header__cta--special:hover {
-  background: rgba(183, 201, 211, 0.1);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border-color: #ffffff;
 }
 
 /* Telefon */
