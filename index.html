@@ -358,15 +358,11 @@
     }
     .sales-card__promo--urgent {
       background: linear-gradient(135deg, #e8414c 0%, #c53030 100%);
-      animation: sales-pulse 1.8s infinite;
+      /* usunieto pulsujaca animacje - wymóg premium feel */
     }
     .sales-card__promo--vip {
       background: linear-gradient(135deg, #4a3b26 0%, #c9a96e 100%);
       color: #fff;
-    }
-    @keyframes sales-pulse {
-      0%, 100% { transform: scale(1); }
-      50%      { transform: scale(1.08); }
     }
 
     /* Body karty */
@@ -1150,13 +1146,8 @@
     }
     .showcase__eyebrow-dot {
       width: 6px; height: 6px; border-radius: 50%;
-      background: #e8414c;
-      box-shadow: 0 0 0 3px rgba(232, 65, 76, 0.2);
-      animation: scPulse 2s infinite;
-    }
-    @keyframes scPulse {
-      0%, 100% { box-shadow: 0 0 0 3px rgba(232, 65, 76, 0.2); }
-      50%      { box-shadow: 0 0 0 6px rgba(232, 65, 76, 0.02); }
+      background: #c9a96e;                      /* gold zamiast czerwonego pulsujacego */
+      box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.18);
     }
     .showcase__title {
       font-family: 'Ubuntu', sans-serif;
@@ -1595,8 +1586,8 @@
             <a href="#inwestycje" class="nav__link">Inwestycje</a>
             <div class="mega-menu" id="megaMenu">
               <div class="mega-menu__list">
-                <a href="/inwestycja" class="mega-menu__item" data-img="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&q=85&auto=format&fit=crop">Osiedle OZON</a>
-                <a href="/osiedle-fi/" class="mega-menu__item" data-img="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200&q=85&auto=format&fit=crop">Nowe Osiedle Fi</a>
+                <a target="_blank" rel="noopener" href="/inwestycja" class="mega-menu__item" data-img="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&q=85&auto=format&fit=crop">Osiedle OZON</a>
+                <a target="_blank" rel="noopener" href="/osiedle-fi/" class="mega-menu__item" data-img="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200&q=85&auto=format&fit=crop">Nowe Osiedle Fi</a>
                 <a href="#" class="mega-menu__item" data-img="https://images.unsplash.com/photo-1464146072230-91cabc968266?w=1200&q=85&auto=format&fit=crop">Michalczyka 15</a>
                 <a href="#" class="mega-menu__item" data-img="https://images.unsplash.com/photo-1460317442991-0ec209397118?w=1200&q=85&auto=format&fit=crop">LINK BUNSCHA</a>
                 <a href="#" class="mega-menu__item" data-img="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&q=85&auto=format&fit=crop">CLOU Lindego</a>
@@ -1774,7 +1765,7 @@
 
         <div class="showcase__rail" id="showcaseRail">
 
-          <a class="sc-card" href="/wyszukiwarka-3d/?inv=fi" data-sc-anim="card">
+          <a class="sc-card" href="/osiedle-fi/" target="_blank" rel="noopener" data-sc-anim="card">
             <div class="sc-card__img sc-card__img--video">
               <video autoplay muted loop playsinline preload="metadata" poster="/media/fi/fi-new-sunset.jpg" aria-label="Nowe Osiedle Fi - animacja">
                 <source src="/media/showcase/fi-anim.mp4" type="video/mp4">
@@ -1797,7 +1788,7 @@
             </div>
           </a>
 
-          <a class="sc-card" href="/wyszukiwarka-3d/?inv=ozon" data-sc-anim="card">
+          <a class="sc-card" href="/osiedle-ozon/" target="_blank" rel="noopener" data-sc-anim="card">
             <div class="sc-card__img sc-card__img--video">
               <video autoplay muted loop playsinline preload="metadata" poster="/media/ozon/ozon-ii-6.webp" aria-label="Osiedle OZON III - animacja">
                 <source src="/media/showcase/ozon-anim.mp4" type="video/mp4">
@@ -1820,7 +1811,7 @@
             </div>
           </a>
 
-          <a class="sc-card" href="/wyszukiwarka-3d/?inv=clou" data-sc-anim="card">
+          <a class="sc-card" href="/clou-lindego/" target="_blank" rel="noopener" data-sc-anim="card">
             <div class="sc-card__img sc-card__img--video">
               <video autoplay muted loop playsinline preload="metadata" poster="/media/clou/lindego-panorama.jpg" aria-label="CLOU Lindego - animacja">
                 <source src="/media/showcase/clou-anim.mp4" type="video/mp4">
@@ -1990,7 +1981,7 @@
         <div class="allinv__grid" data-reveal id="allinvGrid">
 
           <!-- 1. CLOU Lindego - ZREALIZOWANA -->
-          <a href="/clou-lindego/" class="allinv__card" data-status="done" data-inv="clou" id="card-clou">
+          <a target="_blank" rel="noopener" href="/clou-lindego/" class="allinv__card" data-status="done" data-inv="clou" id="card-clou">
             <div class="allinv__card-media"
                  data-slider
                  data-images="/media/clou/lindego-panorama.jpg|/media/clou/lindego-street.jpg|/media/clou/lindego-ogrodek.jpg|/media/clou/lindego-filtrowa.jpg"
@@ -2044,7 +2035,7 @@
           </a>
 
           <!-- 3. Nowe Osiedle Fi - W BUDOWIE -->
-          <a href="/osiedle-fi/" class="allinv__card" data-status="building" data-inv="fi" id="card-fi">
+          <a target="_blank" rel="noopener" href="/osiedle-fi/" class="allinv__card" data-status="building" data-inv="fi" id="card-fi">
             <div class="allinv__card-media"
                  data-slider
                  data-images="https://megapolis.pl/wp-content/uploads/2025/04/08_noc_a-1024x576.jpg|https://megapolis.pl/wp-content/uploads/2024/07/fi-noc-max-res-1-1024x576.webp|https://megapolis.pl/wp-content/uploads/2025/04/08_noc_a-1024x576.jpg|https://megapolis.pl/wp-content/uploads/2024/07/fi-noc-max-res-1-1024x576.webp"
@@ -2071,7 +2062,7 @@
           </a>
 
           <!-- 4. Osiedle OZON - rozdział III - W BUDOWIE -->
-          <a href="/osiedle-ozon/" class="allinv__card" data-status="building" data-inv="ozon" id="card-ozon">
+          <a target="_blank" rel="noopener" href="/osiedle-ozon/" class="allinv__card" data-status="building" data-inv="ozon" id="card-ozon">
             <div class="allinv__card-media"
                  data-slider
                  data-images="/media/ozon/ozon-1.jpg|/media/ozon/ozon-2.jpg|/media/ozon/ozon-3.jpg|/media/ozon/ozon-1.jpg"
@@ -2098,7 +2089,7 @@
           </a>
 
           <!-- 5. LINK Bunscha - ZREALIZOWANA -->
-          <a href="/link-bunscha/" class="allinv__card" data-status="done" data-inv="bunscha" id="card-bunscha">
+          <a target="_blank" rel="noopener" href="/link-bunscha/" class="allinv__card" data-status="done" data-inv="bunscha" id="card-bunscha">
             <div class="allinv__card-media"
                  data-slider
                  data-images="/media/link/link-1.webp|/media/link/link-2.webp|/media/link/link-3.webp|/media/link/link-4.webp"
@@ -2125,7 +2116,7 @@
           </a>
 
           <!-- 6. Osiedle OZON - rozdział II - ZREALIZOWANA -->
-          <a href="/inwestycja" class="allinv__card" data-status="done">
+          <a target="_blank" rel="noopener" href="/inwestycja" class="allinv__card" data-status="done">
             <div class="allinv__card-media"
                  data-slider
                  data-images="/media/ozon/ozon-2.jpg|/media/ozon/ozon-3.jpg|/media/ozon/ozon-1.jpg|/media/ozon/ozon-2.jpg"
@@ -2152,7 +2143,7 @@
           </a>
 
           <!-- 7. Osiedle OZON - rozdział I - ZREALIZOWANA -->
-          <a href="/inwestycja" class="allinv__card" data-status="done">
+          <a target="_blank" rel="noopener" href="/inwestycja" class="allinv__card" data-status="done">
             <div class="allinv__card-media"
                  data-slider
                  data-images="/media/ozon/ozon-3.jpg|/media/ozon/ozon-1.jpg|/media/ozon/ozon-2.jpg|/media/ozon/ozon-3.jpg"
@@ -2179,7 +2170,7 @@
           </a>
 
           <!-- 8. Osiedle Fi (stary etap) - ZREALIZOWANA -->
-          <a href="/osiedle-fi/" class="allinv__card" data-status="done">
+          <a target="_blank" rel="noopener" href="/osiedle-fi/" class="allinv__card" data-status="done">
             <div class="allinv__card-media"
                  data-slider
                  data-images="/media/fi/fi-2.webp|/media/fi/fi-4.webp|/media/fi/fi-7.webp|/media/fi/fi-2.webp"
@@ -2206,7 +2197,7 @@
           </a>
 
           <!-- 9. Filtry - ZREALIZOWANA -->
-          <a href="#" class="allinv__card" data-status="done">
+          <a target="_blank" rel="noopener" href="#" class="allinv__card" data-status="done">
             <div class="allinv__card-media"
                  data-slider
                  data-images="/media/filtry/filtry-1.webp|/media/filtry/filtry-3.webp|/media/filtry/filtry-1.webp|/media/filtry/filtry-3.webp"
@@ -2233,7 +2224,7 @@
           </a>
 
           <!-- 10. Kapelanka 6a - ZREALIZOWANA -->
-          <a href="#" class="allinv__card" data-status="done">
+          <a target="_blank" rel="noopener" href="#" class="allinv__card" data-status="done">
             <div class="allinv__card-media"
                  data-slider
                  data-images="https://megapolis.pl/wp-content/uploads/2024/07/kapelanka2-dzien-max-res.webp|https://megapolis.pl/wp-content/uploads/2024/07/kapelanka2-dzien-max-res.webp|https://megapolis.pl/wp-content/uploads/2024/07/kapelanka2-dzien-max-res.webp|https://megapolis.pl/wp-content/uploads/2024/07/kapelanka2-dzien-max-res.webp"
@@ -2980,13 +2971,23 @@
       var m = L.marker([inv.lat, inv.lng], { icon: makePin(false) }).addTo(map);
       var searchUrl = invToSearchUrl[key] || '/wyszukiwarka/';
       var ctaLabel  = invToCtaLabel[key]  || 'Zobacz mieszkania →';
+      // Popup z 2 CTA: opis osiedla (glowny) + wyszukiwarka 3D (drugi)
+      var detailUrl = inv.url || '/realizacje/';
       var popupHtml =
         '<div class="invmap-popup">' +
-          '<img class="invmap-popup__img" src="' + inv.img + '" alt="' + inv.name + '">' +
+          '<a class="invmap-popup__img-link" href="' + detailUrl + '" target="_blank" rel="noopener">' +
+            '<img class="invmap-popup__img" src="' + inv.img + '" alt="' + inv.name + '">' +
+          '</a>' +
           '<div class="invmap-popup__body">' +
             '<h3 class="invmap-popup__name">' + inv.name + '</h3>' +
             '<p class="invmap-popup__loc">' + inv.loc + '</p>' +
-            '<a class="invmap-popup__cta" href="' + searchUrl + '">' + ctaLabel + '</a>' +
+            '<div class="invmap-popup__ctas">' +
+              '<a class="invmap-popup__cta invmap-popup__cta--primary" href="' + detailUrl + '" target="_blank" rel="noopener">' +
+                'Zobacz osiedle' +
+                '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>' +
+              '</a>' +
+              '<a class="invmap-popup__cta invmap-popup__cta--secondary" href="' + searchUrl + '" target="_blank" rel="noopener">Wyszukiwarka 3D</a>' +
+            '</div>' +
           '</div>' +
         '</div>';
       m.bindPopup(popupHtml, { maxWidth: 260, closeButton: true });

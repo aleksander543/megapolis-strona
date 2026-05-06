@@ -3015,6 +3015,51 @@ html.a11y-light body { background:var(--bg); color:var(--white); }
 .invmap-popup__cta { display: inline-block; font-size: 11px; letter-spacing: 2px; color: var(--accent, #c9a96e); text-transform: uppercase; text-decoration: none; border-bottom: 1px solid var(--accent, #c9a96e); padding-bottom: 2px; }
 .invmap-popup__cta:hover { color: #fff; border-color: #fff; }
 
+/* Popup mapy: 2 CTA - opis osiedla (primary) + wyszukiwarka 3D (secondary) */
+.invmap-popup__img-link { display: block; }
+.invmap-popup__ctas {
+  display: flex; flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+.invmap-popup__cta--primary {
+  display: inline-flex !important;
+  align-items: center; justify-content: center; gap: 8px;
+  padding: 10px 16px;
+  background: var(--accent, #c9a96e);
+  color: #1a1a1a !important;
+  border: 0 !important;
+  border-radius: 9999px !important;
+  font-weight: 700;
+  letter-spacing: 1.4px !important;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.invmap-popup__cta--primary:hover {
+  background: #ffffff;
+  color: var(--brand-night, #003C71) !important;
+  border: 0 !important;
+  transform: translateY(-1px);
+}
+.invmap-popup__cta--secondary {
+  display: inline-block !important;
+  padding: 8px 14px;
+  text-align: center;
+  font-size: 10px !important;
+  letter-spacing: 1.6px !important;
+  color: rgba(255, 255, 255, 0.85) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  border-radius: 9999px !important;
+  text-decoration: none;
+  background: transparent;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.invmap-popup__cta--secondary:hover {
+  color: var(--accent, #c9a96e) !important;
+  border-color: var(--accent, #c9a96e) !important;
+  background: rgba(201, 169, 110, 0.08);
+}
+
 /* Legenda nad mapą */
 .invmap__legend {
   position: absolute; top: 16px; right: 16px;
